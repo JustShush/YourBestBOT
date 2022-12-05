@@ -1,0 +1,7 @@
+{
+	"TOKEN": "Your token",
+	"DevGuild": "",
+	"DevID": "",
+	"ClientID": "",
+	"MONGO_URI": "your mongo uri"
+}

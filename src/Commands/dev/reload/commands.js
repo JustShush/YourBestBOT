@@ -3,7 +3,6 @@ const { loadCommands } = require("../../../handlers/command_Handler");
 
 module.exports = {
 	name: "reload.commands",
-	permissions: ["ADMINISTRATOR"],
 	subCommand: "reload.commands",
 	/**
 	 * 

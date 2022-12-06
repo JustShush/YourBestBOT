@@ -1,11 +1,11 @@
-const { ChatInputCommandInteraction, SlashCommandBuilder, EmbedBuilder } = require("discord.js");
+const { ChatInputCommandInteraction, SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
 
 module.exports = {
 	name: "slow",
-	permissions: ["MANAGE_CHANNELS", "MANAGE_GUILD", "VIEW_AUDIT_LOG", "VIEW_GUILD_INSIGHTS"],
 	data: new SlashCommandBuilder()
 		.setName("slowmode")
 		.setDescription("Change the Slowmode.")
+		.setDefaultMemberPermissions(PermissionFlagsBits.ManageChannels, PermissionFlagsBits.ManageGuild, PermissionFlagsBits.ViewAuditLog, PermissionFlagsBits.ViewGuildInsights)
 		.addNumberOption((option) => option
 			.setName("time")
 			.setDescription("The time for the slowmode.")

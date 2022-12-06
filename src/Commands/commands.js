@@ -2,7 +2,6 @@ const { ChatInputCommandInteraction, SlashCommandBuilder, EmbedBuilder } = requi
 
 module.exports = {
 	name: "commands",
-	permissions: [],
 	data: new SlashCommandBuilder()
 		.setName("commands")
 		.setDescription("Show all the commands available."),

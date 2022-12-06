@@ -1,11 +1,12 @@
-const { ChatInputCommandInteraction, SlashCommandBuilder, EmbedBuilder } = require("discord.js");
+const { ChatInputCommandInteraction, SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits } = require("discord.js");
+const logdb = require("../../schemas/log");
 
 module.exports = {
 	name: "ban",
-	permissions: ["BAN_MEMBERS"],
 	data: new SlashCommandBuilder()
 		.setName("ban")
 		.setDescription("Bans the member given.")
+		.setDefaultMemberPermissions(PermissionFlagsBits.BanMembers)
 		.addUserOption((option) => option
 			.setName("target")
 			.setRequired(true)
@@ -24,7 +25,7 @@ module.exports = {
 		const resColor = colors[color];
 		// end of the color randomization 
 
-		const { options } = interaction;
+		const { options, guild } = interaction;
 
 		const user = options.getUser("target");
 		const member = await interaction.guild.members.fetch(user.id).catch(console.error);
@@ -34,12 +35,11 @@ module.exports = {
 
 		const kickEmbed = new EmbedBuilder()
 			.setColor(resColor)
-			.setTitle(`You have been Banned from: \`${interaction.guild.name}\``)
 			.setTimestamp()
 
 		await user.send({
 			content: `${user}`,
-			embeds: [kickEmbed.setDescription(`By: ${interaction.member}\nReason: \`\`\`${reason}\`\`\``)]
+			embeds: [kickEmbed.setDescription(`By: ${interaction.member}\nReason: \`\`\`${reason}\`\`\``).setTitle(`You have been Banned from: \`${interaction.guild.name}\``)]
 		}).catch();
 
 		await member.ban({
@@ -47,6 +47,24 @@ module.exports = {
 			reason: reason
 		}).catch(console.error);
 
-		interaction.reply({ embeds: [kickEmbed.setDescription(`${user} as been Banned from the server successfully ✅`)], ephemeral: true });
+		const logchannel = await logdb.findOne({ Guild: guild.id })
+		if (logchannel) {
+			const check = client.channels.cache.get(logchannel.Channel);
+			//console.log("SIUUU");
+			if (check) {
+				const logEmbed = new EmbedBuilder()
+					.setTitle(`has been banned.`)
+					.setDescription(`By: ${interaction.member}\nReason: \`\`\`${reason}\`\`\``)
+					.setTimestamp()
+
+				//console.log("test");
+				check.send({
+					content: `<@${user.id}>`,
+					embeds: [logEmbed]
+				})
+			}
+		}
+
+		interaction.reply({ embeds: [kickEmbed.setDescription(`${user} as been Banned from the server successfully ✅\nReason: \`\`\`${reason}\`\`\``).setTitle(`Has been banned from the server.`)], ephemeral: true });
 	}
 }

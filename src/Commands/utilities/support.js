@@ -1,7 +1,6 @@
 const { EmbedBuilder, SlashCommandBuilder, Colors } = require('discord.js');
 module.exports = {
 	name: "support",
-	permissions: [],
 	data: new SlashCommandBuilder()
 		.setName('support')
 		.setDescription('Join YourBestBot\'s support server.'),

@@ -2,7 +2,6 @@ const { EmbedBuilder, SlashCommandBuilder} = require('discord.js');
 
 module.exports = {
 	name: "songs",
-	permissions: [],
 	data: new SlashCommandBuilder()
 		.setName('songs')
 		.setDescription('All the songs made by Midwell'),

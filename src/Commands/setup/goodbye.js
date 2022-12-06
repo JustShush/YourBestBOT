@@ -1,12 +1,12 @@
-const { SlashCommandBuilder, ChatInputCommandInteraction, EmbedBuilder } = require("discord.js");
+const { SlashCommandBuilder, ChatInputCommandInteraction, EmbedBuilder, PermissionFlagsBits, PermissionsBitField } = require("discord.js");
 const byeSchema = require('../../schemas/goodbye');
 
 module.exports = {
 	name: "goodbye",
-	permissions: ["MANAGE_CHANNELS", "MANAGE_GUILD", "VIEW_AUDIT_LOG", "VIEW_GUILD_INSIGHTS"],
 	data: new SlashCommandBuilder()
-		.setName("goodbye")
+		.setName("setup-goodbye")
 		.setDescription("Set the greetings embed.")
+		.setDefaultMemberPermissions(PermissionFlagsBits.ManageChannels, PermissionFlagsBits.ManageGuild, PermissionFlagsBits.ViewAuditLog, PermissionsBitField.ViewGuildInsights)
 		.addStringOption((option) => option
 			.setName("channel")
 			.setDescription("The channel to the GoodBye message to appear.(put it\'s id here)")

@@ -3,7 +3,6 @@ const { loadEvents } = require("../../../handlers/event_Handler");
 
 module.exports = {
 	name: "realod.events",
-	permissions: ["ADMINISTRATOR"],
 	subCommand: "reload.events",
 	/**
 	 * 

@@ -1,10 +1,12 @@
-const { ChatInputCommandInteraction, SlashCommandBuilder, EmbedBuilder } = require("discord.js");
+const { ChatInputCommandInteraction, SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder } = require("discord.js");
+const logdb = require("../../schemas/log");
 
 module.exports = {
-	permissions: ["CHANGE_NICKNAME"],
+	name: "setnick",
 	data: new SlashCommandBuilder()
 		.setName("setnick")
 		.setDescription("Change the nickname of a member.")
+		.setDefaultMemberPermissions(PermissionFlagsBits.ManageNicknames)
 		.addUserOption((option) => option
 			.setName("member")
 			.setDescription("The member to change the nickname.")
@@ -33,6 +35,24 @@ module.exports = {
 		const newnick = options.getString("name");
 
 		user.setNickname(newnick);
+
+		const logchannel = await logdb.findOne({ Guild: guild.id })
+		if (logchannel) {
+			const check = client.channels.cache.get(logchannel.Channel);
+			//console.log("SIUUU");
+			if (check) {
+				const logEmbed = new EmbedBuilder()
+					.setTitle(`SetNickName`)
+					.setDescription(`<@${user}>'s nickname has been set to: \`${newnick}\`\nBy: ${interaction.member}`)
+					.setTimestamp()
+
+				//console.log("test");
+				check.send({
+					content: `<@${user}>`,
+					embeds: [logEmbed]
+				})
+			}
+		}
 
 		interaction.reply({ content: `NickName of ${User.tag} has been changed to: ${newnick}`, ephemeral: true });
 	}

@@ -1,12 +1,12 @@
-const { ChatInputCommandInteraction, SlashCommandBuilder, EmbedBuilder } = require("discord.js");
+const { ChatInputCommandInteraction, SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits } = require("discord.js");
 
 module.exports = {
 	name: "servers",
-	permissions: ["ADMINISTRATOR"],
 	developer: true,
 	data: new SlashCommandBuilder()
 		.setName("servers")
-		.setDescription("Will respond with pong!"),
+		.setDescription("Will respond with pong!")
+		.setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
 	/**
 	 * @param {ChatInputCommandInteraction} interaction
 	 */

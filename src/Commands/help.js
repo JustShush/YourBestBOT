@@ -1,7 +1,6 @@
 const { EmbedBuilder, SlashCommandBuilder, Colors } = require('discord.js');
 module.exports = {
 	anme: "help",
-	permissions: [],
 	data: new SlashCommandBuilder()
 		.setName('help')
 		.setDescription('Gives you help :)'),

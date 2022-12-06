@@ -1,11 +1,12 @@
-const { ChatInputCommandInteraction, SlashCommandBuilder, EmbedBuilder } = require("discord.js");
+const { ChatInputCommandInteraction, SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits } = require("discord.js");
+const logdb = require("../../schemas/log");
 
 module.exports = {
 	name: "modnick",
-	permissions: ["MANAGE_NICKNAMES", "CHANGE_NICKNAME"],
 	data: new SlashCommandBuilder()
 		.setName("modnick")
 		.setDescription("Moderate a user\'s name")
+		.setDefaultMemberPermissions(PermissionFlagsBits.ManageNicknames, PermissionFlagsBits.ChangeNickname)
 		.addUserOption((option) => option
 			.setName("target")
 			.setDescription("The member to change the nickname.")
@@ -51,6 +52,24 @@ module.exports = {
 			content: `${user}`,
 			embeds: [embed]
 		});
+
+		const logchannel = await logdb.findOne({ Guild: guild.id })
+		if (logchannel) {
+			const check = client.channels.cache.get(logchannel.Channel);
+			//console.log("SIUUU");
+			if (check) {
+				const logEmbed = new EmbedBuilder()
+					.setTitle(`ModNickname`)
+					.setDescription(`${user}'s Nickname has been moderated to: \`${newnick}\`\nBy: ${interaction.member}\nReason: \`\`\`${reason}\`\`\``)
+					.setTimestamp()
+
+				//console.log("test");
+				check.send({
+					content: `${user}`,
+					embeds: [logEmbed]
+				})
+			}
+		}
 
 		interaction.reply({ content: `NickName of ${User.tag} has been changed to: \`Moderated Nickname ${newnick}\`\nReason: \`\`\`${reason}\`\`\``, ephemeral: true });
 	}

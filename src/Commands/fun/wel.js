@@ -2,7 +2,6 @@ const { EmbedBuilder, SlashCommandBuilder } = require('discord.js');
 
 module.exports = {
 	name: "wel",
-	permissions: [],
 	data: new SlashCommandBuilder()
 		.setName('wel')
 		.setDescription('Welcome new members.'),

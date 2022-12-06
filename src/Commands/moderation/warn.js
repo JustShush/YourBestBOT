@@ -1,14 +1,13 @@
 const color = require('colors');
 const { SlashCommandBuilder, PermissionFlagsBits, ChatInputCommandInteraction, EmbedBuilder } = require("discord.js");
-const db = require("../../schemas/Infractions");
+const db = require("../../schemas/warn");
 const logdb = require("../../schemas/log");
-const ms = require("ms");
 
 module.exports = {
-	name: "timeout",
+	name: "warn",
 	data: new SlashCommandBuilder()
-		.setName("timeout")
-		.setDescription("Restrict a member's ability to communicate.")
+		.setName("warn")
+		.setDescription("Warn a member.")
 		.setDefaultMemberPermissions(PermissionFlagsBits.ModerateMembers)
 		.setDMPermission(false)
 		.addUserOption(options => options
@@ -17,23 +16,25 @@ module.exports = {
 			.setRequired(true)
 		)
 		.addStringOption(options => options
-			.setName("duration")
-			.setDescription("Provide a duration for this timeout (1m, 1h, 1d)")
-			.setRequired(true)
-		)
-		.addStringOption(options => options
 			.setName("reason")
-			.setDescription("Provide a reson for this timeout.")
+			.setDescription("Provide a reson for this warn.")
 			.setMaxLength(512)
 		),
 	/**
 	 * @param {ChatInputCommandInteraction} interaction
 	 */
 	async execute(interaction, client) {
+
+		// random colors from one dark color palette
+		const colors = ['#282C34', '#E06C75', '#98C379', '#E5C07b', '#61AFEF', '#C678DD', '#56B6C2', '#ABB2BF', '#6B859E', '#3890E9', '#A359ED', '#EC5252', '#C97016', '#5DA713', '#13AFAF'];
+		const color = Math.floor(Math.random() * colors.length);
+		const resColor = colors[color];
+		// end of the color randomization
+
 		const { options, guild, member } = interaction;
 
 		const target = options.getMember("target");
-		const duration = options.getString("duration");
+		const User = options.getUser("target");
 		let reason = options.getString("reason");
 
 		if (!reason) reason = "No reason given.";
@@ -48,9 +49,6 @@ module.exports = {
 			ephemeral: true
 		})
 
-		if (!ms(duration) || ms(duration) > ms("28d"))
-			errorsArray.push("Time provided is invalid or its over the 28 day limit.")
-
 		if (!target.manageable || !target.moderatable)
 			errorsArray.push("Selected target is not moderatable by the bot.")
 
@@ -62,15 +60,7 @@ module.exports = {
 			ephemeral: true
 		})
 
-		target.timeout(ms(duration), reason).catch((err) => {
-			interaction.reply({
-				embeds: [errorsEmbed.setDescription("Could not timeout the user due to an uncommin error.")],
-				ephemeral: true
-			})
-			return console.log("Error occured in TimeOut.js".brightRed.bold);
-		})
-
-		const newInfractionObj = {
+		const warnObj = {
 			IssuerID: member.id,
 			IssuerTag: member.user.tag,
 			Reason: reason,
@@ -88,19 +78,24 @@ module.exports = {
 				Guild: guild.id,
 				User: target.id,
 				UserTag: target.user.tag,
-				Infractions: [newInfractionObj]
+				Warns: [warnObj]
 			});
 		else
-			userData.Infractions.push(newInfractionObj) && await userData.save();
+			userData.Warns.push(warnObj) && await userData.save();
 
-		const successEmbed = new EmbedBuilder()
-			.setAuthor({ name: "Timeout issues", icontURL: guild.iconURL() })
-			.setColor("Gold")
-			.setDescription([
-				`You have been timeout for **${ms(ms(duration), { long: true })}** by ${member}`,
-				`bringing your infractions total to **${userData.Infractions.length} points**.`,
-				`\nReason: ${reason}`
-			].join("\n"));
+		const newEmbed = new EmbedBuilder()
+			.setColor(resColor)
+			.setDescription(`By: ${interaction.member}\nReason: \`\`\`${reason}\`\`\``)
+			.setTimestamp()
+
+		try {
+			await User.send({
+				content: `${target}`,
+				embeds: [newEmbed.setTitle(`You have been warned on: \`${interaction.guild.name}\``)]
+			});
+		} catch (err) {
+			console.log(err);
+		}
 
 		const logchannel = await logdb.findOne({ Guild: guild.id })
 		if (logchannel) {
@@ -108,7 +103,7 @@ module.exports = {
 			//console.log("SIUUU");
 			if (check) {
 				const logEmbed = new EmbedBuilder()
-					.setTitle(`has been TimeOut.`)
+					.setTitle(`has been warned.`)
 					.setDescription(`By: ${interaction.member}\nReason: \`\`\`${reason}\`\`\``)
 					.setTimestamp()
 
@@ -122,9 +117,8 @@ module.exports = {
 
 		return interaction.reply({
 			content: `${target}`,
-			embeds: [successEmbed]
+			embeds: [newEmbed.setTitle("You have been Warned!")]
 		});
-
 
 	}
 }

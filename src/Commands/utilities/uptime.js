@@ -2,7 +2,6 @@ const { ChatInputCommandInteraction, SlashCommandBuilder, EmbedBuilder } = requi
 
 module.exports = {
 	name: "uptime",
-	permissions: [],
 	data: new SlashCommandBuilder()
 		.setName("uptime")
 		.setDescription("Will respond with pong!"),

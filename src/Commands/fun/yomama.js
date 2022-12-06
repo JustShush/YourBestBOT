@@ -2,7 +2,6 @@ const { EmbedBuilder, SlashCommandBuilder } = require('discord.js');
 
 module.exports = {
 	name: "yomama",
-	permissions: [],
 	data: new SlashCommandBuilder()
 		.setName('yomama')
 		.setDescription('Random yomama jokes.'),

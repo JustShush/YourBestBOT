@@ -1,7 +1,6 @@
 const { EmbedBuilder, SlashCommandBuilder, Colors } = require('discord.js');
 module.exports = {
 	name: "bot",
-	permissions: [],
 	data: new SlashCommandBuilder()
 		.setName('bot')
 		.setDescription('Info about YourBestBOT'),

@@ -50,14 +50,12 @@ module.exports = {
 		const logchannel = await logdb.findOne({ Guild: guild.id })
 		if (logchannel) {
 			const check = client.channels.cache.get(logchannel.Channel);
-			//console.log("SIUUU");
 			if (check) {
 				const logEmbed = new EmbedBuilder()
 					.setTitle(`has been banned.`)
 					.setDescription(`By: ${interaction.member}\nReason: \`\`\`${reason}\`\`\``)
 					.setTimestamp()
 
-				//console.log("test");
 				check.send({
 					content: `<@${user.id}>`,
 					embeds: [logEmbed]

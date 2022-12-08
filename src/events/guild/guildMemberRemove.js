@@ -20,7 +20,7 @@ module.exports = {
 			Guild: guild.id,
 		});
 
-		if (!data) return console.log("error in file: \"guildMemberRemove.js\"");
+		if (!data) return console.log("error in file: \"guildMemberRemove.js\""); // this server hasnt setup the welcome command
 		let Channel = guild.channels.cache.get(data.Channel);
 		let MSG = data.MSG;
 		if (!MSG) MSG = "Bye... \:( hope he enjoyed his stay here.";

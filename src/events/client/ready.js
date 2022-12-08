@@ -51,7 +51,7 @@ module.exports = {
 			let minutes = Math.floor(totalSeconds / 60);
 			let seconds = Math.floor(totalSeconds % 60);
 
-			if (days == 1) {
+			/* if (days == 1) {
 				// execute reload of the events
 				for (const [key, value] of client.events)
 					client.removeListener(`${key}`, value, true);
@@ -59,7 +59,7 @@ module.exports = {
 				// execute realod of the commands
 				loadCommands(client);
 				console.log("Events and Commands Reloaded.");
-			}
+			} */
 			if (days == 31) {
 				console.log(`${client.user.username} 31 dias!`.brightRed)
 				Channel.send({ content: `឵\n\n\n\n**${client.user} is GODLIKE!!!!**\n\n\n\n឵ \n||<@453944662093332490>||` })

@@ -48,14 +48,12 @@ module.exports = {
 		const logchannel = await logdb.findOne({ Guild: interaction.guild.id })
 		if (logchannel) {
 			const check = client.channels.cache.get(logchannel.Channel);
-			//console.log("SIUUU");
 			if (check) {
 				const logEmbed = new EmbedBuilder()
 					.setTitle(`has been kicked.`)
 					.setDescription(`By: ${interaction.member}\nReason: \`\`\`${reason}\`\`\``)
 					.setTimestamp()
 
-				//console.log("test");
 				check.send({
 					content: `${target}`,
 					embeds: [logEmbed]

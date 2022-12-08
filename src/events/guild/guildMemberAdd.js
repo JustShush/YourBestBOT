@@ -1,3 +1,4 @@
+const color = require("colors");
 const { EmbedBuilder, GuildMember } = require("discord.js");
 const Schema = require("../../schemas/welcome");
 
@@ -20,7 +21,7 @@ module.exports = {
 			Guild: guild.id,
 		});
 
-		if (!data) return console.log("error in file: \"guildMemberAdd.js\"");
+		if (!data) return console.log("error in file: \"guildMemberAdd.js\""); // this server hasnt setup the welcome command
 		let Channel = guild.channels.cache.get(data.Channel);
 		let MSG = data.MSG;
 		if (!MSG) MSG = "Welcome to the server.";
@@ -38,6 +39,8 @@ module.exports = {
 				dynamic: true
 			}))
 			.setFooter({ text: `We are now a server with ${guild.memberCount} members \<3` })
+
+		console.log(`${user.tag} has joined ${data.GuildName}`.brightPurple);
 
 		Channel.send({ content: `<@${member.id}>`, embeds: [welEmbed], ephemeral: true });
 	}

@@ -32,15 +32,19 @@ module.exports = {
 				inline: false
 			}, {
 				name: '`🎉`- Fun',
-				value: '</dadjokes:1046942864673878106>, </rickroll:1046962540426571856>, `whoisbestgirl`, </songs:1046960024506867763>, </yomama:1046961231099068466>',
+				value: '</dadjokes:1046942864673878106>, </rickroll:1046962540426571856>, `whoisbestgirl`, </songs:1046960024506867763>, </welcome:1049796256198819893>, </yomama:1046961231099068466>',
 				inline: false
 			}, {
 				name: '\u200B',
 				value: '\u200B',
 				inline: false
 			}, {
-				name: '`🔨`- Staff',
-				value: '`hmod`, </kick:1047656524597690480>, </ban:1047665323307962368>, </timeout:1047642895739531385>, `clear`, </slowmode:1048822606876397618>, `on`, `announce`, `dm`, </setnick:1049064624735129670>, </modnick:1049060130043461712>',
+				name: '`🔨`- Setup',
+				value: '</setup-welcome:1049788395733401622>, </setup-goodbye:1049788395733401620>, </setup-logs:1049788395733401621>',
+				inline: false
+			}, {
+				name: '`🛠️`- Staff',
+				value: '`hmod`, </kick:1047656524597690480>, </ban:1047665323307962368>, </timeout:1047642895739531385>, </clear:1049075429585211483>, </slowmode:1048822606876397618>, `on`, `announce`, `dm`, </setnick:1049064624735129670>, </modnick:1049060130043461712>',
 				inline: false
 			})
 			.setFooter({

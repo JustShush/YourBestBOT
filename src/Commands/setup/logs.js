@@ -50,6 +50,7 @@ module.exports = {
 
 		if (!data)
 			data = await db.create({
+				GuildName: interaction.guild.name,
 				Guild: guild.id,
 				User: member.id,
 				UserTag: interaction.user.tag,

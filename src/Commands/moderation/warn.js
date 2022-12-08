@@ -69,12 +69,11 @@ module.exports = {
 
 		let userData = await db.findOne({
 			Guild: guild.id,
-			User: target.id,
-			UserTag: target.user.tag
 		});
 
 		if (!userData)
 			userData = await db.create({
+				GuildName: interaction.guild.name,
 				Guild: guild.id,
 				User: target.id,
 				UserTag: target.user.tag,

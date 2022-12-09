@@ -34,7 +34,7 @@ module.exports = {
 				const check = client.channels.cache.get(logchannel.Channel);
 				if (check) {
 					check.send({
-						content: `${interaction.member} has cleared ${n} messages succesfully.`,
+						content: `${interaction.member} has cleared ${n} messages succesfully in <#${interaction.channel.id}>.`,
 					})
 				}
 			}

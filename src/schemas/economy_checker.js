@@ -8,6 +8,7 @@ module.exports = model("economy_checker", new Schema({
 	balance: Number,
 	inventory: Array,
 	ask_cooldown: Number,
+	search_cooldown: Number,
 	daily_cooldown: Number,
 	daily_streak: Number,
 	daily_last_claimed: Number,
@@ -19,6 +20,5 @@ module.exports = model("economy_checker", new Schema({
 	claimed_level_50: Boolean,
 	claimed_level_75: Boolean,
 	claimed_level_100: Boolean,
-	search_cooldown: Number,
 
 }), "economy_checker")

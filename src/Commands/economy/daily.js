@@ -46,9 +46,7 @@ module.exports = {
 					],
 					ephemeral: true
 				});
-			} else if (
-				Math.floor(Date.now() / 1000 >= userData.daily_last_claimed + 172800)
-			) {
+			} else if ( Math.floor(Date.now() / 1000 >= userData.daily_last_claimed + 172800) ) {
 				userData.daily_streak = 1;
 				userData.daily_last_claimed = 0;
 				await userData.save();

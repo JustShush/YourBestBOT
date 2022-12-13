@@ -45,10 +45,10 @@ module.exports = {
 			if (coins < 30) {
 				interaction.reply({
 					embeds: [
-						new MessageEmbed()
+						new EmbedBuilder()
 							.setAuthor({ name: `No coins found` })
 							.setDescription("What did you expect? You tried searching behind a police station's dumpster. You were luck you were not arrested.")
-							.setColor(`#ff3067`)
+							.setColor(resColor)
 							.setFooter({ text: `Requested by ${interaction.user.tag}` })
 							.setTimestamp(),
 					],
@@ -62,7 +62,7 @@ module.exports = {
 					embeds: [
 						new EmbedBuilder()
 							.setColor(resColor)
-							.setDescription(`You dig up an old time capsule someone buried in their front yard a few years ago, you find ${coins} inside, neato!`)
+							.setDescription(`You dig up an old time capsule someone buried in their front yard a few years ago, you find ${coins} inside, noice!`)
 							.setFooter({ text: `Requested by ${interaction.user.tag}` })
 							.setTimestamp(),
 					],

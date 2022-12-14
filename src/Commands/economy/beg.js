@@ -67,7 +67,7 @@ module.exports = {
 					],
 				});
 				const new_balance = Math.floor(userData.balance + coins);
-				const cooldown = Math.floor(Date.now() / 1000 + 180);
+				const cooldown = Math.floor(Date.now() / 1000 + 30); // 30 sec cooldown
 				userData.ask_cooldown = cooldown;
 				userData.balance = new_balance;
 				await userData.save();

@@ -39,6 +39,10 @@ module.exports = {
 				value: '\u200B',
 				inline: false
 			}, {
+				name: '`💸`- Economy',
+				value: '</daily:1050890520815226890>, </beg:1050238969499099218>, </search:1051231704607633418>, </leaderboard:1051249778723389552>, </balance:1050523131418255400>',
+				inline: false
+			}, {
 				name: '`🔨`- Setup',
 				value: '</setup-welcome:1049788395733401622>, </setup-goodbye:1049788395733401620>, </setup-logs:1049788395733401621>',
 				inline: false

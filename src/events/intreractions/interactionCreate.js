@@ -31,7 +31,7 @@ module.exports = {
 		} else {
 			try {
 				command.execute(interaction, client);
-				console.log(`\nGuild: ${interaction.guild.name}\nChannel: "${interaction.channel.name}"\nCommand: "${command.name}"\nUser: ${interaction.user.tag}`.brightGreen)
+				console.log(`\nGuild: ${interaction.guild.name}\nChannel: "${interaction.channel.name}"\nCommand: "${command.name}"\nUser: ${interaction.user.tag}\nTimestamp: ${Date().slice(0, -42)}`.brightGreen)
 			} catch (err) {
 				console.log(`\nGuild: ${interaction.guild.name}\nChannel: "${interaction.channel.name}"\nCommand: "${command.name}"\nUser: ${interaction.user.tag}`.brightRed)
 			}

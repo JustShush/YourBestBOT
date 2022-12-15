@@ -1,4 +1,5 @@
 .DS_Store
+config_old.json
 config.json
 # Logs
 logs

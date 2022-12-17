@@ -24,15 +24,15 @@ module.exports = {
 			.setThumbnail(interaction.guild.iconURL())
 			.addFields({
 				name: '`⚙️`- Utilities',
-				value: '</help:1048732631140937808>, </ping:1046865666134786169>, `userinfo`, `serverinfo`, </bot:1048732631140937809>, </bin:1047683862999859302>, `invites`, </uptime:1047174162990518383>',
+				value: '</help:1052662424752377969>, </ping:1052662424790106149>, `userinfo`, `serverinfo`, </bot:1052662424790106148>, </bin:1052662424790106147>, `invites`, </uptime:1052662424790106151>',
 				inline: false
 			}, {
 				name: 'Check your ping',
-				value: '</ping:1046865666134786169>',
+				value: '</ping:1052662424790106149>',
 				inline: false
 			}, {
 				name: '`🎉`- Fun',
-				value: '</dadjokes:1046942864673878106>, </rickroll:1046962540426571856>, `whoisbestgirl`, </songs:1046960024506867763>, </welcome:1049796256198819893>, </yomama:1046961231099068466>',
+				value: '</dadjokes:1052662424718815290>, </rickroll:1052662424718815291>, `whoisbestgirl`, </songs:1052662424752377966>, </welcome:1052662424752377967>, </yomama:1052662424752377968>',
 				inline: false
 			}, {
 				name: '\u200B',
@@ -40,15 +40,15 @@ module.exports = {
 				inline: false
 			}, {
 				name: '`💸`- Economy',
-				value: '</daily:1050890520815226890>, </beg:1050238969499099218>, </search:1051231704607633418>, </leaderboard:1051249778723389552>, </balance:1050523131418255400>',
+				value: '</daily:1052662424718815287>, </beg:1052662424718815286>, </search:1052662424718815289>, </leaderboard:1052662424718815288>, </balance:1052662424718815285>',
 				inline: false
 			}, {
 				name: '`🔨`- Setup',
-				value: '</setup-welcome:1049788395733401622>, </setup-goodbye:1049788395733401620>, </setup-logs:1049788395733401621>',
+				value: '</setup-welcome:1052662424790106146>, </setup-goodbye:1052662424790106144>, </setup-logs:1052662424790106145>',
 				inline: false
 			}, {
 				name: '`🛠️`- Staff',
-				value: '`hmod`, </kick:1047656524597690480>, </ban:1047665323307962368>, </timeout:1047642895739531385>, </clear:1049075429585211483>, </slowmode:1048822606876397618>, `on`, `announce`, `dm`, </setnick:1049064624735129670>, </modnick:1049060130043461712>',
+				value: '`hmod`, </kick:1052662424752377972>, </ban:1052662424752377970>, </timeout:1052662424790106142>, </clear:1052662424752377971>, </slowmode:1052662424752377975>, `on`, `announce`, `dm`, </setnick:1052662424752377974>, </modnick:1052662424752377973>',
 				inline: false
 			})
 			.setFooter({

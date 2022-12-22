@@ -11,12 +11,12 @@ module.exports = {
 			.setName("member")
 			.setDescription("The member to change the nickname.")
 			.setRequired(true)
-	)
-	.addStringOption((option) => option
+		)
+		.addStringOption((option) => option
 			.setName("name")
 			.setDescription("The new new nickname for the member.")
 			.setRequired(true)
-	),
+		),
 	/**
 	 * @param {ChatInputCommandInteraction} interaction
 	 */
@@ -28,11 +28,27 @@ module.exports = {
 		const resColor = colors[color];
 		// end of the color randomization
 
-		const { options, guild } = interaction
-		
+		const { options, guild, member } = interaction
+
 		const User = options.getUser("member").id;
 		const user = guild.members.cache.get(User);
 		const newnick = options.getString("name");
+
+		const errorsArray = [];
+		const errorsEmbed = new EmbedBuilder()
+			.setAuthor({ name: "Could not timeout member due to:" })
+			.setColor("Red")
+
+		if (!user.manageable || !user.moderatable)
+			errorsArray.push("Selected target is not moderatable by the bot.")
+
+		if (member.roles.highest.position < user.roles.highest.position)
+			errorsArray.push("Selected member has a higher role position than you.");
+
+		if (errorsArray.length) return interaction.reply({
+			embeds: [errorsEmbed.setDescription(errorsArray.join("\n"))],
+			ephemeral: true
+		})
 
 		user.setNickname(newnick);
 
@@ -43,17 +59,17 @@ module.exports = {
 			if (check) {
 				const logEmbed = new EmbedBuilder()
 					.setTitle(`SetNickName`)
-					.setDescription(`<@${user}>'s nickname has been set to: \`${newnick}\`\nBy: ${interaction.member}`)
+					.setDescription(`${user}'s nickname has been set to: \`${newnick}\`\nBy: ${interaction.member}`)
 					.setTimestamp()
 
 				//console.log("test");
 				check.send({
-					content: `<@${user}>`,
+					content: `${user}`,
 					embeds: [logEmbed]
 				})
 			}
 		}
 
-		interaction.reply({ content: `NickName of ${User.tag} has been changed to: ${newnick}`, ephemeral: true });
+		interaction.reply({ content: `NickName of ${user.user.tag} has been changed to: ${newnick}`, ephemeral: true });
 	}
 }

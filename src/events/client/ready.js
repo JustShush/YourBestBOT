@@ -18,7 +18,7 @@ module.exports = {
 				status: "online",
 			}, {
 				type: ActivityType.Listening,
-				text: "for /help | discord.gg/BSfXFmB",
+				text: "for /help | https://yourbestbot.pt/support",
 				status: "online"
 			}, {
 				type: ActivityType.Watching,

@@ -27,7 +27,7 @@ module.exports = {
 		const resColor = colors[color];
 		// end of the color randomization
 
-		const { options, guild, member } = interaction
+		const { options, guild } = interaction
 
 		const User = options.getUser("target").id;
 		const user = guild.members.cache.get(User);
@@ -47,47 +47,20 @@ module.exports = {
 			.setDescription(`It has been change to: \`Moderated Nickname ${newnick}\`.\nBy: ${interaction.member}\nReason: \`\`\`${reason}\`\`\``)
 			.setTimestamp()
 
-		const errorsArray = [];
-		const errorsEmbed = new EmbedBuilder()
-			.setAuthor({ name: "Could not modnick due to:" })
-			.setColor("Red")
-
-		if (!user.manageable || !user.moderatable)
-			errorsArray.push("Selected target is not moderatable by the bot.")
-
-		if (member.roles.highest.position < user.roles.highest.position)
-			errorsArray.push("Selected member has a higher role position than you.");
-
-		user.setNickname("Moderated Nickname " + newnick).catch(err => {
-			errorsArray.push(`Couldn't change the ${user}\'s nickname.`);
-			console.log(err);
-		});
-
+		user.setNickname("Moderated Nickname " + newnick);
 		user.send({
 			content: `${user}`,
 			embeds: [embed]
-		}).catch(err => {
-			errorsArray.push(`Cannot send messages to this user.`);
-			console.log(err);
-		}) // its not working as i imagined sadge
-
-		if (errorsArray.length) {
-
-			console.log(errorsArray);
-
-			return interaction.reply({
-				embeds: [errorsEmbed.setDescription(errorsArray.join("\n"))],
-				ephemeral: true
-			})
-		}
+		});
 
 		const logchannel = await logdb.findOne({ Guild: guild.id })
 		if (logchannel) {
 			const check = client.channels.cache.get(logchannel.Channel);
+			//console.log("SIUUU");
 			if (check) {
 				const logEmbed = new EmbedBuilder()
 					.setTitle(`ModNickname`)
-					.setDescription(`${user}'s Nickname has been moderated to: \`${newnick}\`\nBy: ${member}\nReason: \`\`\`${reason}\`\`\``)
+					.setDescription(`${user}'s Nickname has been moderated to: \`${newnick}\`\nBy: ${interaction.member}\nReason: \`\`\`${reason}\`\`\``)
 					.setTimestamp()
 
 				//console.log("test");
@@ -98,6 +71,6 @@ module.exports = {
 			}
 		}
 
-		interaction.reply({ content: `NickName of ${user.user.tag} has been changed to: \`Moderated Nickname ${newnick}\`\nReason: \`\`\`${reason}\`\`\``, ephemeral: true });
+		interaction.reply({ content: `NickName of ${User.tag} has been changed to: \`Moderated Nickname ${newnick}\`\nReason: \`\`\`${reason}\`\`\``, ephemeral: true });
 	}
 }

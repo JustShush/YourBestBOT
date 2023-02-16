@@ -21,7 +21,7 @@ module.exports = {
 			Guild: guild.id,
 		});
 
-		if (!data) return console.log("error in file: \"guildMemberAdd.js\""); // this server hasnt setup the welcome command
+		if (!data) return console.log(`\n${user.tag} joined in ${guild.name}\nerror in file: \"guildMemberAdd.js\"`); // this server hasnt setup the welcome command
 		let Channel = guild.channels.cache.get(data.Channel);
 		let MSG = data.MSG;
 		if (!MSG) MSG = "Welcome to the server.";

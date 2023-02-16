@@ -18,7 +18,7 @@ module.exports = {
 				status: "online",
 			}, {
 				type: ActivityType.Listening,
-				text: "for /help | https://yourbestbot.pt/support",
+				text: " /help | yourbestbot.pt/support",
 				status: "online"
 			}, {
 				type: ActivityType.Watching,

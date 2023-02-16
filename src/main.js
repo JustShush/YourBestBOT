@@ -1,11 +1,11 @@
 // DiscordBOT2.0
 const color = require('colors');
 const { Client, GatewayIntentBits, Partials, Collection, ClientVoiceManager } = require("discord.js");
-const { Guilds, GuildMembers, GuildMessages } = GatewayIntentBits;
+const { Guilds, GuildMembers, GuildMessages, GuildPresences } = GatewayIntentBits;
 const { User, Message, GuildMember, ThreadMember } = Partials;
 
 const client = new Client({
-	intents: [Guilds, GuildMembers, GuildMessages],
+	intents: [Guilds, GuildMembers, GuildMessages, GuildPresences],
 	partials: [User, Message, GuildMember, ThreadMember],
 });
 

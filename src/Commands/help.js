@@ -20,7 +20,7 @@ module.exports = {
 					value: "</commands:1052662424718815282>"
 				}, {
 					name: 'If you need any extra help or have any question feel free to join YourBestBOT\'s support server using:',
-					value: "</support:1052662424790106150> or click [here](https://discord.gg/uaZjU2pdVd)"
+					value: "</support:1052662424790106150> or click [here](https://discord.gg/BSfXFmB)"
 				}, {
 					name: 'Invite me to your server using:',
 					value: '</bot:1052662424790106148>'

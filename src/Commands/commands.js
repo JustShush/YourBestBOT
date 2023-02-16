@@ -40,7 +40,7 @@ module.exports = {
 				inline: false
 			}, {
 				name: '`💸`- Economy',
-				value: '</daily:1052662424718815287>, </beg:1052662424718815286>, </search:1052662424718815289>, </leaderboard:1052662424718815288>, </balance:1052662424718815285>, </work-shift:>, </work-apply:>, </work-resign:>, </work-list:>, </jobs-add:>, </jobs-remove:>, </dice:>',
+				value: '</daily:1052662424718815287>, </beg:1052662424718815286>, </search:1052662424718815289>, </leaderboard:1052662424718815288>, </balance:1052662424718815285>',
 				inline: false
 			}, {
 				name: '`🔨`- Setup',

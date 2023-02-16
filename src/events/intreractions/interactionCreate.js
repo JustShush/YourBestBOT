@@ -43,7 +43,7 @@ module.exports = {
 				if (check) {
 					const logEmbed = new EmbedBuilder()
 						.setDescription(
-							`Guild: ${interaction.guild.name}\nChannel: "${interaction.channel.name}"\nUser: <@${interaction.user.id}>\nCommand: "${command.name}"`
+							`Guild: ${interaction.guild.name}\nChannel: "${interaction.channel.name}"<#${interaction.channel.id}>\nUser: <@${interaction.user.id}>\nCommand: "${command.name}"`
 						)
 						.setTimestamp();
 

@@ -112,6 +112,6 @@ Last updated at <t:${Math.floor(Date.now() / 1000)}>.
           console.log(e);
         }
       });
-    }, 15000);
+    }, 6 * 3600 * 1000); // 15000
   },
 };

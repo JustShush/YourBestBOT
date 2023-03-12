@@ -44,7 +44,7 @@ module.exports = {
 				inline: false
 			}, {
 				name: '`🔨`- Setup',
-				value: '</setup-welcome:1052662424790106146>, </setup-goodbye:1052662424790106144>, </setup-logs:1052662424790106145>, </setup-nicksys:>',
+				value: '</setup-welcome:1052662424790106146>, </setup-goodbye:1052662424790106144>, </setup-logs:1052662424790106145>, </setup-nicksys:1084575514313896057>',
 				inline: false
 			}, {
 				name: '`🛠️`- Staff',

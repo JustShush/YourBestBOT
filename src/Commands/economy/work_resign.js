@@ -4,6 +4,10 @@ const EconomyChecker = require("../../schemas/economy_checker");
 
 module.exports = {
 	name: "work resign",
+	description: "Resign from your current job.",
+	permission: "`SEND_MESSAGES`",
+	usage: "`/work-resign`",
+	type: "Economy",
 	data: new SlashCommandBuilder()
 		.setName('work-resign')
 		.setDescription('Resign from your current job.'),

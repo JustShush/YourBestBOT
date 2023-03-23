@@ -2,9 +2,17 @@ const { ChatInputCommandInteraction, SlashCommandBuilder, EmbedBuilder } = requi
 
 module.exports = {
 	name: "commands",
+	description: "Shows the list of commands and how to use them.",
+	permission: "SEND_MESSAGES",
+	usage: "`/commands, /commands [command]`",
+	type: "Other",
 	data: new SlashCommandBuilder()
 		.setName("commands")
-		.setDescription("Show all the commands available."),
+		.setDescription("Show all the commands available.")
+		.addStringOption((option) => option
+			.setName("command")
+			.setDescription("View information on a certain command.")
+			.setRequired(false)),
 	/**
 	 * @param {ChatInputCommandInteraction} interaction
 	 */
@@ -16,47 +24,80 @@ module.exports = {
 		const resColor = colors[color];
 		// end of the color randomization
 
-		const { member } = interaction
+		const { member, options } = interaction
 
-		const cmdEmbed = new EmbedBuilder()
-			.setColor(member.displayHexColor)
-			.setTitle('**Commands**')
-			.setThumbnail(interaction.guild.iconURL())
-			.addFields({
-				name: '`⚙️`- Utilities',
-				value: '</help:1052662424752377969>, </ping:1052662424790106149>, `userinfo`, `serverinfo`, </bot:1052662424790106148>, </bin:1052662424790106147>, `invites`, </uptime:1052662424790106151>',
-				inline: false
-			}, {
-				name: 'Check your ping',
-				value: '</ping:1052662424790106149>',
-				inline: false
-			}, {
-				name: '`🎉`- Fun',
-				value: '</dadjokes:1052662424718815290>, </rickroll:1052662424718815291>, `whoisbestgirl`, </songs:1052662424752377966>, </welcome:1052662424752377967>, </yomama:1052662424752377968>',
-				inline: false
-			}, {
-				name: '\u200B',
-				value: '\u200B',
-				inline: false
-			}, {
-				name: '`💸`- Economy',
-				value: '</daily:1052662424718815287>, </beg:1052662424718815286>, </search:1052662424718815289>, </leaderboard:1052662424718815288>, </balance:1052662424718815285>, </dice:1075840700807123105>',
-				inline: false
-			}, {
-				name: '`🔨`- Setup',
-				value: '</setup-welcome:1052662424790106146>, </setup-goodbye:1052662424790106144>, </setup-logs:1052662424790106145>, </setup-nicksys:1084575514313896057>',
-				inline: false
-			}, {
-				name: '`🛠️`- Staff',
-				value: '`hmod`, </kick:1052662424752377972>, </ban:1052662424752377970>, </timeout:1052662424790106142>, </clear:1052662424752377971>, </slowmode:1052662424752377975>, `on`, `announce`, `dm`, </setnick:1052662424752377974>, </modnick:1052662424752377973>',
-				inline: false
-			})
-			.setFooter({
-				text: `Requested by ${interaction.user.username}`,
-				iconURL: member.user.displayAvatarURL()
-			})
-			.setTimestamp()
+		const cmd = options.getString("command");
 
-		interaction.reply({ embeds: [cmdEmbed] });
+		if (!cmd) {
+			utilityArray = [];
+			funArray = [];
+			moderationArray = [];
+			economyArray = [];
+			otherArray = [];
+			setupArray = [];
+			client.commands.map(async (c) => {
+				if (c.type === "Utility") {
+					utilityArray.push(`\`${c.name}\``);
+				} else if (c.type === "Fun") {
+					funArray.push(`\`${c.name}\``);
+				} else if (c.type === "Moderation") {
+					moderationArray.push(`\`${c.name}\``);
+				} else if (c.type === "Economy") {
+					economyArray.push(`\`${c.name}\``);
+				} else if (c.type === "Other") {
+					otherArray.push(`\`${c.name}\``);
+				} else if (c.type === "Setup") {
+					setupArray.push(`\`${c.name}\``);
+				}
+			});
+
+			const newEmbed = new EmbedBuilder()
+				.setDescription(
+					`**Welcome to the help command. You can view more information on the commands with /help [command].**
+	Utility Commands:
+	${utilityArray.toString().replaceAll(",", ", ")}
+	Fun Commands:
+	${funArray.toString().replaceAll(",", ", ")}
+	Moderation Commands:
+	${moderationArray.toString().replaceAll(",", ", ")}
+	Economy Commands:
+	${economyArray.toString().replaceAll(",", ", ")}
+	Setup Commands:
+	${setupArray.toString().replaceAll(",", ", ")}
+	Other Commands:
+	${otherArray.toString().replaceAll(",", ", ")}
+	`
+				)
+				//.setColor("DARK_NAVY")
+				.setFooter({ text: `Requested by ${interaction.user.tag}`, iconURL: member.user.displayAvatarURL() })
+				.setTimestamp()
+
+			interaction.reply({ embeds: [newEmbed] });
+		} else {
+			embedMessage = false;
+			client.commands.map(async (c) => {
+				if (c.name === cmd) {
+					embedMessage = `
+Information on the command \`${cmd}\`:
+Name: **${c.name}**
+Type: ${c.type}
+Description: \`${c.description}\` 
+Usage: ${c.usage}
+Permissions: ${c.permission}
+`;
+				}
+			});
+			if (!embedMessage) {
+				return interaction.reply({ content: `There is no command with the name \`${cmd}\`.`, ephemeral: true });
+			} else {
+				const cmdEmbed = new EmbedBuilder()
+					.setDescription(`${embedMessage.toString()}`)
+					//.setColor("DARK_NAVY")
+					.setFooter({ text: `Requested by ${interaction.user.tag}` })
+					.setTimestamp()
+
+				interaction.reply({ embeds: [cmdEmbed], ephemeral: true });
+			}
+		}
 	}
 }

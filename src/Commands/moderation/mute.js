@@ -5,9 +5,13 @@ const logdb = require("../../schemas/log");
 const ms = require("ms");
 
 module.exports = {
-	name: "timeout",
+	name: "mute",
+	description: "Mute a member.",
+	permission: "`MODERATE_MEMBERS`",
+	usage: "`/mute [member] [duration], /mute [member] [duration] [reason]`",
+	type: "Moderation",
 	data: new SlashCommandBuilder()
-		.setName("timeout")
+		.setName("mute")
 		.setDescription("Restrict a member's ability to communicate.")
 		.setDefaultMemberPermissions(PermissionFlagsBits.ModerateMembers)
 		.setDMPermission(false)

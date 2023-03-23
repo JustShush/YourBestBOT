@@ -3,10 +3,14 @@ const welcomeSchema = require('../../schemas/welcome');
 
 module.exports = {
 	name: "welcome",
+	description: "Setup the welcome message for when a member joins the server.",
+	permission: "`MANAGE_CHANNELS`, `MANAGE_GUILD`",
+	usage: "`/welcome [channel_id] [msg], /welcome [channel_id] [msg] [role]`",
+	type: "Setup",
 	data: new SlashCommandBuilder()
 		.setName("setup-welcome")
 		.setDescription("Set the greetings embed.")
-		.setDefaultMemberPermissions(PermissionFlagsBits.ManageChannels, PermissionFlagsBits.ManageGuild, PermissionFlagsBits.ViewAuditLog)
+		.setDefaultMemberPermissions(PermissionFlagsBits.ManageChannels, PermissionFlagsBits.ManageGuild)
 		.addChannelOption((option) => option
 			.setName("channel")
 			.setDescription("The channel you the welcome message to appear.(put it\'s id here)")

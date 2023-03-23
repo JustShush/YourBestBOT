@@ -1,6 +1,10 @@
 const { EmbedBuilder, SlashCommandBuilder, Colors } = require('discord.js');
 module.exports = {
 	name: "support",
+	description: "Join the bot's support server.",
+	permission: "`SEND_MESSAGES`",
+	usage: "`/support`",
+	type: "Utility",
 	data: new SlashCommandBuilder()
 		.setName('support')
 		.setDescription('Join YourBestBot\'s support server.'),
@@ -21,6 +25,9 @@ module.exports = {
 				.setTitle('Thank you for inviting me to your server!')
 				.setThumbnail('https://i.imgur.com/GhT4rY2.png') // por a foto do bot aqui depois.
 				.addFields({
+					name: 'Join the support server here:',
+					value: '[Click here](https://discord.gg/kTegA3aaDg) to to join the support server :)'
+				},{
 					name: 'Thank you for helping me grow and reach new palces <3',
 					value: '[Click here](https://discord.com/api/oauth2/authorize?client_id=820324857799245855&permissions=8&scope=bot%20applications.commands) to invite me to your server :)',
 					inline: true

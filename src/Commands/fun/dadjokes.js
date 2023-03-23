@@ -2,6 +2,10 @@ const { EmbedBuilder, SlashCommandBuilder, Colors } = require('discord.js');
 //const fetch = require('node-fetch')
 module.exports = {
 	name: "dadjokes",
+	description: "Random dadjokes.",
+	permission: "`SEND_MESSAGES`",
+	usage: "`/dadjokes`",
+	type: "Fun",
 	data: new SlashCommandBuilder()
 		.setName('dadjokes')
 		.setDescription('Random dadjokes'),

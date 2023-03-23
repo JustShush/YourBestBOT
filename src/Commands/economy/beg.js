@@ -3,6 +3,10 @@ const EconomyChecker = require("../../schemas/economy_checker");
 
 module.exports = {
 	name: "beg",
+	description: "Beg YourBestBOT money, maybe you get something, or not.",
+	permission: "`SEND_MESSAGES`",
+	usage: "`/beg`",
+	type: "Economy",
 	data: new SlashCommandBuilder()
 		.setName('beg')
 		.setDescription('Beg YourBestBOT money, maybe you get something, or not.'),

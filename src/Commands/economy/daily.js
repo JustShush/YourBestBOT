@@ -3,6 +3,10 @@ const EconomyChecker = require("../../schemas/economy_checker");
 
 module.exports = {
 	name: "daily",
+	description: "Claim your daily coins.",
+	permission: "`SEND_MESSAGES`",
+	usage: "`/daily`",
+	type: "Economy",
 	data: new SlashCommandBuilder()
 		.setName('daily')
 		.setDescription('Claim your daily coins!'),

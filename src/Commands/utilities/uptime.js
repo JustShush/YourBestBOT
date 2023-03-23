@@ -2,6 +2,10 @@ const { ChatInputCommandInteraction, SlashCommandBuilder, EmbedBuilder } = requi
 
 module.exports = {
 	name: "uptime",
+	description: "Check bot's uptime.",
+	permission: "`SEND_MESSAGES`",
+	usage: "`/uptime`",
+	type: "Utility",
 	data: new SlashCommandBuilder()
 		.setName("uptime")
 		.setDescription("Will respond with pong!"),

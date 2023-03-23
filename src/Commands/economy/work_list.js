@@ -4,6 +4,10 @@ const jobsChecker = require("../../schemas/job_checker");
 
 module.exports = {
 	name: "work list",
+	description: "View all available jobs.",
+	permission: "`SEND_MESSAGES`",
+	usage: "`/work-list`",
+	type: "Economy",
 	data: new SlashCommandBuilder()
 		.setName('work-list')
 		.setDescription('Work to get some coins.'),

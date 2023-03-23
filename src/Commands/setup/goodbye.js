@@ -3,10 +3,14 @@ const byeSchema = require('../../schemas/goodbye');
 
 module.exports = {
 	name: "goodbye",
+	description: "Setup the goodBye message for when a member leaves the server.",
+	permission: "`MANAGE_CHANNELS`, `MANAGE_GUILD`",
+	usage: "`/goodbye [channel_id] [msg]`",
+	type: "Setup",
 	data: new SlashCommandBuilder()
 		.setName("setup-goodbye")
 		.setDescription("Set the greetings embed.")
-		.setDefaultMemberPermissions(PermissionFlagsBits.ManageChannels, PermissionFlagsBits.ManageGuild, PermissionFlagsBits.ViewAuditLog, PermissionsBitField.ViewGuildInsights)
+		.setDefaultMemberPermissions(PermissionFlagsBits.ManageChannels, PermissionFlagsBits.ManageGuild)
 		.addStringOption((option) => option
 			.setName("channel")
 			.setDescription("The channel to the GoodBye message to appear.(put it\'s id here)")

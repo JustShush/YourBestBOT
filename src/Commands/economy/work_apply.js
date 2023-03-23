@@ -4,6 +4,10 @@ const EconomyChecker = require("../../schemas/economy_checker");
 
 module.exports = {
 	name: "work apply",
+	description: "Aplly for a job.",
+	permission: "`SEND_MESSAGES`",
+	usage: "`/work-apply [job_number]`",
+	type: "Economy",
 	data: new SlashCommandBuilder()
 		.setName('work-apply')
 		.setDescription('Start working.')

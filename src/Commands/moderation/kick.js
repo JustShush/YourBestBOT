@@ -3,6 +3,10 @@ const logdb = require("../../schemas/log");
 
 module.exports = {
 	name: "kick",
+	description: "Kick a member from this server.",
+	permission: "`KICK_MEMBERS`",
+	usage: "`/kick [member], /kick [member] [reason]`",
+	type: "Moderation",
 	data: new SlashCommandBuilder()
 		.setName("kick")
 		.setDescription("Kicks the member given.")

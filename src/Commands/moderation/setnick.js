@@ -3,6 +3,10 @@ const logdb = require("../../schemas/log");
 
 module.exports = {
 	name: "setnick",
+	description: "Change a member's nickname.",
+	permission: "`MANAGE_NICKNAMES`",
+	usage: "`/setnick [member], /setnick [member] [newNick]`",
+	type: "Moderation",
 	data: new SlashCommandBuilder()
 		.setName("setnick")
 		.setDescription("Change the nickname of a member.")

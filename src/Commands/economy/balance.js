@@ -3,6 +3,10 @@ const EconomyChecker = require("../../schemas/economy_checker");
 
 module.exports = {
 	name: "balance",
+	description: "See your balance.",
+	permission: "`SEND_MESSAGES`",
+	usage: "`/balance`",
+	type: "Economy",
 	data: new SlashCommandBuilder()
 		.setName('balance')
 		.setDescription('See your balance.')

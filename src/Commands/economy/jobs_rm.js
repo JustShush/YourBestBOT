@@ -4,6 +4,10 @@ const jobsChecker = require("../../schemas/job_checker");
 
 module.exports = {
 	name: "jobs rm",
+	description: "Remove a job.",
+	permission: "`ADMINISTRATOR`",
+	usage: "`/jobs-remove [job_number]`",
+	type: "Economy",
 	data: new SlashCommandBuilder()
 		.setName('jobs-remove')
 		.setDescription('Add jobs to the server.')

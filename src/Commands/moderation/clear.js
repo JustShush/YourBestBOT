@@ -3,6 +3,10 @@ const logdb = require("../../schemas/log");
 
 module.exports = {
 	name: "clear",
+	description: "Clear x amount of messages.",
+	permission: "`MANAGE_MESSAGES`, `MANAGE_CHANNELS`",
+	usage: "`/clear [number]`",
+	type: "Moderation",
 	data: new SlashCommandBuilder()
 		.setName('clear')
 		.setDescription('Clear messages.')

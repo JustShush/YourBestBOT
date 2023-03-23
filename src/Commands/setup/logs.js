@@ -4,6 +4,10 @@ const db = require("../../schemas/log");
 
 module.exports = {
 	name: "logs",
+	description: "Setup the logs channel so you know when someone uses a command.",
+	permission: "`MANAGE_CHANNELS`, `MANAGE_GUILD`",
+	usage: "`/log [channel_id]`",
+	type: "Setup",
 	data: new SlashCommandBuilder()
 		.setName("setup-logs")
 		.setDescription("Set the channel log.")

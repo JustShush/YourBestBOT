@@ -5,6 +5,10 @@ const logdb = require("../../schemas/log");
 
 module.exports = {
 	name: "warn",
+	description: "Warn a member.",
+	permission: "`MODERATE_MEMBERS`",
+	usage: "`/warn [member], /warn [member] [reason]`",
+	type: "Moderation",
 	data: new SlashCommandBuilder()
 		.setName("warn")
 		.setDescription("Warn a member.")

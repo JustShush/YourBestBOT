@@ -3,6 +3,10 @@ const EconomyChecker = require("../../schemas/economy_checker");
 
 module.exports = {
 	name: "search",
+	description: "Search for coins.",
+	permission: "`SEND_MESSAGES`",
+	usage: "`/search`",
+	type: "Economy",
 	data: new SlashCommandBuilder()
 		.setName('search')
 		.setDescription('Search for coins.'),

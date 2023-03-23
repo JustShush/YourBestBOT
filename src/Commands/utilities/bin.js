@@ -2,6 +2,10 @@ const { ChatInputCommandInteraction, SlashCommandBuilder } = require("discord.js
 
 module.exports = {
 	name: "bin",
+	description: "Share your code using this links.",
+	permission: "`SEND_MESSAGES`",
+	usage: "`/bin`",
+	type: "Utility",
 	data: new SlashCommandBuilder()
 	.setName("bin")
 	.setDescription("Share your code."),

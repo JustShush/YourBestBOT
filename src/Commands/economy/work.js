@@ -4,6 +4,10 @@ const JobChecker = require("../../schemas/job_checker");
 
 module.exports = {
 	name: "work shift",
+	description: "Work a shift from your current job.",
+	permission: "`SEND_MESSAGES`",
+	usage: "`/work-shift`",
+	type: "Economy",
 	data: new SlashCommandBuilder()
 		.setName('work-shift')
 		.setDescription('Work to get some coins.'),

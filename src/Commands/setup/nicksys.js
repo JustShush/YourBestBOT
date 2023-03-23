@@ -4,6 +4,10 @@ const db = require("../../schemas/nickSys");
 
 module.exports = {
 	name: "nicksys",
+	description: "Enable/Disable the nickname system.",
+	permission: "`MANAGE_CHANNELS`, `MANAGE_GUILD`",
+	usage: "`/nicksys`",
+	type: "Setup",
 	data: new SlashCommandBuilder()
 		.setName("setup-nicksys")
 		.setDescription("Enable/Disable the nickname System.")

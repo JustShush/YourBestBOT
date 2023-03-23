@@ -2,6 +2,10 @@ const { EmbedBuilder, SlashCommandBuilder} = require('discord.js');
 
 module.exports = {
 	name: "songs",
+	description: "Tell me if you like it or not. :)",
+	permission: "`SEND_MESSAGES`",
+	usage: "`/songs`",
+	type: "Fun",
 	data: new SlashCommandBuilder()
 		.setName('songs')
 		.setDescription('All the songs made by Midwell'),

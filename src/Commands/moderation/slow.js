@@ -2,10 +2,14 @@ const { ChatInputCommandInteraction, SlashCommandBuilder, PermissionFlagsBits } 
 
 module.exports = {
 	name: "slow",
+	description: "Change the slowmode of the current channel.",
+	permission: "`MANAGE_CHANNELS`, `MANAGE_GUILD`",
+	usage: "`/slow [time]`",
+	type: "Moderation",
 	data: new SlashCommandBuilder()
 		.setName("slowmode")
 		.setDescription("Change the Slowmode.")
-		.setDefaultMemberPermissions(PermissionFlagsBits.ManageChannels, PermissionFlagsBits.ManageGuild, PermissionFlagsBits.ViewAuditLog, PermissionFlagsBits.ViewGuildInsights)
+		.setDefaultMemberPermissions(PermissionFlagsBits.ManageChannels, PermissionFlagsBits.ManageGuild)
 		.addNumberOption((option) => option
 			.setName("time")
 			.setDescription("The time for the slowmode.")

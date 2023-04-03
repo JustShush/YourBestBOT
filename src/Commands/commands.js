@@ -28,6 +28,11 @@ module.exports = {
 
 		const cmd = options.getString("command");
 
+		// Get all global slash command IDs
+		//const globalCommands = await client.application?.commands.fetch();
+		//const globalCommandIds = globalCommands?.map(command => command.id);
+		//console.log('Global command IDs:', globalCommandIds);
+
 		if (!cmd) {
 			utilityArray = [];
 			funArray = [];

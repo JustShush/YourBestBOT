@@ -1,5 +1,7 @@
 .DS_Store
 config_old.json
+config.json.true
+config.json.false
 config.json
 # Logs
 logs

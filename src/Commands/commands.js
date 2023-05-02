@@ -58,7 +58,7 @@ module.exports = {
 
 			const newEmbed = new EmbedBuilder()
 				.setDescription(
-					`**Welcome to the help command. You can view more information on the commands with /help [command].**
+					`**Welcome to the help command. You can view more information on the commands with /commands [command].**
 	Utility Commands:
 	${utilityArray.toString().replaceAll(",", ", ")}
 	Fun Commands:

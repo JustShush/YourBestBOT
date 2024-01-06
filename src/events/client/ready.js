@@ -12,36 +12,36 @@ module.exports = {
 
 		loadCommands(client);
 
-		const updateActivities = () => {
-			const options = [{
-				type: ActivityType.Watching,
-				text: `Over ${client.guilds.cache.size} servers! 🙂`,
-				status: "online",
-			}, {
-				type: ActivityType.Listening,
-				text: " /help | yourbestbot.pt/support",
-				status: "online"
-			}, {
-				type: ActivityType.Watching,
-				text: `Over ${client.guilds.cache.reduce((a, b) => a + b.memberCount, 0)} Users!`,
-				status: "online"
-			}, {
-				type: ActivityType.Listening,
-				text: `new updates soon™`,
-				status: "idle"
-			}];
-			const option = Math.floor(Math.random() * options.length);
-	
+		const options = [{
+			type: ActivityType.Watching,
+			text: `Over ${client.guilds.cache.size} servers! 🙂`,
+			status: "online",
+		}, {
+			type: ActivityType.Listening,
+			text: " /help | yourbestbot.pt/support",
+			status: "online"
+		}, {
+			type: ActivityType.Watching,
+			text: `Over ${client.guilds.cache.reduce((a, b) => a + b.memberCount, 0)} Users!`,
+			status: "online"
+		}, {
+			type: ActivityType.Listening,
+			text: `new updates soon™`,
+			status: "idle"
+		}];
+
+		let i = 0;
+		setInterval(() => {
+			i++;
+			if (!options[i]) i = 0;
 			client.user.setPresence({
 				activities: [{
-					name: options[option].text,
-					type: options[option].type,
+					name: options[i].text,
+					type: options[i].type,
 				}],
-				status: options[option].status,
+				status: options[i].status,
 			})
-			setTimeout(updateActivities, 1 * 60 * 1000);
-		}
-		updateActivities();
+		}, 1 * 60 * 1000);
 
 		const upTimeFunction = () => {
 			let totalSeconds = (client.uptime / 1000);

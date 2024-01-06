@@ -3,6 +3,7 @@ const { ActivityType } = require("discord.js");
 const { connect } = require("mongoose");
 const { loadCommands } = require("../../handlers/command_Handler");
 const { loadEvents } = require("../../handlers/event_Handler");
+const { allGuilds } = require('../../functions/allguilds');
 
 module.exports = {
 	name: "ready",
@@ -69,8 +70,10 @@ module.exports = {
 		upTimeFunction()
 
 		client.guilds.cache.forEach(guild => {
-			console.log(`${guild.name} | ${guild.id}`.brightRed);
+			console.log(`${guild.name} | ${guild.id} | ${guild.memberCount} Members`.brightRed);
 		})
+
+		allGuilds(client);
 
 		connect(client.config.MONGO_URI, {}).then(() => console.log("Connected to mongoDB".brightGreen));
 

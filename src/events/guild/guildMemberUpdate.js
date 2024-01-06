@@ -25,6 +25,7 @@ module.exports = {
 			});
 		else
 			await data.save();
+		//if (data.Nicksys === false) console.log("data.nicksys === false");
 		if (data.Nicksys === true) {
 			//console.log("data.nicksys === true")
 			if (newMember.nickname && oldMember.nickname !== newMember.nickname) {

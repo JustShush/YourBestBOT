@@ -20,7 +20,7 @@ module.exports = {
 			Guild: guild.id,
 		});
 
-		if (!data) return console.log(`\nThis server hasn\'t setup the goodbye command.\nServer: ${guild.name}. Member: ${user.tag}\n in file: \"guildMemberRemove.js\"`); // this server hasnt setup the welcome command
+		if (!data) return console.log(`\nThis server hasn\'t setup the goodbye command.\nServer: ${guild.name}. Member: ${user.tag}\nin file: \"guildMemberRemove.js\"`); // this server hasnt setup the welcome command
 		let Channel = guild.channels.cache.get(data.Channel);
 		let MSG = data.MSG;
 		if (!MSG) MSG = "Bye... \:( hope he enjoyed his stay here.";
@@ -35,6 +35,11 @@ module.exports = {
 			}))
 			.setFooter({ text: `We are now a server with ${guild.memberCount} members \<3` })
 
-		Channel.send({ content: `<@${member.id}>`, embeds: [byeEmbed], ephemeral: true });
+			try {
+				Channel.send({ content: `<@${member.id}>`, embeds: [byeEmbed], ephemeral: true });
+			} catch (err) {
+				console.log(err)
+				console.log("error on file guildMemberRemove. They prob removed the channel!")
+			}
 	}
 }

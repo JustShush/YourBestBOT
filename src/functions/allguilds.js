@@ -15,7 +15,7 @@ function allGuilds(client) {
 				if (err) {
 					console.error('Error deleting the file:', err);
 				} else {
-					console.log('File deleted successfully.');
+					//console.log('File deleted successfully.');
 				}
 			});
 		}
@@ -24,7 +24,7 @@ function allGuilds(client) {
 		let found = guild.channels.cache.find(
 			(channel) => channel.type === ChannelType.GuildText && channel.permissionsFor(guild.members.me).has("SendMessages")
 		);
-		let invites = await guild.invites.fetch().catch(err => { console.log("couldnt fetch the invites in this server!"); return; });
+		let invites = await guild.invites.fetch().catch(err => { console.log("couldnt fetch the invites in this server! | " + guild.name + " | " + guild.id); return; });
 		if (!invites) return;
 		// Check if the bot has any invites for this server
 		const botInvites = invites.filter((invite) => invite.inviter.id === client.user.id);
@@ -40,14 +40,14 @@ function allGuilds(client) {
 				return;
 			})
 		}
-		console.log(invite.code)
+		//console.log(invite.code)
 		let msg = `GuildName: \`${guild.name}\` | id: \`${guild.id}\`\nOwner: <@!${guild.ownerId}> | ${guild.ownerId} | ${guild.memberCount} members\nhttps://discord.gg/${invite.code}\n\n`;
 		fs.appendFile("Guilds.txt", msg, (err) => {
 			if (err) {
 				console.error('Error appending to file:', err);
 				return;
 			}
-			console.log('All guilds have been saved into: Guilds.txt');
+			//console.log('All guilds have been saved into: Guilds.txt');
 		});
 	});
 }

@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "colors": "^1.4.0",
+    "cpu-stat": "^2.0.1",
     "discord.js": "^14.14.1",
     "express": "^4.18.2",
     "mongoose": "^6.7.4",

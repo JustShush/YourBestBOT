@@ -16,20 +16,22 @@ module.exports = {
 	 */
 	execute(interaction, client) {
 
-		let totalSeconds = (client.uptime / 1000);
-		let days = Math.floor(totalSeconds / 86400);
-		totalSeconds %= 86400;
-		let hours = Math.floor(totalSeconds / 3600);
-		totalSeconds %= 3600;
-		let minutes = Math.floor(totalSeconds / 60);
-		let seconds = Math.floor(totalSeconds % 60);
+		const days = Math.floor(client.uptime / 86400000)
+		const hours = Math.floor(client.uptime / 3600000) % 24
+		const minutes = Math.floor(client.uptime / 60000) % 60
+		const seconds = Math.floor(client.uptime / 1000) % 60
 
-		let uptime = `${days} days, ${hours} hours, ${minutes} minutes and ${seconds} seconds`;
+		let time = 0;
+		if (days == 0) {
+			if (hours == 0) {
+				time = `${minutes} minutes and ${seconds} seconds`;
+			} else time = `${hours} h ${minutes} min ${seconds} sec`;
+		} else time = `${days} days, ${hours} hours, ${minutes} minutes and ${seconds} seconds`;
 
 		const newEmbed = new EmbedBuilder()
 			.setColor('#36393F')
 			.setTitle('**My Uptime:**')
-			.setDescription(uptime)
+			.setDescription(time)
 		interaction.reply({ embeds: [newEmbed], ephemeral: true});
 	}
 }

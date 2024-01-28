@@ -46,46 +46,6 @@ for (const file of eventFiles) {
 	}
 }
 
-
-/* client.on(Events.InteractionCreate, async interaction => {
-	if (!interaction.isCommand()) return
-
-	if (interaction.isChatInputCommand()) {
-		// Handle slash commands
-		const command = client.commands.get(interaction.commandName);
-
-		if (!command) return;
-
-		try {
-			await command.execute(interaction, client);
-		} catch (error) {
-			console.error(error);
-			const errorEmbed = new EmbedBuilder()
-				.setTitle('An error occured')
-				.setDescription(`${error}`)
-				.setColor('Red');
-
-			if (interaction.replied || interaction.deferred) {
-				await interaction.followUp({ embeds: [errorEmbed], ephemeral: true });
-			} else {
-				await interaction.reply({ embeds: [errorEmbed], ephemeral: true });
-			}
-		}
-	} else if (interaction.isAutocomplete()) {
-		// Handle autocomplete interactions
-		const command = client.commands.get(interaction.commandName);
-
-		if (command && command.handleAutocomplete) {
-			try {
-				await command.handleAutocomplete(interaction, client);
-			} catch (error) {
-				console.error('Error handling autocomplete:', error);
-				// Optionally, you can send an error message to the user
-			}
-		}
-	}
-}); */
-
 const process = require("node:process");
 
 process.on("unhandledRejection", (reason, promise) => {

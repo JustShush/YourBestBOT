@@ -3,10 +3,10 @@ const { SlashCommandBuilder, PermissionFlagsBits, ChatInputCommandInteraction, E
 const db = require("../../schemas/nickSys");
 
 module.exports = {
-	name: "nicksys",
+	name: "setup-nicksys",
 	description: "Enable/Disable the nickname system.",
 	permission: "`MANAGE_CHANNELS`, `MANAGE_GUILD`",
-	usage: "`/nicksys`",
+	usage: "`/setup-nicksys`",
 	type: "Setup",
 	data: new SlashCommandBuilder()
 		.setName("setup-nicksys")

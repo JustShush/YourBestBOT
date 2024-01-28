@@ -3,7 +3,7 @@ const jobsChecker = require("../../schemas/job_checker");
 const EconomyChecker = require("../../schemas/economy_checker");
 
 module.exports = {
-	name: "work resign",
+	name: "work-resign",
 	description: "Resign from your current job.",
 	permission: "`SEND_MESSAGES`",
 	usage: "`/work-resign`",

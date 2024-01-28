@@ -3,7 +3,7 @@ const EconomyChecker = require("../../schemas/economy_checker");
 const jobsChecker = require("../../schemas/job_checker");
 
 module.exports = {
-	name: "jobs rm",
+	name: "jobs-remove",
 	description: "Remove a job.",
 	permission: "`ADMINISTRATOR`",
 	usage: "`/jobs-remove [job_number]`",

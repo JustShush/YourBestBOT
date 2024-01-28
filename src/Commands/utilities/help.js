@@ -1,6 +1,6 @@
 const { EmbedBuilder, SlashCommandBuilder, Colors } = require('discord.js');
 module.exports = {
-	anme: "help",
+	name: "help",
 	description: "Gives you help.",
 	permission: "`SEND_MESSAGES`",
 	usage: "`/help`",

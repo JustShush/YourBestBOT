@@ -2,10 +2,10 @@ const { SlashCommandBuilder, ChatInputCommandInteraction, EmbedBuilder, Permissi
 const byeSchema = require('../../schemas/goodbye');
 
 module.exports = {
-	name: "goodbye",
+	name: "setup-goodbye",
 	description: "Setup the goodBye message for when a member leaves the server.",
 	permission: "`MANAGE_CHANNELS`, `MANAGE_GUILD`",
-	usage: "`/goodbye [channel_id] [msg]`",
+	usage: "`/setup-goodbye [channel_id] [msg]`",
 	type: "Setup",
 	data: new SlashCommandBuilder()
 		.setName("setup-goodbye")

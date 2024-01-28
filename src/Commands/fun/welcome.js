@@ -1,7 +1,7 @@
 const { EmbedBuilder, SlashCommandBuilder } = require('discord.js');
 
 module.exports = {
-	name: "welome",
+	name: "welcome",
 	description: "Welcome the new members with a cool msg.",
 	permission: "`SEND_MESSAGES`",
 	usage: "`/welcome`",

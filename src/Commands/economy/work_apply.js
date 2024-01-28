@@ -3,7 +3,7 @@ const jobsChecker = require("../../schemas/job_checker");
 const EconomyChecker = require("../../schemas/economy_checker");
 
 module.exports = {
-	name: "work apply",
+	name: "work-apply",
 	description: "Aplly for a job.",
 	permission: "`SEND_MESSAGES`",
 	usage: "`/work-apply [job_number]`",

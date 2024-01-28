@@ -1,10 +1,10 @@
 const { ChatInputCommandInteraction, SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
 
 module.exports = {
-	name: "slow",
+	name: "slowmode",
 	description: "Change the slowmode of the current channel.",
 	permission: "`MANAGE_CHANNELS`, `MANAGE_GUILD`",
-	usage: "`/slow [time]`",
+	usage: "`/slowmode [time]`",
 	type: "Moderation",
 	data: new SlashCommandBuilder()
 		.setName("slowmode")

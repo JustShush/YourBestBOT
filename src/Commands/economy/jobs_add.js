@@ -3,10 +3,10 @@ const EconomyChecker = require("../../schemas/economy_checker");
 const jobsChecker = require("../../schemas/job_checker");
 
 module.exports = {
-	name: "jobs",
+	name: "jobs-add",
 	description: "Create a new job.",
 	permission: "`ADMINISTRATOR`",
-	usage: "`/jobs [job_name] [cooldown] [salary]`",
+	usage: "`/jobs-add [job_name] [cooldown] [salary]`",
 	type: "Economy",
 	data: new SlashCommandBuilder()
 		.setName('jobs-add')

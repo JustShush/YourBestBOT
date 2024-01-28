@@ -2,10 +2,10 @@ const { SlashCommandBuilder, ChatInputCommandInteraction, EmbedBuilder, Permissi
 const welcomeSchema = require('../../schemas/welcome');
 
 module.exports = {
-	name: "welcome",
+	name: "setup-welcome",
 	description: "Setup the welcome message for when a member joins the server.",
 	permission: "`MANAGE_CHANNELS`, `MANAGE_GUILD`",
-	usage: "`/welcome [channel_id] [msg], /welcome [channel_id] [msg] [role]`",
+	usage: "`/setup-welcome [channel_id] [msg], /welcome [channel_id] [msg] [role]`",
 	type: "Setup",
 	data: new SlashCommandBuilder()
 		.setName("setup-welcome")

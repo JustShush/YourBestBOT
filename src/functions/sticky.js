@@ -5,7 +5,7 @@ async function sticky(message) {
 		GuildId: message.guild.id
 	});
 
-	if (!data) return console.log("no sticky in this server");
+	if (!data) return;
 	const dataFind = data.stickys.find(o => o.ChannelID == message.channel.id);
 	if (!dataFind) return;
 	const channel = dataFind.ChannelID;

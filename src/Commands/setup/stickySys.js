@@ -3,7 +3,7 @@ const sticky = require("../../schemas/stickySys.js");
 
 module.exports = {
 	name: "sticky",
-	description: "Manage RNSC Bills.",
+	description: "Manage this server sticky messages.",
 	type: "Setup",
 	subcommand: true,
 	permissions: "ManageChannels",
@@ -37,6 +37,7 @@ module.exports = {
 
 		let channel = null;
 		let data = null;
+		let i = -1;
 
 		switch (cmd) {
 			case "add":
@@ -54,7 +55,7 @@ module.exports = {
 						stickys: []
 					})
 				}
-				const i = data.stickys.findIndex((e) => e.ChannelID == channel.id);
+				i = data.stickys.findIndex((e) => e.ChannelID == channel.id);
 				if (i != -1)
 				return interaction.reply({ content: `There's already a sticky msg in that channel. ${channel}`, ephemeral: true });
 				
@@ -84,9 +85,20 @@ module.exports = {
 				channel = options.getChannel("channel");
 
 				data = await sticky.findOne({
-					GuildId: message.guild.id,
-					ChannelID: channel.id
+					GuildId: interaction.guild.id
 				});
+
+				if (!data) return interaction.reply({ content: `❌ This server doesnt have any Sticky messages setup, consider using /sticky add to create a new sticky message.`, ephemeral: true });
+
+				i = data.stickys.findIndex((e) => e.ChannelID == channel.id);
+				if (i == -1) return interaction.reply({ content: `❌ This channel ${channel} didn't had any sticky message.`, ephemeral: true });
+
+				data.Current = data.Current - 1;
+				data.stickys.splice(i, 1);
+				await data.save();
+
+				await interaction.reply({ content: `✅ Sticky message Removed successfully.`, ephemeral: true });
+
 				break;
 			default:
 				// theres no need for default but ya its here ig

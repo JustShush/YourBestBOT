@@ -8,7 +8,9 @@ module.exports = {
 	type: "Fun",
 	data: new SlashCommandBuilder()
 		.setName('rickroll')
-		.setDescription('RickRoll I guess'),
+		.setDescription('RickRoll I guess')
+		.setDMPermission(true)
+		.setNSFW(false),
 	async execute(interaction, client) {
 		try {
 			await interaction.reply({ content: 'http://tiny.cc/y8hiuz', ephemeral: true})

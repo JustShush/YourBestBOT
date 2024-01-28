@@ -17,7 +17,9 @@ module.exports = {
 			.setDescription(`The member you'd like to Ban`))
 		.addStringOption((option) => option
 			.setName("reason")
-			.setDescription("The reason for Banning the member provided.")),
+			.setDescription("The reason for Banning the member provided."))
+		.setDMPermission(false)
+		.setNSFW(false),
 	/**
 	 * @param {ChatInputCommandInteraction} interaction
 	 */

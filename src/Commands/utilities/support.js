@@ -7,7 +7,9 @@ module.exports = {
 	type: "Utility",
 	data: new SlashCommandBuilder()
 		.setName('support')
-		.setDescription('Join YourBestBot\'s support server.'),
+		.setDescription('Join YourBestBot\'s support server.')
+		.setDMPermission(false)
+		.setNSFW(false),
 	async execute(interaction, client) {
 		try {
 

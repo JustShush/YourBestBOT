@@ -15,7 +15,9 @@ module.exports = {
 		.addNumberOption(option => option
 			.setName("number")
 			.setDescription("The number of the work.")
-			.setRequired(true)),
+			.setRequired(true))
+		.setDMPermission(false)
+		.setNSFW(false),
 	async execute(interaction, client) {
 		try {
 
@@ -57,7 +59,7 @@ module.exports = {
 				.setFooter({ text: `Requested by ${interaction.user.tag}` })
 				.setTimestamp();
 
-			jobData.Jobs = jobData.Jobs.filter((Job, index) => { return index !== Number - 1})
+			jobData.Jobs = jobData.Jobs.filter((Job, index) => { return index !== Number - 1 })
 			jobsChecker.deleteOne({ Jobs: jobData.Jobs[Number - 1] })
 
 			interaction.reply({

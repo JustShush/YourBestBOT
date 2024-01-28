@@ -12,7 +12,9 @@ module.exports = {
 		.addStringOption((option) => option
 			.setName("command")
 			.setDescription("View information on a certain command.")
-			.setRequired(false)),
+			.setRequired(false))
+		.setDMPermission(false)
+		.setNSFW(false),
 	/**
 	 * @param {ChatInputCommandInteraction} interaction
 	 */

@@ -12,7 +12,9 @@ module.exports = {
 		.setDescription('See your balance.')
 		.addUserOption((option) => option
 			.setName("member")
-			.setDescription("The member you want to see is balance.")),
+			.setDescription("The member you want to see is balance."))
+		.setDMPermission(false)
+		.setNSFW(false),
 	/**
 	 * @param {ChatInputCommandInteraction} interaction
 	 */

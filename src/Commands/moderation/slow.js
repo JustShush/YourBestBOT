@@ -14,7 +14,9 @@ module.exports = {
 			.setName("time")
 			.setDescription("The time for the slowmode.")
 			.setRequired(true)
-	),
+		)
+		.setDMPermission(false)
+		.setNSFW(false),
 	/**
 	 * @param {ChatInputCommandInteraction} interaction
 	 */
@@ -27,10 +29,10 @@ module.exports = {
 		// end of the color randomization
 
 		const { options } = interaction
-		
+
 		const Time = options.getNumber("time");
 
-			interaction.channel.setRateLimitPerUser(Time);
+		interaction.channel.setRateLimitPerUser(Time);
 
 		interaction.reply({ content: `The Slowmode of this channel has been set to ${Time}s` });
 	}

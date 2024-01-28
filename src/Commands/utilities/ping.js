@@ -7,12 +7,14 @@ module.exports = {
 	usage: "`/ping`",
 	type: "Utility",
 	data: new SlashCommandBuilder()
-	.setName("ping")
-	.setDescription("Will respond with pong!"),
+		.setName("ping")
+		.setDescription("Will respond with pong!")
+		.setDMPermission(true)
+		.setNSFW(false),
 	/**
 	 * @param {ChatInputCommandInteraction} interaction
 	 */
 	execute(interaction) {
-		interaction.reply({content: "Pong!", ephemeral: true});
+		interaction.reply({ content: "Pong!", ephemeral: true });
 	}
 }

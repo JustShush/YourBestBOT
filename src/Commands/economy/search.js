@@ -9,7 +9,9 @@ module.exports = {
 	type: "Economy",
 	data: new SlashCommandBuilder()
 		.setName('search')
-		.setDescription('Search for coins.'),
+		.setDescription('Search for coins.')
+		.setDMPermission(false)
+		.setNSFW(false),
 	async execute(interaction, client) {
 		try {
 

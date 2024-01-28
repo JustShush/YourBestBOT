@@ -8,7 +8,9 @@ module.exports = {
 	type: "Utility",
 	data: new SlashCommandBuilder()
 		.setName("uptime")
-		.setDescription("Will respond with pong!"),
+		.setDescription("Will respond with pong!")
+		.setDMPermission(true)
+		.setNSFW(false),
 	/**
 	 * @param {ChatInputCommandInteraction} interaction
 	 */

@@ -14,7 +14,9 @@ module.exports = {
 		.addNumberOption((option) => option
 			.setName("amount")
 			.setDescription("The amount of messages to delete.(max 100)")
-			.setRequired(true)),
+			.setRequired(true))
+		.setDMPermission(false)
+		.setNSFW(false),
 	/**
 	* @param {ChatInputCommandInteraction} interaction
 	*/

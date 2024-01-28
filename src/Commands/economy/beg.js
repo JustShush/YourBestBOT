@@ -9,7 +9,9 @@ module.exports = {
 	type: "Economy",
 	data: new SlashCommandBuilder()
 		.setName('beg')
-		.setDescription('Beg YourBestBOT money, maybe you get something, or not.'),
+		.setDescription('Beg YourBestBOT money, maybe you get something, or not.')
+		.setDMPermission(false)
+		.setNSFW(false),
 	async execute(interaction, client) {
 		try {
 

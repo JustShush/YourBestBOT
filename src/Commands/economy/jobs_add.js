@@ -23,7 +23,9 @@ module.exports = {
 		.addNumberOption(option => option
 			.setName("salary")
 			.setDescription("Set the salary per shift.")
-			.setRequired(true)),
+			.setRequired(true))
+		.setDMPermission(false)
+		.setNSFW(false),
 	async execute(interaction, client) {
 		try {
 
@@ -50,7 +52,7 @@ module.exports = {
 				Cooldown: Time,
 				Salary: Salary
 			}
-			
+
 			const jobData = await jobsChecker.findOne({
 				Guild: interaction.guild.id
 			});
@@ -68,7 +70,7 @@ module.exports = {
 			let i = 0;
 			while (jobData.Jobs[i] != null)
 				i++;
-			if (i > 5) return interaction.reply({ content: `This server has reached the maximum amount of jobs. \`5\``});
+			if (i > 5) return interaction.reply({ content: `This server has reached the maximum amount of jobs. \`5\`` });
 
 			const embed = new EmbedBuilder()
 				.setTitle(`${interaction.user.username} you have added \`${Job}\` to the list of jobs.`)

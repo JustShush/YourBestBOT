@@ -13,7 +13,9 @@ module.exports = {
 		.addNumberOption(option => option
 			.setName("amount")
 			.setDescription("Bet amount")
-			.setRequired(true)),
+			.setRequired(true))
+		.setDMPermission(false)
+		.setNSFW(false),
 	async execute(interaction, client) {
 		try {
 

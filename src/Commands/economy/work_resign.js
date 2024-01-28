@@ -10,7 +10,9 @@ module.exports = {
 	type: "Economy",
 	data: new SlashCommandBuilder()
 		.setName('work-resign')
-		.setDescription('Resign from your current job.'),
+		.setDescription('Resign from your current job.')
+		.setDMPermission(false)
+		.setNSFW(false),
 	async execute(interaction, client) {
 		try {
 

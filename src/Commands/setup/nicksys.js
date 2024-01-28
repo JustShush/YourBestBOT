@@ -11,7 +11,9 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName("setup-nicksys")
 		.setDescription("Enable/Disable the nickname System.")
-		.setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild, PermissionFlagsBits.ManageChannels),
+		.setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild, PermissionFlagsBits.ManageChannels)
+		.setDMPermission(false)
+		.setNSFW(false),
 	/**
 	 * @param {ChatInputCommandInteraction} interaction
 	 */

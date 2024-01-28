@@ -14,7 +14,9 @@ module.exports = {
 		.addStringOption((option) => option
 			.setName("msg")
 			.setRequired(true)
-			.setDescription("The msg you want to say.")),
+			.setDescription("The msg you want to say."))
+		.setDMPermission(false)
+		.setNSFW(false),
 	/**
 	 * @param {ChatInputCommandInteraction} interaction
 	 */
@@ -28,7 +30,7 @@ module.exports = {
 		const channel = interaction.guild.channels.cache.get(channelId);
 		if (!channel) interaction.reply({ content: "I wasn't able to send a message to that channel.", ephemeral: true });
 
-		channel.send({ content: msg})
+		channel.send({ content: msg })
 		console.log(`${interaction.user.id} ${interaction.user.tag} has sent \`${msg}\` to ${channel.name}.`.green);
 	}
 }

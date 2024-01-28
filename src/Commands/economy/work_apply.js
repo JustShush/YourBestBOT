@@ -14,7 +14,9 @@ module.exports = {
 		.addNumberOption(option => option
 			.setName("job")
 			.setDescription("Set the job you want to work on.")
-			.setRequired(true)),
+			.setRequired(true))
+		.setDMPermission(false)
+		.setNSFW(false),
 	async execute(interaction, client) {
 		try {
 

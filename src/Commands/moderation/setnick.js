@@ -15,12 +15,14 @@ module.exports = {
 			.setName("member")
 			.setDescription("The member to change the nickname.")
 			.setRequired(true)
-	)
-	.addStringOption((option) => option
+		)
+		.addStringOption((option) => option
 			.setName("name")
 			.setDescription("The new new nickname for the member.")
 			.setRequired(true)
-	),
+		)
+		.setDMPermission(false)
+		.setNSFW(false),
 	/**
 	 * @param {ChatInputCommandInteraction} interaction
 	 */
@@ -33,7 +35,7 @@ module.exports = {
 		// end of the color randomization
 
 		const { options, guild } = interaction
-		
+
 		const User = options.getUser("member").id;
 		const user = guild.members.cache.get(User);
 		const newnick = options.getString("name");

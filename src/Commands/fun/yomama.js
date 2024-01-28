@@ -8,7 +8,9 @@ module.exports = {
 	type: "Fun",
 	data: new SlashCommandBuilder()
 		.setName('yomama')
-		.setDescription('Random yomama jokes.'),
+		.setDescription('Random yomama jokes.')
+		.setDMPermission(true)
+		.setNSFW(false),
 	async execute(interaction, client) {
 		try {
 

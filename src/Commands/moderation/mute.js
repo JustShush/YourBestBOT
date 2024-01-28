@@ -29,7 +29,9 @@ module.exports = {
 			.setName("reason")
 			.setDescription("Provide a reson for this timeout.")
 			.setMaxLength(512)
-		),
+		)
+		.setDMPermission(false)
+		.setNSFW(false),
 	/**
 	 * @param {ChatInputCommandInteraction} interaction
 	 */

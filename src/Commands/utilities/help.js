@@ -7,7 +7,9 @@ module.exports = {
 	type: "Other",
 	data: new SlashCommandBuilder()
 		.setName('help')
-		.setDescription('Gives you help :)'),
+		.setDescription('Gives you help :)')
+		.setDMPermission(true)
+		.setNSFW(false),
 	async execute(interaction, client) {
 		try {
 			// random colors from one dark color palette 

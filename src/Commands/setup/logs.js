@@ -16,7 +16,9 @@ module.exports = {
 			.setName("channel")
 			.setDescription("Select the channel log.")
 			.setRequired(true)
-		),
+		)
+		.setDMPermission(false)
+		.setNSFW(false),
 	/**
 	 * @param {ChatInputCommandInteraction} interaction
 	 */

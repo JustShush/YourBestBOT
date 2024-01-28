@@ -24,7 +24,9 @@ module.exports = {
 		.addRoleOption((option) => option
 			.setName("role")
 			.setDescription("The default role.(put it\'s id here)")
-		),
+		)
+		.setDMPermission(false)
+		.setNSFW(false),
 	/**
 	 * @param {ChatInputCommandInteraction} interaction
 	 */

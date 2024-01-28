@@ -9,7 +9,9 @@ module.exports = {
 	type: "Economy",
 	data: new SlashCommandBuilder()
 		.setName('daily')
-		.setDescription('Claim your daily coins!'),
+		.setDescription('Claim your daily coins!')
+		.setDMPermission(false)
+		.setNSFW(false),
 	async execute(interaction, client) {
 		try {
 

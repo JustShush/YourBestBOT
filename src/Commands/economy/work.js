@@ -10,7 +10,9 @@ module.exports = {
 	type: "Economy",
 	data: new SlashCommandBuilder()
 		.setName('work-shift')
-		.setDescription('Work to get some coins.'),
+		.setDescription('Work to get some coins.')
+		.setDMPermission(false)
+		.setNSFW(false),
 	async execute(interaction, client) {
 		try {
 

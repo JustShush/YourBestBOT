@@ -19,7 +19,9 @@ module.exports = {
 		.addStringOption((option) => option
 			.setName("reason")
 			.setDescription("The reason for changing the nickname of the user.")
-		),
+		)
+		.setDMPermission(false)
+		.setNSFW(false),
 	/**
 	 * @param {ChatInputCommandInteraction} interaction
 	 */

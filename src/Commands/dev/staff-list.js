@@ -6,7 +6,9 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName("staff")
 		.setDescription("Gives you all the staff members on Webex mas aqui!")
-		.setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
+		.setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
+		.setDMPermission(true)
+		.setNSFW(false),
 	/**
 	 * @param {ChatInputCommandInteraction} interaction
 	 */

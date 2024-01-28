@@ -20,7 +20,9 @@ module.exports = {
 			.setName("msg")
 			.setDescription("The GoodBye message.")
 			.setRequired(true)
-		),
+		)
+		.setDMPermission(false)
+		.setNSFW(false),
 	/**
 	 * @param {ChatInputCommandInteraction} interaction
 	 */

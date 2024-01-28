@@ -7,7 +7,9 @@ module.exports = {
 	type: "Utility",
 	data: new SlashCommandBuilder()
 		.setName('bot')
-		.setDescription('Info about YourBestBOT'),
+		.setDescription('Info about YourBestBOT')
+		.setDMPermission(false)
+		.setNSFW(false),
 	async execute(interaction, client) {
 		try {
 

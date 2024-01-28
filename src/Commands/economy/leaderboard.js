@@ -9,7 +9,9 @@ module.exports = {
 	type: "Economy",
 	data: new SlashCommandBuilder()
 		.setName('leaderboard')
-		.setDescription('View the top 10 richest users in this server.'),
+		.setDescription('View the top 10 richest users in this server.')
+		.setDMPermission(false)
+		.setNSFW(false),
 	async execute(interaction, client) {
 		try {
 

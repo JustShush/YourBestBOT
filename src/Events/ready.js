@@ -1,16 +1,12 @@
 const color = require('colors');
-const { ActivityType } = require("discord.js");
+const { Events, ActivityType } = require("discord.js");
 const { connect } = require("mongoose");
-const { loadCommands } = require("../../handlers/command_Handler");
-const { loadEvents } = require("../../handlers/event_Handler");
-const { allGuilds } = require('../../functions/allguilds');
+const { allGuilds } = require('../functions/allguilds');
 
 module.exports = {
-	name: "ready",
+	name: Events.ClientReady,
 	once: true,
 	execute(client) {
-
-		loadCommands(client);
 
 		const options = [{
 			type: ActivityType.Watching,

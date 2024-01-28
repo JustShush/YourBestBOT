@@ -1,0 +1,75 @@
+const { ChatInputCommandInteraction, EmbedBuilder } = require("discord.js");
+
+module.exports = {
+	name: "interactionCreate",
+	/**
+	 *  @param {ChatInputCommandInteraction} interaction
+	 */
+	async execute(interaction, client) {
+		if (!interaction.isCommand()) return;
+
+		if (interaction.isChatInputCommand()) {
+
+			const command = client.commands.get(interaction.commandName);
+			if (!command)
+				return interaction.reply({
+					content: "This command is outdated.",
+					ephemeral: true,
+				});
+
+			if (command.developer && interaction.user.id !== "453944662093332490")
+				return interaction.reply({
+					content: "This command is only available to the dev.",
+					ephemeral: true,
+				});
+
+			try {
+				await command.execute(interaction, client);
+				console.log(
+					`\nGuild: ${interaction.guild.name}\nChannel: "${interaction.channel.name}"\nCommand: "${command.name}"\nUser: ${interaction.user.tag}\nTimestamp: ${Date().slice(0, -42)}`.brightGreen
+				);
+				const channel = "964932900652986428"; // logs WEBEX
+				const check = client.channels.cache.get(channel);
+				if (check) {
+					const logEmbed = new EmbedBuilder()
+						.setDescription(
+							`Guild: ${interaction.guild.name}\nChannel: "${interaction.channel.name}"<#${interaction.channel.id}>\nUser: <@${interaction.user.id}>\nCommand: "${command.name}"`
+						)
+						.setTimestamp();
+
+					check.send({
+						embeds: [logEmbed],
+					});
+				}
+			} catch (error) {
+				console.error(error);
+				console.log(
+					`\nGuild: ${interaction.guild.name}\nChannel: "${interaction.channel.name}"\nCommand: "${command.name}"\nUser: ${interaction.user.tag}`
+						.brightRed
+				);
+				const errorEmbed = new EmbedBuilder()
+					.setTitle('An error occured')
+					.setDescription(`${error}`)
+					.setColor('Red');
+
+				if (interaction.replied || interaction.deferred) {
+					await interaction.followUp({ embeds: [errorEmbed], ephemeral: true });
+				} else {
+					await interaction.reply({ embeds: [errorEmbed], ephemeral: true });
+				}
+			}
+		} else if (interaction.isAutocomplete()) {
+			// Handle autocomplete interactions
+			const command = client.commands.get(interaction.commandName);
+
+			if (command && command.handleAutocomplete) {
+				try {
+					await command.handleAutocomplete(interaction, client);
+				} catch (error) {
+					console.error('Error handling autocomplete:', error);
+					// Optionally, you can send an error message to the user
+				}
+			}
+		}
+	},
+};

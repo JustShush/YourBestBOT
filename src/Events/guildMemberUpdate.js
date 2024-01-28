@@ -1,5 +1,5 @@
 const { EmbedBuilder } = require("discord.js");
-const db = require("../../schemas/nickSys");
+const db = require("../schemas/nickSys");
 
 module.exports = {
 	name: "guildMemberUpdate",

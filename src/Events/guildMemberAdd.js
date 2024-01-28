@@ -1,7 +1,7 @@
 const color = require("colors");
 const { EmbedBuilder, GuildMember } = require("discord.js");
-const Schema = require("../../schemas/welcome");
-const db = require("../../schemas/nickSys");
+const Schema = require("../schemas/welcome");
+const db = require("../schemas/nickSys");
 
 module.exports = {
 	name: "guildMemberAdd",

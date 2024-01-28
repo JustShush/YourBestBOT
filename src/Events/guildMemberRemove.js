@@ -1,5 +1,5 @@
 const { EmbedBuilder, GuildMember } = require("discord.js");
-const Schema = require("../../schemas/goodbye");
+const Schema = require("../schemas/goodbye");
 
 module.exports = {
 	name: "guildMemberRemove",

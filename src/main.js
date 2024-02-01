@@ -5,14 +5,11 @@ const path = require('node:path');
 const { Client, GatewayIntentBits, Partials, Collection, Events } = require("discord.js");
 const { Guilds, GuildMembers, GuildMessages, GuildPresences, MessageContent, GuildInvites } = GatewayIntentBits;
 const { User, Message, GuildMember, ThreadMember, Reaction } = Partials;
-const api = require("./api/app.js")
 
 const client = new Client({
 	intents: [Guilds, GuildMembers, GuildMessages, GuildPresences, MessageContent, GuildInvites],
 	partials: [User, Message, GuildMember, ThreadMember, Reaction],
 });
-
-api.load(client);
 
 client.config = require("../config.json");
 client.commands = new Collection();

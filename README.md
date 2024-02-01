@@ -32,6 +32,6 @@ PS: I dont have any idea for the pfp of the bot, if you want to help just send m
 
 # TODO
 
-- Make auth for the api.
 - Add a new endpoints that gets all commands aswell has the type of command and description so i can make a dynamic thing on the [website](https://yourbestbot.pt).
-- Add a command using the 42API.
+- Make auth for the api.
+- 42API Implementation done just need to do the command now.

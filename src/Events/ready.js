@@ -2,6 +2,7 @@ const color = require('colors');
 const { Events, ActivityType } = require("discord.js");
 const { connect } = require("mongoose");
 const { allGuilds } = require('../functions/allguilds');
+const api = require("../api/app.js");
 
 module.exports = {
 	name: Events.ClientReady,
@@ -37,7 +38,7 @@ module.exports = {
 				}],
 				status: options[i].status,
 			})
-		}, 1 * 60 * 1000);
+		}, 5 * 60 * 1000);
 
 		const upTimeFunction = () => {
 			let totalSeconds = (client.uptime / 1000);
@@ -74,5 +75,6 @@ module.exports = {
 		connect(client.config.MONGO_URI, {}).then(() => console.log("Connected to mongoDB".brightGreen));
 
 		console.log(`${client.user.username} is on-line!\nIn ${client.guilds.cache.size} Servers!`.brightMagenta.bold);
+		api.load(client);
 	}
 }

@@ -20,10 +20,9 @@ module.exports = {
 	 */
 	async execute(interaction, client) {
 
-		// technically, this can be moved into the ready event as well
-		if (!interaction.client.application.commands.cache.size) {
+		// technically, this can be moved into the ready event
+		if (!interaction.client.application.commands.cache.size)
 			await interaction.client.application.commands.fetch();
-		}
 
 		// random colors from one dark color palette
 		const colors = ['#282C34', '#E06C75', '#98C379', '#E5C07b', '#61AFEF', '#C678DD', '#56B6C2', '#ABB2BF', '#6B859E', '#3890E9', '#A359ED', '#EC5252', '#C97016', '#5DA713', '#13AFAF'];
@@ -40,10 +39,6 @@ module.exports = {
 		//const globalCommandIds = globalCommands?.map(command => command.id);
 		//console.log('Global command IDs:', globalCommandIds);
 
-		await interaction.deferReply();
-
-		await interaction.editReply({ content: `Fetching all the commands...` });
-
 		if (!cmd) {
 			utilityArray = [];
 			funArray = [];
@@ -52,7 +47,7 @@ module.exports = {
 			otherArray = [];
 			setupArray = [];
 			
-			const promiseArray = client.commands.map(async (c) => {
+			client.commands.map(async (c) => {
 				if (c.type === "Utility") {
 					getSubcommand(interaction, utilityArray, c.name);
 					//utilityArray.push(`\`${c.name}\``);
@@ -73,8 +68,6 @@ module.exports = {
 					//setupArray.push(`\`${c.name}\``);
 				}
 			});
-
-			await Promise.all(promiseArray);
 
 			const newEmbed = new EmbedBuilder()
 				.setDescription(
@@ -97,7 +90,7 @@ module.exports = {
 				.setFooter({ text: `Requested by ${interaction.user.tag}`, iconURL: member.user.displayAvatarURL() })
 				.setTimestamp()
 
-			await interaction.editReply({ content: " ", embeds: [newEmbed] });
+			await interaction.reply({ content: " ", embeds: [newEmbed] });
 		} else {
 			embedMessage = false;
 			client.commands.map(async (c) => {
@@ -113,7 +106,7 @@ Permissions: ${c.permission}
 				}
 			});
 			if (!embedMessage) {
-				return interaction.editReply({ content: `There is no command with the name \`${cmd}\`.`, ephemeral: true });
+				return interaction.reply({ content: `There is no command with the name \`${cmd}\`.`, ephemeral: true });
 			} else {
 				const cmdEmbed = new EmbedBuilder()
 					.setDescription(`${embedMessage.toString()}`)
@@ -121,14 +114,14 @@ Permissions: ${c.permission}
 					.setFooter({ text: `Requested by ${interaction.user.tag}` })
 					.setTimestamp()
 
-				await interaction.editReply({ content: " ", embeds: [cmdEmbed], ephemeral: true });
+				await interaction.reply({ content: " ", embeds: [cmdEmbed], ephemeral: true });
 			}
 		}
 	}
 }
 
 // this function gets the slash command, now i only need to make it get if the command has sub commands
-// TY Blåhaj https://discord.com/channels/1055188344188973066/1096722788385050694/1199455671016509480
+// TY Luna https://discord.com/channels/1055188344188973066/1096722788385050694/1199455671016509480
 function getSlashCommand(client, name, subcommand) {
 	const command = client.application.commands.cache.find(((cmd) => cmd.name === name));
 	if (!command) return `\`${name}${subcommand ? ` ${subcommand}` : ""}\``;
@@ -146,10 +139,9 @@ function getSubcommand(interaction, list, name) {
 			for (const subcommand of subcommands) {
 				list.push(`${getSlashCommand(interaction.client, command.name, subcommand.name)}`);
 			}
+			continue;
 		}
-		
 		list.push(getSlashCommand(interaction.client, command.name));
 	}
-
 	return list;
 }

@@ -20,6 +20,11 @@ module.exports = {
 	 */
 	async execute(interaction, client) {
 
+		// technically, this can be moved into the ready event as well
+		if (!interaction.client.application.commands.cache.size) {
+			await interaction.client.application.commands.fetch();
+		}
+
 		// random colors from one dark color palette
 		const colors = ['#282C34', '#E06C75', '#98C379', '#E5C07b', '#61AFEF', '#C678DD', '#56B6C2', '#ABB2BF', '#6B859E', '#3890E9', '#A359ED', '#EC5252', '#C97016', '#5DA713', '#13AFAF'];
 		const color = Math.floor(Math.random() * colors.length);
@@ -46,24 +51,25 @@ module.exports = {
 			economyArray = [];
 			otherArray = [];
 			setupArray = [];
+			
 			const promiseArray = client.commands.map(async (c) => {
 				if (c.type === "Utility") {
-					await getSubcommand(interaction, utilityArray, c.name);
+					getSubcommand(interaction, utilityArray, c.name);
 					//utilityArray.push(`\`${c.name}\``);
 				} else if (c.type === "Fun") {
-					await getSubcommand(interaction, funArray, c.name);
+					getSubcommand(interaction, funArray, c.name);
 					//funArray.push(`\`${c.name}\``);
 				} else if (c.type === "Moderation") {
-					await getSubcommand(interaction, moderationArray, c.name);
+					getSubcommand(interaction, moderationArray, c.name);
 					//moderationArray.push(`\`${c.name}\``);
 				} else if (c.type === "Economy") {
-					await getSubcommand(interaction, economyArray, c.name);
+					getSubcommand(interaction, economyArray, c.name);
 					//economyArray.push(`\`${c.name}\``);
 				} else if (c.type === "Other") {
-					await getSubcommand(interaction, otherArray, c.name);
+					getSubcommand(interaction, otherArray, c.name);
 					//otherArray.push(`\`${c.name}\``);
 				} else if (c.type === "Setup") {
-					await getSubcommand(interaction, setupArray, c.name);
+					getSubcommand(interaction, setupArray, c.name);
 					//setupArray.push(`\`${c.name}\``);
 				}
 			});
@@ -122,36 +128,28 @@ Permissions: ${c.permission}
 }
 
 // this function gets the slash command, now i only need to make it get if the command has sub commands
-// TY Sister https://discord.com/channels/1055188344188973066/1096722788385050694/1199455671016509480
-async function getSlashCommand(client, name, subcommand) {
-
-	if (!client.application.commands.cache.size)
-		await client.application.commands.fetch();
-
+// TY Blåhaj https://discord.com/channels/1055188344188973066/1096722788385050694/1199455671016509480
+function getSlashCommand(client, name, subcommand) {
 	const command = client.application.commands.cache.find(((cmd) => cmd.name === name));
 	if (!command) return `\`${name}${subcommand ? ` ${subcommand}` : ""}\``;
 
 	return `</${command.name}${subcommand ? ` ${subcommand}` : ""}:${command.id}>`
 }
 
-async function getSubcommand(interaction, list, name) {
-
-	if (!interaction.client.application.commands.cache.size)
-		await interaction.client.application.commands.fetch();
-
-	for await (const [one, command] of interaction.client.application.commands.cache) {
-		if (command.name === name) {
-
-			const subcommands = (command?.options)
-				? (command?.options || []).filter(option => option.type === ApplicationCommandOptionType.Subcommand)
-				: [];
-			if (subcommands.length) {
-				for await (const subcommand of subcommands) {
-					list.push(`${await getSlashCommand(interaction.client, command.name, subcommand.name)}`);
-				}
-				continue;
+function getSubcommand(interaction, list, name) {
+	for (const [, command] of interaction.client.application.commands.cache) {
+		if (command.name !== name) continue;
+		
+		const subcommands = (command?.options || []).filter(option => option.type === ApplicationCommandOptionType.Subcommand) || [];
+		
+		if (subcommands.length) {
+			for (const subcommand of subcommands) {
+				list.push(`${getSlashCommand(interaction.client, command.name, subcommand.name)}`);
 			}
-			list.push(await getSlashCommand(interaction.client, command.name));
 		}
+		
+		list.push(getSlashCommand(interaction.client, command.name));
 	}
+
+	return list;
 }

@@ -134,11 +134,13 @@ async function getSlashCommand(client, name, subcommand) {
 	return `</${command.name}${subcommand ? ` ${subcommand}` : ""}:${command.id}>`
 }
 
-async function getSubcommand(interaction, list, Name) {
-	const commands = Array.from(await interaction.client.application.commands.fetch());
+async function getSubcommand(interaction, list, name) {
 
-	for await (const [one, command] of commands) {
-		if (command.name === Name) {
+	if (!interaction.client.application.commands.cache.size)
+		await interaction.client.application.commands.fetch();
+
+	for await (const [one, command] of interaction.client.application.commands.cache) {
+		if (command.name === name) {
 
 			const subcommands = (command?.options)
 				? (command?.options || []).filter(option => option.type === ApplicationCommandOptionType.Subcommand)

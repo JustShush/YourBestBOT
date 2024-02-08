@@ -23,7 +23,7 @@ This is an update from [YourBestBOT-legacy](https://github.com/JustShush/Discord
 
 ## 🔗 Resource Links
 
-- 🤖 Demo Bot: [Invite Here](https://yourbestbot.pt/invite)
+- 🤖 YourBestBOT Bot: [Invite Here](https://yourbestbot.pt/invite)
 - 🤝 Support Server: [Join Here](https://yourbestbot.pt/support)
 
 <br>

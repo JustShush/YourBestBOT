@@ -16,7 +16,7 @@ This is an update from [YourBestBOT-legacy](https://github.com/JustShush/Discord
   •
   <a href="#-getting-started">Getting Started</a>
   •
-  <a href="https://github.com/JustShush/YourBestBOT/blob/main/README.md#--contributing--">Contributing</a>
+  <a href="#--contributing--">Contributing</a>
 </p>
 
 <br>
@@ -60,6 +60,7 @@ If you need any additional help, make sure to read our guides [join the Discord 
 <h1 align="center"> 🤝 Contributing 🤝 </h1>
 
 - Feel free to [Fork](https://github.com/JustShush/YourBestBOT/fork) this repository, create a feature branch and submit a pull request
+- Before Forking the repository make sure to read [contributing](https://github.com/JustShush/YourBestBOT/blob/main/CONTRIBUTING.md#contributing)
 
 <br>
 PS: I dont have any idea for the pfp of the bot, if you want to help just send me a message with an idea for the pfp, we will very appreciate the help :)

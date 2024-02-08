@@ -1,6 +1,6 @@
 # Contributing
 
-Thank you for considering making a contribution to Discord Tickets.
+Thank you for considering making a contribution to YourbestBOT.
 
 Before contributing, please read the [code of conduct](CODE_OF_CONDUCT.md), which all contributors must follow.
 

@@ -6,7 +6,7 @@ const { Message } = require("discord.js");
  * @param {String[]} args user intput
  */
 function stealEmoji(message, args) {
-	if (!args) return message.reply({ content: "Please specify some emojis." });
+	if (!args || args.length <= 0) return message.reply({ content: "Please specify some emojis." });
 	const regex = /<a?:([a-zA-Z0-9_]+):(\d+)>/;
 	const match = args[0].match(regex);
 

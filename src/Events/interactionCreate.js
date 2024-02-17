@@ -1,4 +1,4 @@
-const { ChatInputCommandInteraction, EmbedBuilder, ChannelType } = require("discord.js");
+const { ChatInputCommandInteraction, EmbedBuilder } = require("discord.js");
 
 module.exports = {
 	name: "interactionCreate",
@@ -74,6 +74,7 @@ module.exports = {
 				});
 
 			try {
+				//if (randomNRange(1000)) AD(interaction, false);
 				await command.execute(interaction, client);
 				console.log(
 					`\nGuild: ${interaction.guild.name}\nChannel: "${interaction.channel.name}"\nCommand: "${command.name}"\nUser: ${interaction.user.tag}\nTimestamp: ${Date().slice(0, -42)}`.brightGreen

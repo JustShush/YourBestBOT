@@ -1,4 +1,5 @@
 const { ChatInputCommandInteraction, SlashCommandBuilder, EmbedBuilder, ApplicationCommandOptionType } = require("discord.js");
+const { commandsArr } = require("../../Events/messageCreate.js");
 
 module.exports = {
 	name: "commands",
@@ -40,6 +41,10 @@ module.exports = {
 		//console.log('Global command IDs:', globalCommandIds);
 
 		if (!cmd) {
+
+			// Legacy commands
+			const legacyArr = commandsArr.map(cmd => '+' + cmd);
+
 			utilityArray = [];
 			funArray = [];
 			moderationArray = [];
@@ -84,6 +89,9 @@ module.exports = {
 	${setupArray.join(' ')}
 	Other Commands:
 	${otherArray.join(' ')}
+
+	*Legacy(+) commands*
+	${legacyArr.join(", ")}
 	`
 				)
 				//.setColor("DARK_NAVY")
@@ -92,6 +100,7 @@ module.exports = {
 
 			await interaction.reply({ content: " ", embeds: [newEmbed] });
 		} else {
+			if (commandsArr.includes(cmd)) return interaction.reply({ content: `At this moment legacy commands dont have a detailed description. sorry \<3`, ephemeral: true });
 			embedMessage = false;
 			client.commands.map(async (c) => {
 				if (c.name === cmd) {

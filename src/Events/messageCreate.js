@@ -1,9 +1,10 @@
-const { AttachmentBuilder } = require("discord.js");
+const { AttachmentBuilder, PermissionFlagsBits } = require("discord.js");
 const { sticky } = require("../functions/sticky.js");
 const { stealEmoji } = require("../functions/stealEmoji.js");
 
 module.exports = {
 	name: "messageCreate",
+	commandsArr: ["steal"],
 	execute(message, client) {
 		if (client.user.id == message.author.id) return;
 		sticky(message);
@@ -12,6 +13,7 @@ module.exports = {
 		const args = message.content.slice(prefix.length).trim().split(/ +/);
 		const command = args.shift().toLowerCase();
 		if (command === 'steal') {
+			if (!(message.member.permissions.has(PermissionFlagsBits.ManageGuildExpressions))) return message.channel.send({ content: `You don't have the required permissions to run this command.`}).then((msg) => { setTimeout(() => { msg.delete(); }, 5 * 1000);})
 			stealEmoji(message, args);
 		}
 		if (message.content == "test") {

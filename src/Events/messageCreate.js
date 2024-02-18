@@ -1,4 +1,4 @@
-const { AttachmentBuilder, PermissionFlagsBits } = require("discord.js");
+const { AttachmentBuilder, PermissionFlagsBits, TextChannel, EmbedBuilder } = require("discord.js");
 const { sticky } = require("../functions/sticky.js");
 const { stealEmoji } = require("../functions/stealEmoji.js");
 
@@ -12,64 +12,60 @@ module.exports = {
 		const prefix = "+";
 		const args = message.content.slice(prefix.length).trim().split(/ +/);
 		const command = args.shift().toLowerCase();
+		detect(message);
 		if (command === 'steal') {
-			if (!(message.member.permissions.has(PermissionFlagsBits.ManageGuildExpressions))) return message.channel.send({ content: `You don't have the required permissions to run this command.`}).then((msg) => { setTimeout(() => { msg.delete(); }, 5 * 1000);})
+			if (!(message.member.permissions.has(PermissionFlagsBits.ManageGuildExpressions))) return message.channel.send({ content: `You don't have the required permissions to run this command.` }).then((msg) => { setTimeout(() => { msg.delete(); }, 5 * 1000); })
 			stealEmoji(message, args);
-		}
-		if (message.content == "test") {
-			test(message);
 		}
 	},
 };
 
-const Canvas = require('@napi-rs/canvas');
-const { request } = require('undici'); // Using undici to make HTTP requests for better performance
-async function test(message) {
-	// Create a 700x250 pixel canvas and get its context
-	// The context will be used to modify the canvas
-	const canvas = Canvas.createCanvas(1100, 500);
-	const context = canvas.getContext('2d');
+async function detect(message) {
+	const messageLinkRegex = /https:\/\/discord\.com\/channels\/(\d+)\/(\d+)\/(\d+)/;
+	const match = message.content.match(messageLinkRegex);
+	if (match) {
+		const [, serverId, channelId, messageId] = match;
 
-	// Load and draw the space image as the background
-	const background = await Canvas.loadImage('./img/space.png');
-	context.drawImage(background, 0, 0, canvas.width, canvas.height);
+		// Ensure the linked message is within the same server
+		if (serverId === message.guild.id) {
+			try {
+				const linkedChannel = message.guild.channels.cache.get(channelId);
+				if (linkedChannel && linkedChannel instanceof TextChannel) {
+					const linkedMessage = await linkedChannel.messages.fetch(messageId);
+					//console.log(linkedMessage);
 
-	// Function to draw a circular clip
-	function drawCircularClip(x, y, radius) {
-		context.beginPath();
-		context.arc(x, y, radius, 0, Math.PI * 2);
-		context.closePath();
-		context.clip();
+					const authorEmbed = new EmbedBuilder()
+						.setAuthor({ name: linkedMessage.author.globalName, iconURL: linkedMessage.author.avatarURL() })
+						.setColor(message.guild.members.me.displayHexColor)
+
+					const footerEmbed = new EmbedBuilder()
+						.setFooter({ text: linkedMessage.author.bot ? `@${linkedMessage.author.username}` : `@${linkedMessage.author.globalName}`, iconURL: linkedMessage.author.avatarURL() })
+						.setColor(message.guild.members.me.displayHexColor)
+
+					const obj = {
+						embeds: [],
+					}
+
+					if (linkedMessage.content)
+						authorEmbed.setDescription(linkedMessage.content);
+					if (linkedMessage.attachments.size > 0)
+						authorEmbed.setImage(`${linkedMessage.attachments.first().url}`)
+					console.log(footerEmbed);
+					if (linkedMessage.embeds.length > 0)
+					{
+						obj.embeds.push(footerEmbed);
+						obj.embeds.push(linkedMessage.embeds[0]);
+					} else
+						obj.embeds.push(authorEmbed);
+					console.log(obj.embeds);
+					//message.reply(`Content of the linked message: ${linkedMessage.content}`, { allowedMentions: { repliedUser: false } });
+					return message.reply(obj, { mention: false });
+				} else {
+					message.reply('The linked channel is not accessible or is not a text channel.');
+				}
+			} catch (error) {
+				console.error('Error fetching linked message:', error);
+			}
+		}
 	}
-
-	// Draw a centered circular clip on top of the background
-	const clipX = canvas.width / 2;
-	const clipY = (canvas.height / 2) - 100;
-	const clipRadius = 100; // Adjust this value to your desired size of the pfp circle
-	drawCircularClip(clipX, clipY, clipRadius);
-
-	// Draw the background again to fill the circular clip
-	context.drawImage(background, 0, 0, canvas.width, canvas.height);
-
-	// Fetch and draw the author's profile picture
-	const { body } = await request(message.author.displayAvatarURL({ format: 'jpg' }));
-	const avatar = await Canvas.loadImage(await body.arrayBuffer());
-
-	// Increase the size of the author's profile picture
-	const avatarSize = 200; // Adjust this value to your desired size
-	const avatarX = clipX - avatarSize / 2;
-	const avatarY = (clipY - avatarSize / 2);
-
-
-	context.drawImage(avatar, avatarX, avatarY, avatarSize, avatarSize);
-	// Draw a circular border around the profile picture
-	const borderWidth = 50; // Adjust this value to your desired border width
-	context.lineWidth = borderWidth;
-	context.strokeStyle = 'white'; // Change the color if needed
-	drawCircularClip(clipX, clipY, avatarSize / 2 + borderWidth / 2);
-	context.stroke();
-	// Use the helpful Attachment class structure to process the file for you
-	const attachment = new AttachmentBuilder(await canvas.encode('png'), { name: 'profile-image.png' });
-
-	message.channel.send({ files: [attachment] });
 }

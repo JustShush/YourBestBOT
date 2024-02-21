@@ -1,4 +1,5 @@
 const { ChatInputCommandInteraction, EmbedBuilder } = require("discord.js");
+const Schema = require("../schemas/stats.js");
 
 module.exports = {
 	name: "interactionCreate",
@@ -74,6 +75,16 @@ module.exports = {
 				});
 
 			try {
+				const data = await Schema.findOne()
+				if (!data) {
+					data = await Schema.create({
+						NMessages: 0,
+						NUsedCmd: 1
+					})
+					console.log("something went wrong when trying tog get bot stats");
+				}
+				data.NUsedCmd = data.NUsedCmd + 1;
+				await data.save();
 				//if (randomNRange(1000)) AD(interaction, false);
 				await command.execute(interaction, client);
 				console.log(

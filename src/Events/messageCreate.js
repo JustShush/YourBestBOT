@@ -1,14 +1,25 @@
-const { AttachmentBuilder, PermissionFlagsBits, TextChannel, EmbedBuilder } = require("discord.js");
+const { PermissionFlagsBits, TextChannel, EmbedBuilder } = require("discord.js");
+const Schema = require("../schemas/stats.js");
 const { sticky } = require("../functions/sticky.js");
 const { stealEmoji } = require("../functions/stealEmoji.js");
 
 module.exports = {
 	name: "messageCreate",
 	commandsArr: ["steal"],
-	execute(message, client) {
+	async execute(message, client) {
 		if (client.user.id == message.author.id) return;
 		sticky(message);
 		if (message.author.bot) return;
+		let data = await Schema.findOne()
+		if (!data) {
+			data = await Schema.create({
+				NMessages: 1,
+				NUsedCmd: 0
+			})
+			console.log("something went wrong when trying tog get bot stats");
+		}
+		data.NMessages = data.NMessages + 1;
+		await data.save();
 		const prefix = "+";
 		const args = message.content.slice(prefix.length).trim().split(/ +/);
 		const command = args.shift().toLowerCase();
@@ -46,11 +57,11 @@ async function detect(message) {
 						embeds: [],
 					}
 
+					// for gifs add just the first frame to the image and the link of the video to the description
 					if (linkedMessage.content)
 						authorEmbed.setDescription(linkedMessage.content);
 					if (linkedMessage.attachments.size > 0)
 						authorEmbed.setImage(`${linkedMessage.attachments.first().url}`)
-					console.log(footerEmbed);
 					if (linkedMessage.embeds.length > 0)
 					{
 						obj.embeds.push(footerEmbed);

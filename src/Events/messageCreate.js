@@ -1,5 +1,6 @@
 const { PermissionFlagsBits, TextChannel, EmbedBuilder } = require("discord.js");
 const Schema = require("../schemas/stats.js");
+const UserStats = require("../schemas/userStats.js");
 const { sticky } = require("../functions/sticky.js");
 const { stealEmoji } = require("../functions/stealEmoji.js");
 
@@ -20,6 +21,23 @@ module.exports = {
 		}
 		data.NMessages = data.NMessages + 1;
 		await data.save();
+
+		let userData = await UserStats.findOne({ UserId: message.author.id });
+		if (!userData) {
+			userData = await UserStats.create({
+				User: message.author.username,
+				UserId: message.author.id,
+				Avatar: message.author.avatar,
+				Banner: message.author.banner || "",
+				Messages: 0,
+				CmdCount: 0,
+				Votes: 0,
+			})
+		}
+		if (userData.Avatar != message.author.avatar) userData.Avatar = message.author.avatar;
+		userData.Messages = userData.Messages + 1;
+		await userData.save();
+
 		const prefix = "+";
 		const args = message.content.slice(prefix.length).trim().split(/ +/);
 		const command = args.shift().toLowerCase();

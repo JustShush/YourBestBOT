@@ -1,5 +1,6 @@
 const { ChatInputCommandInteraction, EmbedBuilder } = require("discord.js");
 const Schema = require("../schemas/stats.js");
+const UserStats = require("../schemas/userStats.js");
 
 module.exports = {
 	name: "interactionCreate",
@@ -85,6 +86,23 @@ module.exports = {
 				}
 				data.NUsedCmd = data.NUsedCmd + 1;
 				await data.save();
+
+				let userData = await UserStats.findOne({ UserId: interaction.user.id });
+				if (!userData) {
+					userData = await UserStats.create({
+						User: interaction.user.username,
+						UserId: interaction.user.id,
+						Avatar: interaction.user.avatar,
+						Banner: interaction.user.banner || "",
+						Messages: 0,
+						CmdCount: 0,
+						Votes: 0,
+					})
+				}
+				if (userData.Avatar != interaction.user.avatar) userData.Avatar = interaction.user.avatar;
+				userData.CmdCount = userData.CmdCount + 1;
+				await userData.save();
+
 				//if (randomNRange(1000)) AD(interaction, false);
 				await command.execute(interaction, client);
 				console.log(

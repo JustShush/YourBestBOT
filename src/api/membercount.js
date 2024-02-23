@@ -1,3 +1,9 @@
+/**
+ * @typedef {import('express').Request} CustomRequest
+ * @typedef {import('express').Response} CustomResponse
+ * @param {CustomRequest} req
+ * @param {CustomResponse} res
+ */
 module.exports = (req, res, client) => {
 
 	const { id } = req.params;

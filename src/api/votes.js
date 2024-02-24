@@ -20,25 +20,21 @@ module.exports = async (req, res, client) => {
 		obj = { ...req.body }
 
 	for (const key in req.query) {
-		// Check if the property is not already present in newData
 		if (!(key in obj)) {
-			// Add the property to newData
 			obj[key] = req.query[key];
 		}
 	}
-	console.log(obj);
 
 	if (obj.type !== "upvote")
 		return console.log("IDK something other then \"upvote\"", obj.type);
 
 	const user = await client.users.fetch(obj.user);
-	console.log(user);
 	if (!user) return console.log("There was a problem trying to fetch the Voting user.");
 	if (user.bot) return ; // its dumb but idk just in case
 
-	let Data = UserStats.findOne({ UserId: obj.user });
-	if (!Data) {
-		Data = await UserStats.create({
+	let data = await UserStats.findOne({ UserId: obj.user });
+	if (!data) {
+		data = await UserStats.create({
 			User: user.username,
 			UserId: user.id,
 			Avatar: user.avatar,
@@ -48,22 +44,25 @@ module.exports = async (req, res, client) => {
 			Votes: 0,
 		})
 	}
-	Data.Votes = Data.Votes + 1;
-	await Data.save().catch((err) => console.log("error idk", err));
+	data.Votes = data.Votes + 1;
+	await data.save().catch((err) => console.log("error idk", err));
 
 	let avatar = user.avatarURL();
 	if (user.avatar) avatar = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`
 
-	const channels = ["704028617595682876", "1208092080744702023"] // comas // bot-updates YBB Support
+	// 704028617595682876
+	const channels = ["704028617595682876","1208092080744702023"] // comas // bot-updates YBB Support
 
-	channels.forEach((ch) => {
+	channels.forEach(async (ch) => {
+
+		const c = await client.channels.cache.get(ch);
 
 		const newEmbed = new EmbedBuilder()
-			.setTitle(`Thank you @${user.username} for voting!`)
-			.setDescription(`You have already voted **${data.Votes} times** \<3\<3`)
+			.setDescription(`## <a:tada:1210660276018618388> Thank you \`@${user.username}\` for voting! <a:tada:1210660276018618388>\nThey have already voted **${data.Votes} times** \<3\<3`)
+			.setColor(user.accentColor || "Blurple")
 			.setThumbnail(avatar)
 
-		ch.send({ embeds: [newEmbed] });
+		c.send({ embeds: [newEmbed] });
 	})
 
 	res.sendStatus(200);

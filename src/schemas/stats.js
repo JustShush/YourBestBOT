@@ -16,5 +16,14 @@ module.exports = model("stats", new Schema({
 	NMessages: reqNumber,
 	// number of command used
 	NUsedCmd: reqNumber,
+	// arr of all the commands
+	cmds: [{
+		name: reqString,
+		type: reqString,
+		uses: {
+			type: Number,
+			default: 0
+		}
+	}]
 
 }), "stats")

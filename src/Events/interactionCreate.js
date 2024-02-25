@@ -84,6 +84,17 @@ module.exports = {
 					})
 					console.log("something went wrong when trying tog get bot stats");
 				}
+				let i = data.cmds.findIndex(obj => obj.name == command.name);
+				if (i === -1) {
+					const obj = {
+						name: command.name,
+						type: command.type,
+						uses: 1
+					}
+					data.cmds.push(obj);
+				} else
+					data.cmds[i].uses = data.cmds[i].uses + 1;
+
 				data.NUsedCmd = data.NUsedCmd + 1;
 				await data.save();
 

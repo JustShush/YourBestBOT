@@ -41,7 +41,8 @@ module.exports = {
 		const prefix = "+";
 		const args = message.content.slice(prefix.length).trim().split(/ +/);
 		const command = args.shift().toLowerCase();
-		detect(message);
+		if (message.guild.id == "702545447750860931" || message.guild.id == "1054090158779150376")
+			detect(message);
 		if (command === 'steal') {
 			if (!(message.member.permissions.has(PermissionFlagsBits.ManageGuildExpressions))) return message.channel.send({ content: `You don't have the required permissions to run this command.` }).then((msg) => { setTimeout(() => { msg.delete(); }, 5 * 1000); })
 			stealEmoji(message, args);
@@ -51,7 +52,7 @@ module.exports = {
 
 async function detect(message) {
 	const messageLinkRegex = /https:\/\/discord\.com\/channels\/(\d+)\/(\d+)\/(\d+)/;
-	const match = message.content.match(messageLinkRegex);
+	const match = message.content.match(messageLinkRegex) || message.includes(message.content.match(messageLinkRegex));
 	if (match) {
 		const [, serverId, channelId, messageId] = match;
 
@@ -86,7 +87,6 @@ async function detect(message) {
 						obj.embeds.push(linkedMessage.embeds[0]);
 					} else
 						obj.embeds.push(authorEmbed);
-					console.log(obj.embeds);
 					//message.reply(`Content of the linked message: ${linkedMessage.content}`, { allowedMentions: { repliedUser: false } });
 					return message.reply(obj, { mention: false });
 				} else {

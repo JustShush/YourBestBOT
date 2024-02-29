@@ -55,10 +55,15 @@ module.exports = async (req, res, client) => {
 
 	channels.forEach(async (ch) => {
 
+		let currentTime = new Date();
+		let twelveHoursLater = new Date(currentTime.getTime() + (12 * 60 * 60 * 1000));
+		let unixTimestamp = Math.floor(twelveHoursLater.getTime() / 1000);
+		let formattedTimestamp = `<t:${unixTimestamp}:R>`;
+
 		const c = await client.channels.cache.get(ch);
 
 		const newEmbed = new EmbedBuilder()
-			.setDescription(`## <a:tada:1210660276018618388> Thank you \`@${user.username}\` for voting! <a:tada:1210660276018618388>\nThey have already voted **${data.Votes} times** \<3\<3`)
+			.setDescription(`## <a:tada:1210660276018618388> Thank you \`@${user.username}\` for voting! <a:tada:1210660276018618388>\nThey have already voted **${data.Votes} times** \<3\<3\nYou will be able to vote again ${formattedTimestamp} on [top.gg](https://yourbestbot.pt/vote)`)
 			.setColor(user.accentColor || "Blurple")
 			.setThumbnail(avatar)
 

@@ -1,6 +1,7 @@
 const color = require('colors');
 const { Events, ActivityType } = require("discord.js");
 const { connect } = require("mongoose");
+const cron = require('node-cron');
 const { allGuilds } = require('../functions/allguilds');
 const api = require("../api/app.js");
 
@@ -65,6 +66,44 @@ module.exports = {
 			setTimeout(upTimeFunction, 1000)
 		}
 		upTimeFunction()
+
+		const Stats = require("../schemas/stats.js");
+		const { config, pretty } = require("../../config.json");
+
+		async function monthlyUpdate() {
+			const currentDate = new Date();
+			console.log(currentDate, currentDate.getDate());
+			// 1st day of the month
+			if (currentDate.getDate() === 1) {
+				const data = await Stats.findOne();
+				if (!data) return console.log("couldn't find monthly data");
+				const diff = data.votes.current - data.votes.last;
+				const current = data.votes.current;
+				const total = data.votes.total;
+				data.votes.diff = diff;
+				data.votes.last = current;
+				data.votes.current = 0;
+				await data.save();
+				const channel = await client.channels.cache.get(config.logs[1].id);
+				await channel.send({ content: `${pretty.BlueSquare}**[MonthlyUpdate]:** Votes Total:${total} Diff:${diff} Last:${current}`});
+			}
+		}
+
+		async function weekUpdate() {
+			// This code will run only on the 1st day of the month
+			console.log('This code runs on the 1st day of every month.');
+			// Put your code here that you want to run on the 1st day of the month
+		}
+
+		async function dayUpdate() {
+			// This code will run only on the 1st day of the month
+			console.log('This code runs on the 1st day of every month.');
+			// Put your code here that you want to run on the 1st day of the month
+		}
+
+		cron.schedule('0 0 1 * *', monthlyUpdate);
+		cron.schedule('0 0 * * 0', weekUpdate);
+		cron.schedule('0 0 * * *', dayUpdate);
 
 		client.guilds.cache.forEach(guild => {
 			console.log(`${guild.name} | ${guild.id} | ${guild.memberCount} Members`.brightRed);

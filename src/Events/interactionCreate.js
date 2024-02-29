@@ -76,6 +76,26 @@ module.exports = {
 				});
 
 			try {
+				//if (randomNRange(1000)) AD(interaction, false);
+				await command.execute(interaction, client);
+				console.log(
+					`\nGuild: ${interaction.guild.name}\nChannel: "${interaction.channel.name}"\nCommand: "${command.name}"\nUser: ${interaction.user.tag}\nTimestamp: ${Date().slice(0, -42)}`.brightGreen
+				);
+				const channel = "964932900652986428"; // logs WEBEX
+				const check = client.channels.cache.get(channel);
+				if (check) {
+					const logEmbed = new EmbedBuilder()
+						.setDescription(
+							`Guild: ${interaction.guild.name}\nChannel: "${interaction.channel.name}"<#${interaction.channel.id}>\nUser: <@${interaction.user.id}>\nCommand: "${command.name}"`
+						)
+						.setTimestamp();
+
+					check.send({
+						embeds: [logEmbed],
+					});
+				}
+
+				// updating stats
 				const data = await Schema.findOne()
 				if (!data) {
 					data = await Schema.create({
@@ -113,25 +133,6 @@ module.exports = {
 				if (userData.Avatar != interaction.user.avatar) userData.Avatar = interaction.user.avatar;
 				userData.CmdCount = userData.CmdCount + 1;
 				await userData.save();
-
-				//if (randomNRange(1000)) AD(interaction, false);
-				await command.execute(interaction, client);
-				console.log(
-					`\nGuild: ${interaction.guild.name}\nChannel: "${interaction.channel.name}"\nCommand: "${command.name}"\nUser: ${interaction.user.tag}\nTimestamp: ${Date().slice(0, -42)}`.brightGreen
-				);
-				const channel = "964932900652986428"; // logs WEBEX
-				const check = client.channels.cache.get(channel);
-				if (check) {
-					const logEmbed = new EmbedBuilder()
-						.setDescription(
-							`Guild: ${interaction.guild.name}\nChannel: "${interaction.channel.name}"<#${interaction.channel.id}>\nUser: <@${interaction.user.id}>\nCommand: "${command.name}"`
-						)
-						.setTimestamp();
-
-					check.send({
-						embeds: [logEmbed],
-					});
-				}
 			} catch (error) {
 				console.error(error);
 				console.log(
@@ -153,9 +154,9 @@ module.exports = {
 			// Handle autocomplete interactions
 			const command = client.commands.get(interaction.commandName);
 
-			if (command && command.handleAutocomplete) {
+			if (command && command.autocomplete) {
 				try {
-					await command.handleAutocomplete(interaction, client);
+					await command.autocomplete(interaction, client);
 				} catch (error) {
 					console.error('Error handling autocomplete:', error);
 					// Optionally, you can send an error message to the user

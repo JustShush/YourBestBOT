@@ -27,7 +27,7 @@ function allGuilds(client) {
 		let invites = await guild.invites.fetch().catch(err => { console.log("couldnt fetch the invites in this server! | " + guild.name + " | " + guild.id); return; });
 		if (!invites) return;
 		// Check if the bot has any invites for this server
-		const botInvites = invites.filter((invite) => invite.inviter.id === client.user.id);
+		const botInvites = await invites.filter((invite) => invite.inviterId === client.user.id);
 		let invite;
 		if (botInvites.size <= 0) {
 			invite = await found.createInvite({

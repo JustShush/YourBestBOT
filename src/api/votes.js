@@ -1,5 +1,6 @@
 const { EmbedBuilder } = require('discord.js');
 const UserStats = require("../schemas/userStats.js");
+const Stats = require("../schemas/stats.js");
 
 /**
  * @typedef {import('express').Request} CustomRequest
@@ -32,28 +33,50 @@ module.exports = async (req, res, client) => {
 	if (!user) return console.log("There was a problem trying to fetch the Voting user.");
 	if (user.bot) return ; // its dumb but idk just in case
 
-	let data = await UserStats.findOne({ UserId: obj.user });
-	if (!data) {
-		data = await UserStats.create({
+	let userData = await UserStats.findOne({ UserId: obj.user });
+	if (!userData) {
+		userData = await UserStats.create({
 			User: user.username,
 			UserId: user.id,
 			Avatar: user.avatar,
 			Banner: user.banner || "",
 			Messages: 0,
 			CmdCount: 0,
-			Votes: 0,
+			Votes: {
+				count: 0,
+				last: Date.now()
+			},
 		})
 	}
-	data.Votes = data.Votes + 1;
-	await data.save().catch((err) => console.log("error idk", err));
+	userData.Votes.count += 1;
+	userData.Votes.last = Date.now();
+	await userData.save().catch((err) => console.log("error idk", err));
+	// General Stats
+	const stats = await Stats.findOne();
+	stats.votes.total = stats.votes.total + 1;
+	stats.votes.current = stats.votes.current + 1;
+	await stats.save();
 
 	let avatar = user.avatarURL();
 	if (user.avatar) avatar = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`
 
-	// 704028617595682876
-	const channels = ["704028617595682876","1208092080744702023"] // comas // bot-updates YBB Support
+	const channels = [ client.config.config.votes.webex.voteChannel,
+		client.config.config.votes.support.voteChannel
+	]; // comas // votes YBB Support
 
 	channels.forEach(async (ch) => {
+		const webex = client.guilds.cache.get(client.config.config.votes.support.guildId);
+		const sup = client.guilds.cache.get(client.config.config.votes.support.guildId);
+		if (webex) {
+			const member = webex.members.cache.get(user.id);
+			const role = webex.roles.cache.get(client.config.config.votes.webex.roleId);
+			await member.roles.add(role).catch((err) => console.log("there was an error trying to give voter role", err));
+		}
+		if (sup) {
+			const member = sup.members.cache.get(user.id);
+			const role = sup.roles.cache.get(client.config.config.votes.support.roleId);
+			await member.roles.add(role).catch((err) => console.log("there was an error trying to give voter role", err));
+		}
 
 		let currentTime = new Date();
 		let twelveHoursLater = new Date(currentTime.getTime() + (12 * 60 * 60 * 1000));
@@ -63,7 +86,7 @@ module.exports = async (req, res, client) => {
 		const c = await client.channels.cache.get(ch);
 
 		const newEmbed = new EmbedBuilder()
-			.setDescription(`## <a:tada:1210660276018618388> Thank you \`@${user.username}\` for voting! <a:tada:1210660276018618388>\nThey have already voted **${data.Votes} times** \<3\<3\nYou will be able to vote again ${formattedTimestamp} on [top.gg](https://yourbestbot.pt/vote)`)
+			.setDescription(`## <a:tada:1210660276018618388> Thank you \`@${user.username}\` for voting! <a:tada:1210660276018618388>\nThey have already voted **${userData.Votes} times** \<3\<3\nYou will be able to vote again ${formattedTimestamp} on [top.gg](https://yourbestbot.pt/vote)`)
 			.setColor(user.accentColor || "Blurple")
 			.setThumbnail(avatar)
 

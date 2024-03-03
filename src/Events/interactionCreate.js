@@ -30,7 +30,8 @@ module.exports = {
 				console.log(
 					`\nUser: ${interaction.user.globalName}\n\nCommand: "${command.name}"\nUser: ${interaction.user.tag}\nTimestamp: ${Date().slice(0, -42)}`.brightGreen
 				);
-				const channel = "964932900652986428"; // logs WEBEX
+				//const channel = "964932900652986428"; // logs WEBEX
+				const channel = client.config.config.webex.logs; // logs WEBEX
 				const check = client.channels.cache.get(channel);
 				if (check) {
 					const logEmbed = new EmbedBuilder()
@@ -100,9 +101,23 @@ module.exports = {
 				if (!data) {
 					data = await Schema.create({
 						NMessages: 0,
-						NUsedCmd: 1
+						NUsedCmd: 1,
+						servers: {
+							total: client.guilds.cache.size,
+							current: client.guilds.cache.size,
+							last: 0,
+							diff: client.guilds.cache.size
+						}
 					})
 					console.log("something went wrong when trying tog get bot stats");
+				}
+				if (!data.servers) {
+					data.servers = {
+						total: client.guilds.cache.size,
+						current: client.guilds.cache.size,
+						last: 0,
+						diff: client.guilds.cache.size
+					}
 				}
 				let i = data.cmds.findIndex(obj => obj.name == command.name);
 				if (i === -1) {

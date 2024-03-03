@@ -18,6 +18,9 @@ module.exports = model("UserStats", new Schema({
 	Banner: String,
 	Messages: reqNumber,
 	CmdCount: reqNumber,
-	Votes: reqNumber
+	Votes: {
+		count: reqNumber,
+		last: reqNumber
+	}
 
 }), "UserStats")

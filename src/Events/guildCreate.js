@@ -1,8 +1,25 @@
 const { EmbedBuilder, ChannelType } = require("discord.js");
+const Stats = require("../schemas/stats.js");
 
 module.exports = {
 	name: "guildCreate",
 	async execute(guild, client) {
+
+		let data = await Stats.findOne();
+		if (!data.servers) {
+			data.servers = {
+				total: client.guilds.cache.size,
+				current: client.guilds.cache.size,
+				last: 0,
+				diff: client.guilds.cache.size
+			}
+		} else {
+			data.servers.total = client.guilds.cache.size;
+			data.servers.current = data.servers.current + 1;
+			data.servers.diff = data.servers.current - last;
+		}
+		await data.save();
+
 		//this sends a message to the first channel that the bot finds
 		/* let found = guild.channels.cache.find((channel) => channel.type === ChannelType.GuildText && channel.permissionsFor(guild.members.me).has('SendMessages'))
 		if(found) {

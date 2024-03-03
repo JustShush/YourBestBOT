@@ -4,11 +4,12 @@ const { connect } = require("mongoose");
 const cron = require('node-cron');
 const { allGuilds } = require('../functions/allguilds');
 const api = require("../api/app.js");
+const UserStats = require("../schemas/userStats.js");
 
 module.exports = {
 	name: Events.ClientReady,
 	once: true,
-	execute(client) {
+	async execute(client) {
 
 		const options = [{
 			type: ActivityType.Watching,
@@ -77,6 +78,8 @@ module.exports = {
 			if (currentDate.getDate() === 1) {
 				const data = await Stats.findOne();
 				if (!data) return console.log("couldn't find monthly data");
+				if (data.votes.total < data.votes.current)
+					data.votes.total = data.votes.current;
 				const diff = data.votes.current - data.votes.last;
 				const current = data.votes.current;
 				const total = data.votes.total;
@@ -85,7 +88,7 @@ module.exports = {
 				data.votes.current = 0;
 				await data.save();
 				const channel = await client.channels.cache.get(config.logs[1].id);
-				await channel.send({ content: `${pretty.BlueSquare}**[MonthlyUpdate]:** Votes Total:${total} Diff:${diff} Last:${current}`});
+				await channel.send({ content: `${pretty.BlueSquare} **[MonthlyUpdate]:** Votes Total:${total} Diff:${diff} Last:${current}`});
 			}
 		}
 
@@ -105,6 +108,24 @@ module.exports = {
 		cron.schedule('0 0 * * 0', weekUpdate);
 		cron.schedule('0 0 * * *', dayUpdate);
 
+		/* const users = await UserStats.find() // get all the users
+		users.forEach(async (u) => {
+			if (((new Date(u.Votes.last).getTime() + 1000) - Date.now()) < 1) {
+				const webex = client.guilds.cache.get(client.config.config.votes.webex.guildId);
+				const sup = client.guilds.cache.get(client.config.config.votes.support.guildId);
+				if (webex) {
+					const member = webex.members.cache.get(u.UserId);
+					const role = webex.roles.cache.get(client.config.config.votes.webex.roleId);
+					await member.roles.remove(role).catch((err) => console.log("there was an error trying to remove voter role", err));
+				}
+				if (sup) {
+					const member = webex.members.cache.get(u.UserId);
+					const role = webex.roles.cache.get(client.config.config.votes.support.roleId);
+					await member.roles.remove(role).catch((err) => console.log("there was an error trying to remove voter role", err));
+				}
+			}
+		}) */
+
 		client.guilds.cache.forEach(guild => {
 			console.log(`${guild.name} | ${guild.id} | ${guild.memberCount} Members`.brightRed);
 		})
@@ -113,7 +134,7 @@ module.exports = {
 
 		connect(client.config.MONGO_URI, {}).then(() => console.log("Connected to mongoDB".brightGreen));
 
-		console.log(`${client.user.username} is on-line!\nIn ${client.guilds.cache.size} Servers!`.brightMagenta.bold);
+		console.log(`${client.user.username} is online!\nIn ${client.guilds.cache.size} Servers!`.brightMagenta.bold);
 		api.load(client);
 	}
 }

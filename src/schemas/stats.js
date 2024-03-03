@@ -35,6 +35,13 @@ module.exports = model("stats", new Schema({
 		current: reqNumber,
 		last: reqNumber,
 		diff: reqNumber
+	},
+	// number of servers stats
+	servers: {
+		total: reqNumber,
+		current: reqNumber,
+		last: reqNumber,
+		diff: reqNumber
 	}
 
 }), "stats")

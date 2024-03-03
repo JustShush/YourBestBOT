@@ -19,6 +19,14 @@ module.exports = {
 			})
 			console.log("something went wrong when trying tog get bot stats");
 		}
+		if (!data.servers) {
+			data.servers = {
+				total: client.guilds.cache.size,
+				current: client.guilds.cache.size,
+				last: 0,
+				diff: client.guilds.cache.size
+			}
+		}
 		data.NMessages = data.NMessages + 1;
 		await data.save();
 
@@ -31,7 +39,9 @@ module.exports = {
 				Banner: message.author.banner || "",
 				Messages: 0,
 				CmdCount: 0,
-				Votes: 0,
+				Votes: {
+					count: 0
+				},
 			})
 		}
 		if (userData.Avatar != message.author.avatar) userData.Avatar = message.author.avatar;
@@ -52,7 +62,7 @@ module.exports = {
 
 async function detect(message) {
 	const messageLinkRegex = /https:\/\/discord\.com\/channels\/(\d+)\/(\d+)\/(\d+)/;
-	const match = message.content.match(messageLinkRegex) || message.includes(message.content.match(messageLinkRegex));
+	const match = message.content.match(messageLinkRegex);
 	if (match) {
 		const [, serverId, channelId, messageId] = match;
 

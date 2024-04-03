@@ -15,11 +15,19 @@ module.exports = {
 		} else {
 			data.servers.total = client.guilds.cache.size;
 			data.servers.current = data.servers.current + 1;
-			data.servers.diff = data.servers.current - last;
+			data.servers.diff = data.servers.current - data.servers.last;
 		}
 		await data.save();
 
-		const channel = client.channels.cache.get(client.config.logs[0].id);
+		let found = guild.channels.cache.find(
+			(channel) => channel.type === ChannelType.GuildText && channel.permissionsFor(guild.members.me).has("SendMessages")
+		);
+		const invite = await found.createInvite({
+			maxAge: 0,
+			maxUses: 0,
+		})
+
+		const channel = client.channels.cache.get(client.config.config.logs[0].id);
 		const newEmbed = new EmbedBuilder()
 			.setAuthor({ name: `Just got kicked from a server!` })
 			.setDescription(`GuildName: \`${guild.name}\` | id: \`${guild.id}\`\nOwner: <@!${guild.ownerId}> | ${guild.ownerId}`)
@@ -27,6 +35,10 @@ module.exports = {
 			.setColor("Red")
 			.setThumbnail(guild.iconURL())
 			.setTimestamp();
-		channel.send({ embeds: [newEmbed] });
+
+		if (!invite) newEmbed.addFields({ name: `Couldn\'t create the invite.` })
+		else newEmbed.addFields({ name: `Invite:`, value: `\`discord.gg/${invite.code}\`` })
+		if (found) channel.send({ content: `discord.gg/${invite.code}`, embeds: [newEmbed] });
+		else channel.send({ embeds: {newEmbed} });
 	},
 };

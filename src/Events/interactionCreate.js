@@ -8,10 +8,25 @@ module.exports = {
 	 *  @param {ChatInputCommandInteraction} interaction
 	 */
 	async execute(interaction, client) {
-		if (!interaction.isCommand()) return;
+		//if (!interaction.isCommand()) return;
 
+		if (interaction.isAutocomplete()) {
+			// Handle autocomplete interactions
+			console.log("in autocomplete!");
+			const command = client.commands.get(interaction.commandName);
+			if (!command) return;
+			
+			if (command && command.autocomplete) {
+				console.log("in autocomplete!!!!!!!!!!!!!!!!");
+				try {
+					await command.autocomplete(interaction, client);
+				} catch (error) {
+					console.error('Error handling autocomplete:', error);
+					// Optionally, you can send an error message to the user
+				}
+			}
 		// handle dm commands
-		if (interaction.isChatInputCommand() && !interaction.guildId) {
+		} else if (interaction.isChatInputCommand() && !interaction.guildId) {
 			const command = client.commands.get(interaction.commandName);
 			if (!command)
 				return interaction.reply({
@@ -30,17 +45,16 @@ module.exports = {
 				console.log(
 					`\nUser: ${interaction.user.globalName}\n\nCommand: "${command.name}"\nUser: ${interaction.user.tag}\nTimestamp: ${Date().slice(0, -42)}`.brightGreen
 				);
-				//const channel = "964932900652986428"; // logs WEBEX
-				const channel = client.config.config.webex.logs; // logs WEBEX
-				const check = client.channels.cache.get(channel);
-				if (check) {
+				const webhookId = client.config.config.logs[2].webhookId; // logs WEBEX
+				const webhook = await client.fetchWebhook(webhookId);
+				if (webhook) {
 					const logEmbed = new EmbedBuilder()
 						.setDescription(
 							`User: ${interaction.user.globalName}\nUser: <@${interaction.user.id}>\nCommand: "${command.name}"`
 						)
 						.setTimestamp();
 
-					check.send({
+					webhook.send({
 						embeds: [logEmbed],
 					});
 				}
@@ -82,16 +96,16 @@ module.exports = {
 				console.log(
 					`\nGuild: ${interaction.guild.name}\nChannel: "${interaction.channel.name}"\nCommand: "${command.name}"\nUser: ${interaction.user.tag}\nTimestamp: ${Date().slice(0, -42)}`.brightGreen
 				);
-				const channel = "964932900652986428"; // logs WEBEX
-				const check = client.channels.cache.get(channel);
-				if (check) {
+				const webhookId = client.config.config.logs[2].webhookId; // logs WEBEX
+				const webhook = await client.fetchWebhook(webhookId);
+				if (webhook) {
 					const logEmbed = new EmbedBuilder()
 						.setDescription(
 							`Guild: ${interaction.guild.name}\nChannel: "${interaction.channel.name}"<#${interaction.channel.id}>\nUser: <@${interaction.user.id}>\nCommand: "${command.name}"`
 						)
 						.setTimestamp();
 
-					check.send({
+					webhook.send({
 						embeds: [logEmbed],
 					});
 				}
@@ -142,7 +156,10 @@ module.exports = {
 						Banner: interaction.user.banner || "",
 						Messages: 0,
 						CmdCount: 0,
-						Votes: 0,
+						Votes: {
+							count: 0,
+							last: null
+						},
 					})
 				}
 				if (userData.Avatar != interaction.user.avatar) userData.Avatar = interaction.user.avatar;
@@ -163,18 +180,6 @@ module.exports = {
 					await interaction.followUp({ embeds: [errorEmbed], ephemeral: true });
 				} else {
 					await interaction.reply({ embeds: [errorEmbed], ephemeral: true });
-				}
-			}
-		} else if (interaction.isAutocomplete()) {
-			// Handle autocomplete interactions
-			const command = client.commands.get(interaction.commandName);
-
-			if (command && command.autocomplete) {
-				try {
-					await command.autocomplete(interaction, client);
-				} catch (error) {
-					console.error('Error handling autocomplete:', error);
-					// Optionally, you can send an error message to the user
 				}
 			}
 		}

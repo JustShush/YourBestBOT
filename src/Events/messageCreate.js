@@ -56,9 +56,37 @@ module.exports = {
 		if (command === 'steal') {
 			if (!(message.member.permissions.has(PermissionFlagsBits.ManageGuildExpressions))) return message.channel.send({ content: `You don't have the required permissions to run this command.` }).then((msg) => { setTimeout(() => { msg.delete(); }, 5 * 1000); })
 			stealEmoji(message, args);
+		} else if (command == 'eval') {
+			myEval(message, args);
 		}
 	},
 };
+
+const { inspect } = require('util')
+async function myEval(message, args) {
+	if(message.author.id !== '453944662093332490') return message.channel.send("sorry, this command is only for the developer")
+
+	const command = args.join(" ");
+	if(!command) return message.channel.send("you must write a command ")
+
+	let words = ["token", "destroy", "config"]
+	if(words.some(word => message.content.toLowerCase().includes(word))){
+		return message.channel.send("Those words are blacklisted!")
+	}
+
+	try {
+		const evaled = await eval(command)
+		message.channel.send({ content: `\`\`\`js\n${inspect(evaled, { depth: 3})}\`\`\``});
+
+	} catch (error) {
+		const embedfailure = new EmbedBuilder()
+		.setColor("#FF0000")
+		.addFields({ name: `Entrance`, value: `\`\`\`js\n${command}\`\`\``})
+		.addFields({ name: `Error`, value: `\`\`\`js\n${error}\`\`\` `})
+
+		message.channel.send({ embeds: [embedfailure] })
+	}
+}
 
 async function detect(message) {
 	const messageLinkRegex = /https:\/\/discord\.com\/channels\/(\d+)\/(\d+)\/(\d+)/;

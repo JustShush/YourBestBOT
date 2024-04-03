@@ -1,5 +1,6 @@
 const color = require('colors');
-const { SlashCommandBuilder, PermissionFlagsBits, ChatInputCommandInteraction, EmbedBuilder } = require("discord.js");
+const { SlashCommandBuilder, PermissionFlagsBits, ChatInputCommandInteraction, EmbedBuilder, WebhookClient } = require("discord.js");
+const fs = require("fs");
 const db = require("../../schemas/log");
 
 module.exports = {
@@ -12,7 +13,7 @@ module.exports = {
 		.setName("setup-logs")
 		.setDescription("Set the channel log.")
 		.setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild, PermissionFlagsBits.ManageChannels)
-		.addStringOption(options => options
+		.addChannelOption(options => options
 			.setName("channel")
 			.setDescription("Select the channel log.")
 			.setRequired(true)
@@ -32,7 +33,7 @@ module.exports = {
 
 		const { options, guild, member } = interaction;
 
-		const Channel = options.getString("channel");
+		const Channel = options.getChannel("channel");
 		//console.log("Channel: " + Channel + "ChannelId: " + ChannelId);
 
 		const errorsArray = [];
@@ -40,8 +41,11 @@ module.exports = {
 			.setAuthor({ name: "Could not timeout member due to:" })
 			.setColor("Red")
 
-		if (!interaction.guild.channels.cache.get(Channel))
+		if (!interaction.guild.channels.cache.get(Channel.id))
 			errorsArray.push("That Channel is not in this guild!");
+
+		if (!interaction.guild.members.me.permissions.has("ManageWebhooks"))
+			errorsArray.push('I do not have permission to manage webhooks in this channel.');
 
 		if (errorsArray.length) return interaction.reply({
 			embeds: [errorsEmbed.setDescription(errorsArray.join("\n"))],
@@ -54,26 +58,45 @@ module.exports = {
 			UserTag: interaction.user.tag,
 		});
 
+		const webhooks = await interaction.channel.fetchWebhooks();
+		// Check if a webhook already exists for the channel
+		let webhook = webhooks.find(webhook => webhook.owner.id === interaction.client.user.id);
+
+		if (!webhook)
+			webhook = await interaction.channel.createWebhook({
+				name: "YourBestBot Logging",
+				reason: "New webhook to log stuff <3"
+			});
+
+		//console.log(webhook, webhook.token);
+
 		if (!data)
 			data = await db.create({
 				GuildName: interaction.guild.name,
 				Guild: guild.id,
-				User: member.id,
+				UserId: member.id,
 				UserTag: interaction.user.tag,
-				Channel: Channel
+				General: {
+					id: Channel.id,
+					webhookId: webhook.id
+				}
 			});
-		else
+		else {
+			/*
+			// in the other side fetch the webhook so i can send the msg
+			const webhook = await client.fetchWebhook(webhookId);
+			await webhook.send({ content: "test" }); */
+			await client.fetchWebhooks(data.General.webhookId).then(async (wh) => { await wh.delete();} ).catch(console.error);
+			data.General.id = Channel.id;
+			data.General.webhookId = webhook.id;
 			await data.save();
+		}
 
 		const newEmbed = new EmbedBuilder()
 			.setColor(resColor)
 			.setDescription(`✅ Logs Channel has been setup.\nChannel: \`${Channel}\``)
 			.setTimestamp()
 
-		return interaction.reply({
-			embeds: [newEmbed],
-			ephemeral: true
-		});
-
+		return interaction.reply({ embeds: [newEmbed], ephemeral: true });
 	}
 }

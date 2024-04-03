@@ -48,6 +48,7 @@ module.exports = async (req, res, client) => {
 			},
 		})
 	}
+	if (!userData.Votes) userData.Votes = {};
 	userData.Votes.count += 1;
 	userData.Votes.last = Date.now();
 	await userData.save().catch((err) => console.log("error idk", err));
@@ -86,7 +87,7 @@ module.exports = async (req, res, client) => {
 		const c = await client.channels.cache.get(ch);
 
 		const newEmbed = new EmbedBuilder()
-			.setDescription(`## <a:tada:1210660276018618388> Thank you \`@${user.username}\` for voting! <a:tada:1210660276018618388>\nThey have already voted **${userData.Votes} times** \<3\<3\nYou will be able to vote again ${formattedTimestamp} on [top.gg](https://yourbestbot.pt/vote)`)
+			.setDescription(`## <a:tada:1210660276018618388> Thank you \`@${user.username}\` for voting! <a:tada:1210660276018618388>\nThey have already voted **${userData.Votes.count} times** \<3\<3\nYou will be able to vote again ${formattedTimestamp} on [top.gg](https://yourbestbot.pt/vote)`)
 			.setColor(user.accentColor || "Blurple")
 			.setThumbnail(avatar)
 

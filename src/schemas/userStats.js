@@ -14,7 +14,7 @@ const reqNumber = {
 module.exports = model("UserStats", new Schema({
 	User: reqString,
 	UserId: reqNumber,
-	Avatar: reqString,
+	Avatar: String,
 	Banner: String,
 	Messages: reqNumber,
 	CmdCount: reqNumber,

@@ -4,25 +4,20 @@ const db = require("../../schemas/warn");
 const logdb = require("../../schemas/log");
 
 module.exports = {
-	name: "warn",
-	description: "Warn a member.",
+	name: "warnings",
+	description: "Get the warnings for a user",
 	permission: "`MODERATE_MEMBERS`",
-	usage: "`/warn [member], /warn [member] [reason]`",
+	usage: "`/warnings [member]`",
 	type: "Moderation",
 	data: new SlashCommandBuilder()
-		.setName("warn")
-		.setDescription("Warn a member.")
+		.setName("warnings")
+		.setDescription("Get the warnings for a user")
 		.setDefaultMemberPermissions(PermissionFlagsBits.ModerateMembers)
 		.setDMPermission(false)
 		.addUserOption(options => options
-			.setName("target")
-			.setDescription("Select the target member.")
+			.setName("user")
+			.setDescription("User to get the warning for")
 			.setRequired(true)
-		)
-		.addStringOption(options => options
-			.setName("reason")
-			.setDescription("Provide a reson for this warn.")
-			.setMaxLength(512)
 		)
 		.setDMPermission(false)
 		.setNSFW(false),
@@ -39,8 +34,8 @@ module.exports = {
 
 		const { options, guild, member } = interaction;
 
-		const target = options.getMember("target");
-		const User = options.getUser("target");
+		const target = options.getMember("user");
+		const User = options.getUser("user");
 		let reason = options.getString("reason");
 
 		if (!reason) reason = "No reason given.";
@@ -66,13 +61,6 @@ module.exports = {
 			ephemeral: true
 		})
 
-		const warnObj = {
-			IssuerID: member.id,
-			IssuerTag: member.user.tag,
-			Reason: reason,
-			Date: Math.floor(new Date().getTime() / 1000)
-		}
-
 		let userData = await db.findOne({
 			Guild: guild.id,
 			User: target.id
@@ -84,43 +72,20 @@ module.exports = {
 				Guild: guild.id,
 				User: target.id,
 				UserTag: target.user.tag,
-				Warns: [warnObj]
+				Warns: []
 			});
-		else
-			userData.Warns.push(warnObj) && await userData.save();
+		else {
+			const nbr = userData.Warns.length;
+			if (nbr <= 0) return interaction.reply({ content: "There are no warnings for this user.", ephemeral: true });
+			const newEmbed = new EmbedBuilder()
+				.setColor("Red")
+				.setAuthor({ name: `${nbr} for ${User.username} (${User.id})`, iconURL: User.displayAvatarURL()})
+			userData.Warns.forEach((w) => {
+				newEmbed.addFields({ name: `**Moderator: ${w.IssuerTag}**`, value: `${w.Reason} - <t:${w.Date}:R>`})
+			})
 
-		const newEmbed = new EmbedBuilder()
-			.setColor(resColor)
-			.setDescription(`By: ${interaction.member}\nReason: \`\`\`${reason}\`\`\``)
-			.setTimestamp()
-
-		try {
-			await User.send({
-				content: `${target}`,
-				embeds: [newEmbed.setTitle(`You have been warned on: \`${interaction.guild.name}\``)]
-			});
-		} catch (err) {
-			console.log(err);
+			interaction.reply({ embeds: [newEmbed] });
 		}
-
-		const logchannel = await logdb.findOne({ Guild: guild.id });
-		if (logchannel) {
-			// get the webhook from just the log channel
-			const webhook = await client.fetchWebhook(logchannel.General.webhookId);
-			if (webhook) {
-				const logEmbed = new EmbedBuilder()
-					.setTitle(`has been warned.`)
-					.setDescription(`By: ${interaction.member}\nReason: \`\`\`${reason}\`\`\``)
-					.setTimestamp()
-
-				webhook.send({ content: `${target}`, embeds: [logEmbed] });
-			}
-		}
-
-		return interaction.reply({
-			content: `${target}`,
-			embeds: [newEmbed.setTitle("You have been Warned!")]
-		});
 
 	}
 }

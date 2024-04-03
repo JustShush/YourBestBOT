@@ -29,7 +29,7 @@ module.exports = {
 			status: "idle"
 		}];
 
-		let i = 0;
+		let i = -1;
 		setInterval(() => {
 			i++;
 			if (!options[i]) i = 0;
@@ -110,7 +110,7 @@ module.exports = {
 
 		/* const users = await UserStats.find() // get all the users
 		users.forEach(async (u) => {
-			if (((new Date(u.Votes.last).getTime() + 1000) - Date.now()) < 1) {
+			if (((new Date(u.votes.last).getTime() + 1000) - Date.now()) < 1) {
 				const webex = client.guilds.cache.get(client.config.config.votes.webex.guildId);
 				const sup = client.guilds.cache.get(client.config.config.votes.support.guildId);
 				if (webex) {

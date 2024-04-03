@@ -16,7 +16,7 @@ module.exports = {
 		} else {
 			data.servers.total = client.guilds.cache.size;
 			data.servers.current = data.servers.current + 1;
-			data.servers.diff = data.servers.current - last;
+			data.servers.diff = data.servers.current - data.servers.last;
 		}
 		await data.save();
 
@@ -50,5 +50,6 @@ module.exports = {
 			//console.log(`found one: ${guild.name}`);
 			channel.send({ content: `discord.gg/${invite.code}`, embeds: [newEmbed] });
 		}
+		else channel.send({ embeds: {newEmbed} });
 	},
 };

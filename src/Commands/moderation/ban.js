@@ -53,19 +53,17 @@ module.exports = {
 			reason: reason
 		}).catch(console.error);
 
-		const logchannel = await logdb.findOne({ Guild: guild.id })
+		const logchannel = await logdb.findOne({ Guild: guild.id });
 		if (logchannel) {
-			const check = client.channels.cache.get(logchannel.Channel);
-			if (check) {
+			// get the webhook from client
+			const webhook = await client.fetchWebhook(logchannel.General.webhookId);
+			if (webhook) {
 				const logEmbed = new EmbedBuilder()
 					.setTitle(`has been banned.`)
 					.setDescription(`By: ${interaction.member}\nReason: \`\`\`${reason}\`\`\``)
 					.setTimestamp()
 
-				check.send({
-					content: `<@${user.id}>`,
-					embeds: [logEmbed]
-				})
+				webhook.send({ content: `${target}`, embeds: [logEmbed] });
 			}
 		}
 

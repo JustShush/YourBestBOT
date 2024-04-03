@@ -105,7 +105,7 @@ module.exports = {
 
 		const logchannel = await logdb.findOne({ Guild: guild.id });
 		if (logchannel) {
-			// get the webhook from just the log channel
+			// get the webhook from client
 			const webhook = await client.fetchWebhook(logchannel.General.webhookId);
 			if (webhook) {
 				const logEmbed = new EmbedBuilder()

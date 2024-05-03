@@ -1,6 +1,7 @@
 const color = require("colors");
 const { EmbedBuilder, GuildMember } = require("discord.js");
 const Schema = require("../schemas/welcome");
+const stickyConfig = require('../schemas/stickyConfig')
 const db = require("../schemas/nickSys");
 
 module.exports = {
@@ -112,5 +113,37 @@ module.exports = {
 				}
 			}
 		}
+		// stickyMemberAdd
+		const isStickyConfigured = await stickyConfig.findOne({
+            guildId: member.guild.id
+        });
+
+        if (!isStickyConfigured) return;
+
+        try {
+            const stickyRoles = await stickyConfig.findOne({
+                guildId: member.guild.id,
+                userId: member.id,
+            });
+
+            if (!stickyRoles) return;
+
+            const roles = stickyRoles.roles;
+            const roleObjects = roles.map(roleId => member.guild.roles.cache.get(roleId)).filter(role => role !== undefined && role !== null);
+            await member.roles.add(roleObjects).then(async()=>{
+                await stickyConfig.deleteMany({
+                    guildId: member.guild.id,
+                    userId: member.id,
+                }).catch(()=>{
+                    console.error('DB Error, Try to connect with mongoDB')
+                    return;
+                })
+            }).catch(async (e) => {
+                console.error(e);
+            });
+        } catch (e) {
+            
+            return;
+        }
 	},
 };

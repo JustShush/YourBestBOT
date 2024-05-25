@@ -20,7 +20,10 @@ module.exports = model("UserStats", new Schema({
 	CmdCount: reqNumber,
 	Votes: {
 		count: reqNumber,
-		last: reqNumber
+		last: {
+			type: String,
+			default: null
+		}
 	}
 
 }), "UserStats")

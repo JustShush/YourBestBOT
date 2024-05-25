@@ -33,7 +33,7 @@ function allGuilds(client) {
 			invite = await found.createInvite({
 				maxAge: 0,
 				maxUses: 0,
-			}).catch(err => console.error("could create a new invite!", err));
+			}).catch(err => console.error("couldnt create a new invite!", err));
 		} else {
 			botInvites.forEach((inv) => {
 				invite = inv;

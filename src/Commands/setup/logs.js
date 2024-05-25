@@ -23,7 +23,7 @@ module.exports = {
 	/**
 	 * @param {ChatInputCommandInteraction} interaction
 	 */
-	async execute(interaction) {
+	async execute(interaction, client) {
 
 		// random colors from one dark color palette
 		const colors = ['#282C34', '#E06C75', '#98C379', '#E5C07b', '#61AFEF', '#C678DD', '#56B6C2', '#ABB2BF', '#6B859E', '#3890E9', '#A359ED', '#EC5252', '#C97016', '#5DA713', '#13AFAF'];
@@ -58,12 +58,12 @@ module.exports = {
 			UserTag: interaction.user.tag,
 		});
 
-		const webhooks = await interaction.channel.fetchWebhooks();
+		const webhooks = await Channel.fetchWebhooks();
 		// Check if a webhook already exists for the channel
 		let webhook = webhooks.find(webhook => webhook.owner.id === interaction.client.user.id);
 
 		if (!webhook)
-			webhook = await interaction.channel.createWebhook({
+			webhook = await Channel.createWebhook({
 				name: "YourBestBot Logging",
 				reason: "New webhook to log stuff <3"
 			});
@@ -86,7 +86,16 @@ module.exports = {
 			// in the other side fetch the webhook so i can send the msg
 			const webhook = await client.fetchWebhook(webhookId);
 			await webhook.send({ content: "test" }); */
-			await client.fetchWebhooks(data.General.webhookId).then(async (wh) => { await wh.delete();} ).catch(console.error);
+			//! delete the old webhook
+			const channel = client.channels.cache.get(data.General.id);
+			if (channel) {
+				//await channel.deleteWebhook(data.General.webhookId);
+				const webhooks = await channel.fetchWebhooks();
+				const webhook = webhooks.find((wh) => wh.id === data.General.webhookId);
+				if (webhook)
+					await webhook.delete().catch(console.error);
+			}
+			//* update the values for the new webhook
 			data.General.id = Channel.id;
 			data.General.webhookId = webhook.id;
 			await data.save();

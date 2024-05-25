@@ -13,7 +13,7 @@ module.exports = {
 
 		const options = [{
 			type: ActivityType.Watching,
-			text: `Over ${client.guilds.cache.size} servers! 🙂`,
+			text: `Over {servers} servers! 🙂`,
 			status: "online",
 		}, {
 			type: ActivityType.Listening,
@@ -21,7 +21,7 @@ module.exports = {
 			status: "online"
 		}, {
 			type: ActivityType.Watching,
-			text: `Over ${client.guilds.cache.reduce((a, b) => a + b.memberCount, 0)} Users!`,
+			text: `Over {users} Users!`,
 			status: "online"
 		}, {
 			type: ActivityType.Listening,
@@ -35,7 +35,7 @@ module.exports = {
 			if (!options[i]) i = 0;
 			client.user.setPresence({
 				activities: [{
-					name: options[i].text,
+					name: options[i].text.replaceAll('{users}', client.guilds.cache.reduce((a, b) => a + b.memberCount, 0)).replaceAll('{servers}', client.guilds.cache.size),
 					type: options[i].type,
 				}],
 				status: options[i].status,
@@ -78,6 +78,7 @@ module.exports = {
 			if (currentDate.getDate() === 1) {
 				const data = await Stats.findOne();
 				if (!data) return console.log("couldn't find monthly data");
+				//* Votes
 				if (data.votes.total < data.votes.current)
 					data.votes.total = data.votes.current;
 				const diff = data.votes.current - data.votes.last;
@@ -86,16 +87,36 @@ module.exports = {
 				data.votes.diff = diff;
 				data.votes.last = current;
 				data.votes.current = 0;
+
+				//* Servers
+				const Sdiff = data.servers.current - data.servers.last;
+				const Scurrent = data.servers.current;
+				const Stotal = data.servers.total;
+				data.servers.diff = Sdiff;
+				data.servers.last = Scurrent;
+				data.servers.current = 0;
 				await data.save();
 				const channel = await client.channels.cache.get(config.logs[1].id);
-				await channel.send({ content: `${pretty.BlueSquare} **[MonthlyUpdate]:** Votes Total:${total} Diff:${diff} Last:${current}`});
+				await channel.send({ content: `${pretty.BlueSquare} **[MonthlyUpdate]:** Votes Total:${total} Diff:${diff} Last:${current}\nServers Total:${Stotal} Diff:${Sdiff} Last: ${Scurrent}` });
 			}
 		}
 
 		async function weekUpdate() {
-			// This code will run only on the 1st day of the month
-			console.log('This code runs on the 1st day of every month.');
-			// Put your code here that you want to run on the 1st day of the month
+			const data = await Stats.findOne();
+			if (!data) return console.log("couldn't find monthly data");
+			//* Votes
+			if (data.votes.total < data.votes.current)
+				data.votes.total = data.votes.current;
+			const diff = data.votes.current - data.votes.last;
+			const current = data.votes.current;
+			const total = data.votes.total;
+
+			//* Servers
+			const Sdiff = data.servers.current - data.servers.last;
+			const Scurrent = data.servers.current;
+			const Stotal = data.servers.total;
+			const channel = await client.channels.cache.get(config.logs[1].id);
+			await channel.send({ content: `${pretty.BlueSquare} **[WeeklyUpdate]:** Votes Total:${total} Diff:${diff} Last:${current}\nServers Total:${Stotal} Diff:${Sdiff} Last: ${Scurrent}` });
 		}
 
 		async function dayUpdate() {
@@ -106,7 +127,7 @@ module.exports = {
 
 		cron.schedule('0 0 1 * *', monthlyUpdate);
 		cron.schedule('0 0 * * 0', weekUpdate);
-		cron.schedule('0 0 * * *', dayUpdate);
+		//cron.schedule('0 0 * * *', dayUpdate);
 
 		/* const users = await UserStats.find() // get all the users
 		users.forEach(async (u) => {

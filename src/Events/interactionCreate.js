@@ -12,12 +12,10 @@ module.exports = {
 
 		if (interaction.isAutocomplete()) {
 			// Handle autocomplete interactions
-			console.log("in autocomplete!");
 			const command = client.commands.get(interaction.commandName);
 			if (!command) return;
 			
 			if (command && command.autocomplete) {
-				console.log("in autocomplete!!!!!!!!!!!!!!!!");
 				try {
 					await command.autocomplete(interaction, client);
 				} catch (error) {

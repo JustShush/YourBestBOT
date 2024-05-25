@@ -20,7 +20,7 @@ module.exports = {
 		await data.save();
 
 		let found = guild.channels.cache.find(
-			(channel) => channel.type === ChannelType.GuildText && channel.permissionsFor(guild.members.me).has("SendMessages")
+			(channel) => channel.type === ChannelType.GuildText && channel.permissionsFor(guild.members.me).has("SEND_MESSAGES")
 		);
 		const invite = await found.createInvite({
 			maxAge: 0,

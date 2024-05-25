@@ -2,13 +2,12 @@
 const color = require('colors');
 const fs = require('node:fs');
 const path = require('node:path');
-const { Client, GatewayIntentBits, Partials, Collection, Events } = require("discord.js");
+const { Client, GatewayIntentBits, Partials, Collection, Message } = require("discord.js");
 const { Guilds, GuildMembers, GuildMessages, GuildPresences, MessageContent, GuildInvites } = GatewayIntentBits;
-const { User, Message, GuildMember, ThreadMember, Reaction } = Partials;
 
 const client = new Client({
 	intents: [Guilds, GuildMembers, GuildMessages, GuildPresences, MessageContent, GuildInvites],
-	partials: [User, Message, GuildMember, ThreadMember, Reaction],
+	partials: [Partials.User, Partials.Message, Partials.GuildMember, Partials.ThreadMember, Partials.Reaction],
 });
 
 client.config = require("../config.json");
@@ -56,6 +55,10 @@ process.on("uncaughtException", (err) => {
 process.on("uncaughtExceptionMonitor", (err, origin) => {
 	console.error("Uncaught Exception Monitor:", err, origin);
 });
+
+process.on('rejectionHandled', (err) => {
+	console.log("rejected handled:", err);
+})
 
 client.login(client.config.TOKEN);
 require("../deploy.js")

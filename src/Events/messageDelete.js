@@ -4,8 +4,7 @@ const logs = require("../schemas/log.js");
 module.exports = {
 	name: "messageDelete",
 	async execute(message, client) {
-		if (client.user.id == message.author.id) return;
-		if (message.author.bot) return;
+		if (message.author == null || message.author.bot) return;
 		const data = await logs.findOne({ Guild: message.guild.id });
 		if (!data) return;
 		const newEmbed = new EmbedBuilder()

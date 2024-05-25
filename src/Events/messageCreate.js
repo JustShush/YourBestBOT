@@ -1,4 +1,4 @@
-const { PermissionFlagsBits, TextChannel, EmbedBuilder } = require("discord.js");
+const { PermissionFlagsBits, TextChannel, EmbedBuilder, ChannelType } = require("discord.js");
 const Schema = require("../schemas/stats.js");
 const UserStats = require("../schemas/userStats.js");
 const { sticky } = require("../functions/sticky.js");
@@ -48,7 +48,13 @@ module.exports = {
 		userData.Messages = userData.Messages + 1;
 		await userData.save();
 
-		const prefix = "+";
+		const PREFIXES = ["+", "ybb"];
+		const prefix = PREFIXES.find((prefix) => {
+			if (message.content.toLowerCase().startsWith(prefix)) return true;
+			// Check if the prefix is separated by a space
+			const words = message.content.toLowerCase().split(' ');
+			return words.length > 1 && words[0] === prefix.toLowerCase();
+		}) || "<@!${client.user.id}>" || "<@${client.user.id}>";
 		const args = message.content.slice(prefix.length).trim().split(/ +/);
 		const command = args.shift().toLowerCase();
 		if (message.guild.id == "702545447750860931" || message.guild.id == "1054090158779150376")
@@ -58,31 +64,63 @@ module.exports = {
 			stealEmoji(message, args);
 		} else if (command == 'eval') {
 			myEval(message, args);
+		} else if (command == 'inv') {
+			getInv(client, message, args);
 		}
 	},
 };
 
+async function getInv(client, message, args) {
+	if (message.author.id !== '453944662093332490') return message.channel.send("sorry, this command is only for the developer")
+	const guild = await client.guilds.cache.get(args[0]);
+	let found = guild.channels.cache.find(
+		(channel) => channel.type === ChannelType.GuildText && channel.permissionsFor(guild.members.me).has("SendMessages")
+	);
+	let invites = await guild.invites.fetch().catch(err => { message.reply({ content: "couldnt fetch the invites in this server! | " + guild.name + " | " + guild.id }); return; });
+	if (!invites) return;
+	// Check if the bot has any invites for this server
+	const botInvites = await invites.filter((invite) => invite.inviterId === client.user.id);
+	let invite = botInvites.values().next().value;
+	if (botInvites.size <= 0) {
+		invite = await found.createInvite({
+			maxAge: 0,
+			maxUses: 0,
+		}).catch(err => message.reply("couldnt create a new invite! IG Im missing perms in that server \:(", err));
+	}
+	const newEmbed = new EmbedBuilder()
+		.setAuthor({ name: guild.name })
+		.setDescription(`GuildName: \`${guild.name}\` | id: \`${guild.id}\`\nOwner: <@!${guild.ownerId}> | ${guild.ownerId}`)
+		.addFields(
+			{ name: `Number of members:`, value: `${guild.memberCount}` },
+			{ name: `Invite:`, value: `\`discord.gg/${invite.code}\`` }
+		)
+		.setThumbnail(guild.iconURL())
+		.setTimestamp();
+
+	await message.reply({ content: 'discord.gg/' + invite, embeds: [newEmbed]})
+}
+
 const { inspect } = require('util')
 async function myEval(message, args) {
-	if(message.author.id !== '453944662093332490') return message.channel.send("sorry, this command is only for the developer")
+	if (message.author.id !== '453944662093332490') return message.channel.send("sorry, this command is only for the developer")
 
 	const command = args.join(" ");
-	if(!command) return message.channel.send("you must write a command ")
+	if (!command) return message.channel.send("you must write a command ")
 
 	let words = ["token", "destroy", "config"]
-	if(words.some(word => message.content.toLowerCase().includes(word))){
+	if (words.some(word => message.content.toLowerCase().includes(word))) {
 		return message.channel.send("Those words are blacklisted!")
 	}
 
 	try {
 		const evaled = await eval(command)
-		message.channel.send({ content: `\`\`\`js\n${inspect(evaled, { depth: 3})}\`\`\``});
+		message.channel.send({ content: `\`\`\`js\n${inspect(evaled, { depth: 3 })}\`\`\`` });
 
 	} catch (error) {
 		const embedfailure = new EmbedBuilder()
-		.setColor("#FF0000")
-		.addFields({ name: `Entrance`, value: `\`\`\`js\n${command}\`\`\``})
-		.addFields({ name: `Error`, value: `\`\`\`js\n${error}\`\`\` `})
+			.setColor("#FF0000")
+			.addFields({ name: `Entrance`, value: `\`\`\`js\n${command}\`\`\`` })
+			.addFields({ name: `Error`, value: `\`\`\`js\n${error}\`\`\` ` })
 
 		message.channel.send({ embeds: [embedfailure] })
 	}
@@ -119,8 +157,7 @@ async function detect(message) {
 						authorEmbed.setDescription(linkedMessage.content);
 					if (linkedMessage.attachments.size > 0)
 						authorEmbed.setImage(`${linkedMessage.attachments.first().url}`)
-					if (linkedMessage.embeds.length > 0)
-					{
+					if (linkedMessage.embeds.length > 0) {
 						obj.embeds.push(footerEmbed);
 						obj.embeds.push(linkedMessage.embeds[0]);
 					} else

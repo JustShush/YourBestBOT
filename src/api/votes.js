@@ -71,11 +71,13 @@ module.exports = async (req, res, client) => {
 		if (webex) {
 			const member = webex.members.cache.get(user.id);
 			const role = webex.roles.cache.get(client.config.config.votes.webex.roleId);
+			if (member.roles.has(role)) return console.log(`${member} already has the vote role!`);
 			await member.roles.add(role).catch((err) => console.log("there was an error trying to give voter role", err));
 		}
 		if (sup) {
 			const member = sup.members.cache.get(user.id);
 			const role = sup.roles.cache.get(client.config.config.votes.support.roleId);
+			if (member.roles.has(role)) return console.log(`${member} already has the vote role!`);
 			await member.roles.add(role).catch((err) => console.log("there was an error trying to give voter role", err));
 		}
 

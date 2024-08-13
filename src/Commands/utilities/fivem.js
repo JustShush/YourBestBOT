@@ -9,11 +9,11 @@ module.exports = {
 	permissions: "UseApplicationCommands",
 	data: new SlashCommandBuilder()
 		.setName('fivem')
-		.setDescription('Makes the bot say something in the specified channel')
+		.setDescription('Gives your simple information related to a specific server.')
 		.setDefaultMemberPermissions(PermissionFlagsBits.UseApplicationCommands)
 		.addStringOption(o =>
 			o.setName('server')
-				.setDescription('O link do servidor. ex: https://cfx.re/join/code')
+				.setDescription('The connect to the server. EX: cfx.re/join/bqjgz4')
 				.setAutocomplete(true)
 				.setRequired(true)),
 	integration_types: [0, 1],
@@ -22,9 +22,9 @@ module.exports = {
 
 		const focusedValue = interaction.options.getFocused();
 
-		const choices = [{ name: "🔷 Diamond 🔷", value: "https://cfx.re/join/bqjgz4" }, { name: "Portugalia", value: "https://cfx.re/join/6z6el4" },
-		{ name: "Utopia", value: "https://cfx.re/join/vyxrqx" }, { name: "DarkLife", value: "https://cfx.re/join/758kzd" },
-		{ name: "🔱 Atlantic 🔱", value: "https://cfx.re/join/8lla53" }];
+		const choices = [{ name: "🔷 Diamond 🔷", value: "https://cfx.re/join/bqjgz4" }, { name: "AltF4", value: "https://cfx.re/join/ppvp87" },
+		{ name: "Portugalia", value: "https://cfx.re/join/6z6el4" }, { name: "Utopia", value: "https://cfx.re/join/vyxrqx" },
+		{ name: "DarkLife", value: "https://cfx.re/join/758kzd" }, { name: "🔱 Atlantic 🔱", value: "https://cfx.re/join/8lla53" }];
 		const fvalue = { name: focusedValue, value: focusedValue }
 		let list = choices;
 		if (focusedValue) list = [fvalue, ...choices];
@@ -37,28 +37,28 @@ module.exports = {
 	},
 	async execute(interaction) {
 		const { options } = interaction;
-		const op = options.getString("server");
+		const op = ensureHttps(options.getString("server"))
 
-		if (op === "chorao") {
-			const pc = await getServerStatus("https://cfx.re/join/godogx");
-			return interaction.reply({ content: `[${pc.playercount}/500] on Chorão RP | Season 2`, ephemeral: true });
-		} else {
-			const pc = await getServerStatus(op);
+		const pc = await getServerStatus(op);
 
-			const newEmbed = new EmbedBuilder()
-				.setAuthor({ name: pc.name, iconURL: pc.logo })
-				.setTitle(`**${pc.playercount}** players online.`)
-				.setTimestamp()
+		const newEmbed = new EmbedBuilder()
+			.setAuthor({ name: pc.name, iconURL: pc.logo })
+			.setTitle(`**${pc.playercount}** players online.`)
+			.setTimestamp()
 
-			const row = new ActionRowBuilder().setComponents(
-				new ButtonBuilder()
-					.setEmoji("🚀")
-					.setLabel("Connect")
-					.setURL(op)
-					.setStyle(ButtonStyle.Link),
-			)
+		const row = new ActionRowBuilder().setComponents(
+			new ButtonBuilder()
+				.setEmoji("🚀")
+				.setLabel("Connect")
+				.setURL(op)
+				.setStyle(ButtonStyle.Link),
+		)
 
-			return interaction.reply({ embeds: [newEmbed], components: [row], ephemeral: true });
-		}
+		return interaction.reply({ embeds: [newEmbed], components: [row], ephemeral: true });
 	}
+}
+
+function ensureHttps(url) {
+	if (!url.startsWith('https://')) return 'https://' + url;
+	return url;
 }

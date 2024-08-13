@@ -55,7 +55,7 @@ module.exports = {
 						inline: true
 					},
 					{ name: '\u200B', value: '\u200B', inline: true },
-					{ name: "Help Command:", value: `</help:1052662424752377969>`, inline: true },
+					{ name: "Help Command:", value: `</help:1224796261626937355>`, inline: true },
 					{ name: "**Node Js version:**", value: `${node}`, inline: true },
 					{ name: "Developer:", value: `<@453944662093332490>`, inline: true },
 					{ name: "**Uptime:**", value: `\`\`\`${time}\`\`\``, inline: false },

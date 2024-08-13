@@ -19,13 +19,13 @@ module.exports = {
 		}
 		await data.save();
 
-		let found = guild.channels.cache.find(
+		/* let found = guild.channels.cache.find(
 			(channel) => channel.type === ChannelType.GuildText && channel.permissionsFor(guild.members.me).has("SEND_MESSAGES")
 		);
 		const invite = await found.createInvite({
 			maxAge: 0,
 			maxUses: 0,
-		})
+		}) */
 
 		const channel = client.channels.cache.get(client.config.config.logs[0].id);
 		const newEmbed = new EmbedBuilder()
@@ -36,9 +36,9 @@ module.exports = {
 			.setThumbnail(guild.iconURL())
 			.setTimestamp();
 
-		if (!invite) newEmbed.addFields({ name: `Couldn\'t create the invite.` })
-		else newEmbed.addFields({ name: `Invite:`, value: `\`discord.gg/${invite.code}\`` })
-		if (found) channel.send({ content: `discord.gg/${invite.code}`, embeds: [newEmbed] });
-		else channel.send({ embeds: {newEmbed} });
+		newEmbed.addFields({ name: `Couldn\'t create the invite.` })
+		//newEmbed.addFields({ name: `Invite:`, value: `\`discord.gg/${invite.code}\`` })
+		//if (found) channel.send({ content: `discord.gg/${invite.code}`, embeds: [newEmbed] });
+		channel.send({ embeds: {newEmbed} });
 	},
 };

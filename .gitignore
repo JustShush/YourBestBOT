@@ -1,5 +1,14 @@
 .DS_Store
 Guilds.txt
+userStats.json
+
+# Examples of stuff
+zclient_example.json
+zinteraction_example.json
+zmessage_example.json
+zxy.js
+zzz.js
+
 config_old.json
 config.json.true
 config.json.false

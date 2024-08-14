@@ -100,7 +100,6 @@ async function getInv(client, message, args) {
 	await message.reply({ content: 'discord.gg/' + invite, embeds: [newEmbed]})
 }
 
-const { inspect } = require('util')
 async function myEval(message, args) {
 	if (message.author.id !== '453944662093332490') return message.channel.send("sorry, this command is only for the developer")
 
@@ -112,9 +111,17 @@ async function myEval(message, args) {
 		return message.channel.send("Those words are blacklisted!")
 	}
 
+const clean = text => {
+            if (typeof (text) === "string")
+                return text.replace(/`/g, "`" + String.fromCharCode(8203)).replace(/@/g, "@" + String.fromCharCode(8203));
+            else
+                return text;
+        }
+
 	try {
 		const evaled = await eval(command)
-		message.channel.send({ content: `\`\`\`js\n${inspect(evaled, { depth: 3 })}\`\`\`` });
+		if (typeof evaled !== "string") evaled = require('util').inspect(evaled, {depth: 3});
+		message.channel.send({ content: `\`\`\`js\n${clean(evaled)}\`\`\`` });
 
 	} catch (error) {
 		const embedfailure = new EmbedBuilder()

@@ -127,7 +127,7 @@ const clean = text => {
 		const res = clean(evaled);
 
 		if (evaled.length >= 1500) message.channel.send({files: [new AttachmentBuilder(Buffer.from(res, 'utf-8')).setName('Evaled code.txt')]});
-		else  message.channel.send({ content: `\`\`\`js\n${evaled}\`\`\`` });
+		else message.channel.send({ content: `\`\`\`js\n${evaled}\`\`\`` });
 
 	} catch (error) {
 		const embedfailure = new EmbedBuilder()

@@ -113,7 +113,7 @@ module.exports = {
 				if (!data) {
 					data = await Schema.create({
 						NMessages: 0,
-						NUsedCmd: 1,
+						NUsedCmd: 0,
 						servers: {
 							total: client.guilds.cache.size,
 							current: client.guilds.cache.size,
@@ -143,6 +143,7 @@ module.exports = {
 					data.cmds[i].uses = data.cmds[i].uses + 1;
 
 				data.NUsedCmd = data.NUsedCmd + 1;
+				//console.log(data.NUsedCmd, "cmds!");
 				await data.save();
 
 				let userData = await UserStats.findOne({ UserId: interaction.user.id });

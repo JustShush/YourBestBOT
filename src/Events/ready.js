@@ -1,5 +1,5 @@
 const color = require('colors');
-const { Events, ActivityType } = require("discord.js");
+const { Client, Events, ActivityType } = require("discord.js");
 const { connect } = require("mongoose");
 const cron = require('node-cron');
 const { allGuilds } = require('../functions/allguilds');
@@ -9,6 +9,9 @@ const UserStats = require("../schemas/userStats.js");
 module.exports = {
 	name: Events.ClientReady,
 	once: true,
+	/**
+	 * @param {Client} client
+	 */
 	async execute(client) {
 
 		const options = [{
@@ -125,9 +128,14 @@ module.exports = {
 			// Put your code here that you want to run on the 1st day of the month
 		}
 
+		async function rVoteRole() {
+			console.log('12 timer', new Date().toLocaleString());
+		}
+
 		cron.schedule('0 0 1 * *', monthlyUpdate);
 		cron.schedule('0 0 * * 0', weekUpdate);
 		//cron.schedule('0 0 * * *', dayUpdate);
+		cron.schedule('0 0 */12 * * *', rVoteRole);
 
 		/* const users = await UserStats.find() // get all the users
 		users.forEach(async (u) => {

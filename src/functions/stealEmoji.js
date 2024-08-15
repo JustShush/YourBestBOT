@@ -11,9 +11,10 @@ function stealEmoji(message, args) {
 	const match = args[0].match(regex);
 
 	if (match) {
-		const ename = match[1];
+		//console.log(args)
+		const ename = args[1] ? args[1] : match[1];
 		const id = match[2];
-		//console.log(ename, id);
+		//console.log(match, ename, id);
 		const extention = args[0].includes("<a:") ? ".gif" : ".png";
 		const url = `https://cdn.discordapp.com/emojis/${id + extention}`;
 		message.guild.emojis.create({ attachment: url, name: ename })

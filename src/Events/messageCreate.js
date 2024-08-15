@@ -1,4 +1,4 @@
-const { PermissionFlagsBits, TextChannel, EmbedBuilder, ChannelType } = require("discord.js");
+const { PermissionFlagsBits, TextChannel, EmbedBuilder, ChannelType, AttachmentBuilder } = require("discord.js");
 const Schema = require("../schemas/stats.js");
 const UserStats = require("../schemas/userStats.js");
 const { sticky } = require("../functions/sticky.js");
@@ -101,7 +101,7 @@ async function getInv(client, message, args) {
 }
 
 async function myEval(message, args) {
-	if (message.author.id !== '453944662093332490') return message.channel.send("sorry, this command is only for the developer")
+	if (message.author.id !== '453944662093332490') return;
 
 	const command = args.join(" ");
 	if (!command) return message.channel.send("you must write a command ")
@@ -119,9 +119,15 @@ const clean = text => {
         }
 
 	try {
-		const evaled = await eval(command)
+		let evaled;
+		if (command.includes("await")) evaled = await eval(`async() => ${command}`)();
+		else evaled = await eval(command)
 		if (typeof evaled !== "string") evaled = require('util').inspect(evaled, {depth: 3});
-		message.channel.send({ content: `\`\`\`js\n${clean(evaled)}\`\`\`` });
+		
+		const res = clean(evaled);
+
+		if (evaled.length >= 1500) message.channel.send({files: [new AttachmentBuilder(Buffer.from(res, 'utf-8')).setName('Evaled code.txt')]});
+		else  message.channel.send({ content: `\`\`\`js\n${evaled}\`\`\`` });
 
 	} catch (error) {
 		const embedfailure = new EmbedBuilder()

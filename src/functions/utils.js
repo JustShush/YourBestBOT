@@ -1,4 +1,5 @@
 const { Integration, EmbedBuilder, Message, Client } = require("discord.js");
+const axios = require("axios");
 
 /**
  * Check if 2 random numbers are the same.
@@ -82,4 +83,33 @@ async function getTopServers(client, nbr) {
 	return topServers;
 }
 
-module.exports = { randomN, randomNRange, AD, ADMessage, getTopServers };
+function getTimestamp() {
+	const date = new Date();
+	const year = date.getFullYear();
+	const month = date.getMonth() + 1;
+	const day = date.getDate();
+	const hours = date.getHours();
+	const minutes = date.getMinutes();
+	const seconds = date.getSeconds();
+	return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+}
+
+/**
+ * Sends a WebHook to a specific channel with the input msg
+ * @param {String} msg The message to send
+ */
+function INFO(msg) {
+	const wh = "https://discord.com/api/webhooks/1274752856448303157/U4Yd_w46FgPRvilXO4YhYGPEUa1n-cuG5tWYu_h94H7AMI8vcxtvghYcsvURJ4Cj8vLg";
+
+	const data = {
+		content: msg + ' ' + __filename,
+		username: 'YBB INFO',
+		//avatar_url: ''
+	}
+
+	// send the msg
+	axios.post(wh, data)
+
+}
+
+module.exports = { randomN, randomNRange, AD, ADMessage, getTopServers, getTimestamp , INFO };

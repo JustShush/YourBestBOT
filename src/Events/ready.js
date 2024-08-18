@@ -3,8 +3,8 @@ const { Client, Events, ActivityType } = require("discord.js");
 const { connect } = require("mongoose");
 const cron = require('node-cron');
 const { allGuilds } = require('../functions/allguilds');
+const { RVotingRole } = require("../functions/votingRoleRemove.js");
 const api = require("../api/app.js");
-const UserStats = require("../schemas/userStats.js");
 
 module.exports = {
 	name: Events.ClientReady,
@@ -106,7 +106,7 @@ module.exports = {
 
 		async function weekUpdate() {
 			const data = await Stats.findOne();
-			if (!data) return console.log("couldn't find monthly data");
+			if (!data) return console.log("couldn't find weekly data");
 			//* Votes
 			if (data.votes.total < data.votes.current)
 				data.votes.total = data.votes.current;
@@ -124,18 +124,14 @@ module.exports = {
 
 		async function dayUpdate() {
 			// This code will run only on the 1st day of the month
-			console.log('This code runs on the 1st day of every month.');
+			//console.log('This code runs on the 1st day of every month.');
 			// Put your code here that you want to run on the 1st day of the month
-		}
-
-		async function rVoteRole() {
-			console.log('12 timer', new Date().toLocaleString());
 		}
 
 		cron.schedule('0 0 1 * *', monthlyUpdate);
 		cron.schedule('0 0 * * 0', weekUpdate);
 		//cron.schedule('0 0 * * *', dayUpdate);
-		cron.schedule('0 0 */12 * * *', rVoteRole);
+		cron.schedule('0 * * * *', RVotingRole); // run every hour
 
 		/* const users = await UserStats.find() // get all the users
 		users.forEach(async (u) => {

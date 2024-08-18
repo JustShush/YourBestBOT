@@ -75,9 +75,7 @@ module.exports = {
 		//if (nickData.Nicksys === false) console.log("nickData.nicksys === false");
 		if (nickData.Nicksys === true) {
 			//console.log("nickData.nicksys === true")
-			console.log("before line 78!");
 			if (member.nickname.includes("Moderated Nickname ")) return; //console.log(`${newMember.user.tag} | ${newMember.user.id} already has a mod nickname: ${oldMember.nickname}`);
-			console.log("after line 78!");
 			const newNick = member.nickname;
 			function countNKC(str) {
 				const nonKeyboardChars = str.match(regex) || [];

@@ -11,7 +11,7 @@ module.exports = {
 		.setName('clear')
 		.setDescription('Clear messages.')
 		.setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages, PermissionFlagsBits.ManageChannels)
-		.addNumberOption((option) => option
+		.addStringOption((option) => option
 			.setName("amount")
 			.setDescription("The amount of messages to delete.(max 100)")
 			.setRequired(true))
@@ -25,15 +25,14 @@ module.exports = {
 
 			const { options, guild } = interaction
 
-			const n = options.getNumber("amount");
-			if (n >= 100) return interaction.reply({ content: "You can't remove more than 100 mesages!" });
-			if (n < 1) return interaction.reply({ content: "You have to delete at least 1 message!" });
+			const n = options.getString("amount");
 
-			interaction.channel.messages.fetch({
-				limit: n
-			}).then(msg => {
-				interaction.channel.bulkDelete(msg)
-			})
+			if (isNaN(n)) return interaction.reply({ content: 'Please provide a valid number between 1 and 100.', ephemeral: true });
+			if (n < 1) return interaction.reply({ content: "You have to delete at least 1 message!", ephemeral: true });
+			
+			await interaction.deferReply({ ephemeral: true });
+
+			deleteMessages(interaction.channel, parseInt(n));
 
 			const logchannel = await logdb.findOne({ Guild: guild.id })
 			if (logchannel) {
@@ -45,9 +44,19 @@ module.exports = {
 				}
 			}
 
-			await interaction.reply({ content: `You have deleted ${n} messages succesfully.`, ephemeral: true })
+			await interaction.followUp({ content: `You have deleted ${n} messages succesfully.`, ephemeral: true })
 		} catch (error) {
 			console.log(error)
 		}
+	}
+}
+
+async function deleteMessages(channel, totalToDelete) {
+	let remaining = totalToDelete;
+	while (remaining > 0) {
+		const deleteCount = remaining > 100 ? 100 : remaining;
+		// the true here forces the bot to delete msgs that older then 14 days.
+		await channel.bulkDelete(deleteCount, true);
+		remaining -= deleteCount;
 	}
 }

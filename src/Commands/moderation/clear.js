@@ -5,7 +5,7 @@ module.exports = {
 	name: "clear",
 	description: "Clear x amount of messages.",
 	permission: "`MANAGE_MESSAGES`, `MANAGE_CHANNELS`",
-	usage: "`/clear [number]`",
+	usage: "`/clear [number]`, `/clear [number] [user]`",
 	type: "Moderation",
 	data: new SlashCommandBuilder()
 		.setName('clear')
@@ -13,7 +13,7 @@ module.exports = {
 		.setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages, PermissionFlagsBits.ManageChannels)
 		.addStringOption((option) => option
 			.setName("amount")
-			.setDescription("The amount of messages to delete.(max 100)")
+			.setDescription("The amount of messages to delete.(max 500)")
 			.setRequired(true))
 		.addUserOption((option) => option
 			.setName('user')

@@ -8,9 +8,9 @@ module.exports = {
 		const data = await logs.findOne({ Guild: message.guild.id });
 		if (!data) return;
 		const newEmbed = new EmbedBuilder()
-			.setAuthor({ name: message.author.globalName, iconURL: message.author.displayAvatarURL()})
+			.setAuthor({ name: message.author.globalName, iconURL: message.author.displayAvatarURL() })
 			.setColor("#FF0000")
-			.setFooter({ text: `User ID: ${message.author.id}`})
+			.setFooter({ text: `User ID: ${message.author.id}` })
 			.setTimestamp()
 
 		let embedContent = `Message deleted in ${message.channel}\n`;

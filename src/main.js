@@ -7,7 +7,7 @@ const { Guilds, GuildMembers, GuildMessages, GuildPresences, MessageContent, Gui
 
 const client = new Client({
 	intents: [Guilds, GuildMembers, GuildMessages, GuildPresences, MessageContent, GuildInvites],
-	partials: [Partials.User, Partials.Message, Partials.GuildMember, Partials.ThreadMember, Partials.Reaction],
+	partials: [Partials.User, Partials.Channel, Partials.Message, Partials.GuildMember, Partials.ThreadMember, Partials.Reaction],
 });
 
 client.config = require("../config.json");

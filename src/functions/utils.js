@@ -98,7 +98,7 @@ function getTimestamp() {
  * Sends a WebHook to a specific channel with the input msg
  * @param {String} msg The message to send
  */
-function INFO(msg) {
+async function INFO(msg) {
 	const wh = "https://discord.com/api/webhooks/1274752856448303157/U4Yd_w46FgPRvilXO4YhYGPEUa1n-cuG5tWYu_h94H7AMI8vcxtvghYcsvURJ4Cj8vLg";
 
 	const data = {
@@ -108,7 +108,7 @@ function INFO(msg) {
 	}
 
 	// send the msg
-	axios.post(wh, data)
+	await axios.post(wh, data).then((res) => console.log(res.data)).catch((err) => console.log(err));
 
 }
 

@@ -92,7 +92,7 @@ module.exports = {
 				//if (randomNRange(1000)) AD(interaction, false);
 				await command.execute(interaction, client);
 				console.log(
-					`\nGuild: ${interaction.guild.name}\nChannel: "${interaction.channel.name}"\nCommand: "${command.name}"\nUser: ${interaction.user.tag}\nTimestamp: ${Date().slice(0, -42)}`.brightGreen
+					`\nGuild: ${interaction.member.guild.name}\nChannel: "${interaction.channel.name}"\nCommand: "${command.name}"\nUser: ${interaction.user.tag}\nTimestamp: ${Date().slice(0, -42)}`.brightGreen
 				);
 				const webhookId = client.config.config.logs[2].webhookId; // logs WEBEX
 				const webhook = await client.fetchWebhook(webhookId);
@@ -167,7 +167,7 @@ module.exports = {
 			} catch (error) {
 				console.error(error);
 				console.log(
-					`\nGuild: ${interaction.guild.name}\nChannel: "${interaction.channel.name}"\nCommand: "${command.name}"\nUser: ${interaction.user.tag}`
+					`\nChannel: "${interaction.channel.name}\nCommand: "${command.name}"\nUser: ${interaction.user.tag}`
 						.brightRed
 				);
 				const errorEmbed = new EmbedBuilder()

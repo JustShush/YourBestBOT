@@ -1,6 +1,7 @@
 const { EmbedBuilder } = require('discord.js');
 const UserStats = require("../schemas/userStats.js");
 const Stats = require("../schemas/stats.js");
+const Votes = require("../schemas/votes.js");
 
 /**
  * @typedef {import('express').Request} CustomRequest
@@ -61,23 +62,31 @@ module.exports = async (req, res, client) => {
 	let avatar = user.avatarURL();
 	if (user.avatar) avatar = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`
 
-	const channels = [ client.config.config.votes.webex.voteChannel,
-		client.config.config.votes.support.voteChannel
+	if (!client.guilds.cache.size) await client.guilds.fetch();
+	const webex = await client.guilds.cache.get(client.config.config.votes.webex.guildId);
+	const sup = await client.guilds.cache.get(client.config.config.votes.support.guildId);
+
+	const channels = [ await webex.channels.cache.get(client.config.config.votes.webex.voteChannel),
+		await sup.channels.cache.get(client.config.config.votes.support.voteChannel)
 	]; // comas // votes YBB Support
 
 	channels.forEach(async (ch) => {
-		const webex = client.guilds.cache.get(client.config.config.votes.support.guildId);
-		const sup = client.guilds.cache.get(client.config.config.votes.support.guildId);
 		if (webex) {
-			const member = webex.members.cache.get(user.id);
-			const role = webex.roles.cache.get(client.config.config.votes.webex.roleId);
-			if (member.roles.has(role)) return console.log(`${member} already has the vote role!`);
+			if (!webex.members.cache.size) await webex.members.fetch();
+			const member = await webex.members.cache.get(user.id);
+			if (!member) return console.log("couldn't find the ybb member" + __filename);
+			const role = await webex.roles.cache.get(client.config.config.votes.webex.roleId);
+			if (!webex.roles.cache.size) await webex.roles.fetch();
+			if (member.roles.cache.has(role)) return console.log(`${member} already has the vote role!`);
 			await member.roles.add(role).catch((err) => console.log("there was an error trying to give voter role", err));
 		}
 		if (sup) {
-			const member = sup.members.cache.get(user.id);
-			const role = sup.roles.cache.get(client.config.config.votes.support.roleId);
-			if (member.roles.has(role)) return console.log(`${member} already has the vote role!`);
+			if (!sup.members.cache.size) await sup.members.fetch();
+			const member = await sup.members.cache.get(user.id);
+			if (!member) return console.log("couldn't find the sup member" + __filename);
+			const role = await sup.roles.cache.get(client.config.config.votes.support.roleId);
+			if (!sup.roles.cache.size) await sup.roles.fetch();
+			if (member.roles.cache.has(role)) return console.log(`${member} already has the vote role!`);
 			await member.roles.add(role).catch((err) => console.log("there was an error trying to give voter role", err));
 		}
 
@@ -86,15 +95,25 @@ module.exports = async (req, res, client) => {
 		let unixTimestamp = Math.floor(twelveHoursLater.getTime() / 1000);
 		let formattedTimestamp = `<t:${unixTimestamp}:R>`;
 
-		const c = await client.channels.cache.get(ch);
-
 		const newEmbed = new EmbedBuilder()
 			.setDescription(`## <a:tada:1210660276018618388> Thank you \`@${user.username}\` for voting! <a:tada:1210660276018618388>\nThey have already voted **${userData.Votes.count} times** \<3\<3\nYou will be able to vote again ${formattedTimestamp} on [top.gg](https://yourbestbot.pt/vote)`)
 			.setColor(user.accentColor || "Blurple")
 			.setThumbnail(avatar)
 
-		c.send({ embeds: [newEmbed] });
+		ch.send({ embeds: [newEmbed] });
 	})
+
+	let votes = await Votes.findOne({ UserId: obj.user });
+	if (!votes) {
+		votes = await Votes.create({
+			UserId: user.id,
+			last: Date.now(),
+		})
+	} else {
+		votes.UserID = user.id;
+		votes.last = Date.now();
+	}
+	await votes.save();
 
 	res.sendStatus(200);
 }

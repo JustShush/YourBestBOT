@@ -15,24 +15,21 @@ async function getServerStatus(url) {
 		const playersMatch = html.match(playersRegex);
 
 		const playersTextContent = playersMatch ? playersMatch[1].trim() : null;
-		if (playersTextContent) obj.playercount = playersTextContent;
-		else obj.playercount = null;
+		obj.playercount = playersTextContent || "Unknown";
 
 		// server name
 		const titleRegex = /<title>(.*?)<\/title>/;
 		const titleMatch = html.match(titleRegex);
 
-		const serverName = titleMatch ? titleMatch[1] : null;
-		if (serverName) obj.name = serverName;
-		else obj.name = null;
+		const serverName = titleMatch ? titleMatch[1] : "Unknown";
+		obj.name = serverName;
 
 		// server image url
 		const imageRegex = /<meta property="og:image" content="(.*?)"/;
 		const imageMatch = html.match(imageRegex);
 
-		const imageUrl = imageMatch ? imageMatch[1] : null;
-		if (imageUrl) obj.logo = imageUrl;
-		else obj.logo = null;
+		const imageUrl = imageMatch ? imageMatch[1] : "No Image Available";
+		obj.logo = imageUrl;
 
 		//console.log('Text content inside players class:', playersTextContent);
 		//console.log('Server Name:', serverName);

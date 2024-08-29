@@ -35,11 +35,11 @@ module.exports = {
 			}))
 			.setFooter({ text: `We are now a server with ${guild.memberCount} members \<3` })
 
-			try {
-				Channel.send({ content: `<@${member.id}>`, embeds: [byeEmbed], ephemeral: true });
-			} catch (err) {
-				console.log(err)
-				console.log("error on file guildMemberRemove. They prob removed the channel!")
-			}
+		try {
+			Channel.send({ content: `<@${member.id}>`, embeds: [byeEmbed], ephemeral: true });
+		} catch (err) {
+			console.log(err)
+			console.log("error on file guildMemberRemove. They prob removed the channel! " + guild.id + " | " + guild.name);
+		}
 	}
 }

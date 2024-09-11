@@ -28,7 +28,7 @@ module.exports = {
 				.setThumbnail('https://i.imgur.com/GhT4rY2.png') // por a foto do bot aqui depois.
 				.addFields({
 					name: 'Join the support server here:',
-					value: '[Click here](https://discord.gg/kTegA3aaDg) to to join the support server :)'
+					value: '[Click here](https://discord.gg/WhSYAUtar5) to to join the support server :)'
 				},{
 					name: 'Thank you for helping me grow and reach new palces <3',
 					value: '[Click here](https://discord.com/api/oauth2/authorize?client_id=820324857799245855&permissions=8&scope=bot%20applications.commands) to invite me to your server :)',

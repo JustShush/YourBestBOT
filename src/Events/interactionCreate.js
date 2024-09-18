@@ -91,7 +91,7 @@ module.exports = {
 			try {
 				//if (randomNRange(1000)) AD(interaction, false);
 				await command.execute(interaction, client);
-				console.log(
+				console.log(interaction,
 					`\nGuild: ${interaction.member.guild.name}\nChannel: "${interaction.channel.name}"\nCommand: "${command.name}"\nUser: ${interaction.user.tag}\nTimestamp: ${Date().slice(0, -42)}`.brightGreen
 				);
 				const webhookId = client.config.config.logs[2].webhookId; // logs WEBEX
@@ -165,7 +165,7 @@ module.exports = {
 				userData.CmdCount = userData.CmdCount + 1;
 				await userData.save();
 			} catch (error) {
-				console.error(error);
+				console.error(error, interaction);
 				console.log(
 					`\nChannel: "${interaction.channel.name}\nCommand: "${command.name}"\nUser: ${interaction.user.tag}`
 						.brightRed

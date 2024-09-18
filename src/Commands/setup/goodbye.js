@@ -11,6 +11,11 @@ module.exports = {
 		.setName("setup-goodbye")
 		.setDescription("Set the greetings embed.")
 		.setDefaultMemberPermissions(PermissionFlagsBits.ManageChannels, PermissionFlagsBits.ManageGuild)
+		.addBooleanOption((option) => option
+			.setName('status')
+			.setDescription('Enable/Disable')
+			.setRequired(true)
+		)
 		.addStringOption((option) => option
 			.setName("channel")
 			.setDescription("The channel to the GoodBye message to appear.(put it\'s id here)")
@@ -39,6 +44,16 @@ module.exports = {
 		const member = await interaction.guild.members.fetch(interaction.user.id).catch(console.error);
 		const Channel = options.getString("channel");
 		const byeMSG = options.getString("msg");
+		const status = options.getBoolean('status');
+
+		const byeEmbed = new EmbedBuilder()
+			.setColor(resColor)
+			.setTimestamp()
+
+		if (!status) {
+			await byeSchema.findOneAndDelete({ Guild: interaction.guild.id });
+			return await interaction.reply({ embeds: [byeEmbed.setDescription('✅ GoodBye System has be **DISABLED**!')], ephemeral: true });
+		}
 
 		let byeRes = await byeSchema.findOne({
 			Guild: interaction.guild.id,
@@ -59,10 +74,6 @@ module.exports = {
 		}
 		byeRes.save();
 
-		const byeEmbed = new EmbedBuilder()
-			.setColor(resColor)
-			.setTimestamp()
-
-		interaction.reply({ embeds: [byeEmbed.setDescription(`✅ Welcome message has been setup.\nChannel: ${Channel} \nMessage: \`${byeMSG}\`✅`)], ephemeral: true });
+		interaction.reply({ embeds: [byeEmbed.setDescription(`✅ GoodBye message has been setup.\nChannel: ${Channel} \nMessage: \`${byeMSG}\`✅`)], ephemeral: true });
 	}
 }

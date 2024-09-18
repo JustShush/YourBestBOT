@@ -6,7 +6,7 @@ module.exports = {
 	description: "Manage this server sticky messages.",
 	type: "Setup",
 	subcommand: true,
-	permissions: "ManageChannels",
+	permission: "ManageChannels",
 	data: new SlashCommandBuilder()
 		.setName('sticky')
 		.setDescription('Manage this server sticky messages.')

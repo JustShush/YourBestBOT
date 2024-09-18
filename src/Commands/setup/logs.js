@@ -13,6 +13,11 @@ module.exports = {
 		.setName("setup-logs")
 		.setDescription("Set the channel log.")
 		.setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild, PermissionFlagsBits.ManageChannels)
+		.addBooleanOption((option) => option
+			.setName('status')
+			.setDescription('Enable/Disable')
+			.setRequired(true)
+		)
 		.addChannelOption(options => options
 			.setName("channel")
 			.setDescription("Select the channel log.")
@@ -33,8 +38,18 @@ module.exports = {
 
 		const { options, guild, member } = interaction;
 
+		const status = options.getBoolean('status');
 		const Channel = options.getChannel("channel");
 		//console.log("Channel: " + Channel + "ChannelId: " + ChannelId);
+
+		if (!status) {
+			await db.findOneAndDelete({ Guild: guild.id });
+			const newEmbed = new EmbedBuilder()
+				.setColor(resColor)
+				.setDescription(`✅ Logs Channel has been removed.`)
+				.setTimestamp()
+			return await interaction.reply({ embeds: [newEmbed], ephemeral: true });
+		}
 
 		const errorsArray = [];
 		const errorsEmbed = new EmbedBuilder()

@@ -70,24 +70,38 @@ module.exports = async (req, res, client) => {
 		await sup.channels.cache.get(client.config.config.votes.support.voteChannel)
 	]; // comas // votes YBB Support
 
-	channels.forEach(async (ch) => {
+	let inWebex, inSup = false;
+
+	for (const ch of channels) {
 		if (webex) {
 			if (!webex.members.cache.size) await webex.members.fetch();
 			const member = await webex.members.cache.get(user.id);
-			if (!member) return console.log("couldn't find the ybb member" + __filename);
-			const role = await webex.roles.cache.get(client.config.config.votes.webex.roleId);
-			if (!webex.roles.cache.size) await webex.roles.fetch();
-			if (member.roles.cache.has(role)) return console.log(`${member} already has the vote role!`);
-			await member.roles.add(role).catch((err) => console.log("there was an error trying to give voter role", err));
+			if (!member) {
+				console.log("couldn't find the ybb member" + __filename);
+			} else {
+				const role = await webex.roles.cache.get(client.config.config.votes.webex.roleId);
+				if (!webex.roles.cache.size) await webex.roles.fetch();
+				if (member.roles.cache.has(role)) {
+					console.log(`${member} already has the vote role!`);
+				} else {
+					await member.roles.add(role).catch((err) => console.log("there was an error trying to give voter role", err));
+				}
+			}
 		}
 		if (sup) {
 			if (!sup.members.cache.size) await sup.members.fetch();
 			const member = await sup.members.cache.get(user.id);
-			if (!member) return console.log("couldn't find the sup member" + __filename);
-			const role = await sup.roles.cache.get(client.config.config.votes.support.roleId);
-			if (!sup.roles.cache.size) await sup.roles.fetch();
-			if (member.roles.cache.has(role)) return console.log(`${member} already has the vote role!`);
-			await member.roles.add(role).catch((err) => console.log("there was an error trying to give voter role", err));
+			if (!member) {
+				console.log("couldn't find the sup member" + __filename);
+			} else {
+				const role = await sup.roles.cache.get(client.config.config.votes.support.roleId);
+				if (!sup.roles.cache.size) await sup.roles.fetch();
+				if (member.roles.cache.has(role)) {
+					console.log(`${member} already has the vote role!`);
+				} else {
+					await member.roles.add(role).catch((err) => console.log("there was an error trying to give voter role", err));
+				}
+			}
 		}
 
 		let currentTime = new Date();
@@ -101,7 +115,7 @@ module.exports = async (req, res, client) => {
 			.setThumbnail(avatar)
 
 		ch.send({ embeds: [newEmbed] });
-	})
+	}
 
 	let votes = await Votes.findOne({ UserId: obj.user });
 	if (!votes) {
@@ -110,7 +124,6 @@ module.exports = async (req, res, client) => {
 			last: Date.now(),
 		})
 	} else {
-		votes.UserID = user.id;
 		votes.last = Date.now();
 	}
 	await votes.save();

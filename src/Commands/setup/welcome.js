@@ -11,6 +11,11 @@ module.exports = {
 		.setName("setup-welcome")
 		.setDescription("Set the greetings embed.")
 		.setDefaultMemberPermissions(PermissionFlagsBits.ManageChannels, PermissionFlagsBits.ManageGuild)
+		.addBooleanOption((option) => option
+			.setName('status')
+			.setDescription('Enable/Disable')
+			.setRequired(true)
+		)
 		.addChannelOption((option) => option
 			.setName("channel")
 			.setDescription("The channel you the welcome message to appear.(put it\'s id here)")
@@ -44,10 +49,21 @@ module.exports = {
 		const Channel = options.getChannel("channel");
 		const welcomeMSG = options.getString("msg");
 		let Role = options.getRole("role");
+		const status = options.getBoolean('status');
 		let i = 1;
 		if (!Role) {
 			Role = "";
 			i = 0;
+		}
+
+		const welcomeEmbed = new EmbedBuilder()
+			.setColor(resColor)
+			.setTimestamp()
+
+		if (!status) {
+			await welcomeSchema.findOneAndDelete({ Guild: interaction.guild.id });
+			await interaction.reply({ embeds: [welcomeEmbed.setDescription(`✅ Welcome message system has been **DISABLED**`)], ephemeral: true });
+			return ;
 		}
 
 		let welcomeRes = await welcomeSchema.findOne({
@@ -74,10 +90,6 @@ module.exports = {
 			welcomeRes.Role = Role.id
 		}
 		welcomeRes.save();
-
-		const welcomeEmbed = new EmbedBuilder()
-			.setColor(resColor)
-			.setTimestamp()
 
 		if (i == 1)
 			interaction.reply({ embeds: [welcomeEmbed.setDescription(`✅ Welcome message has been setup.\nChannel: ${Channel} \nMessage: \`${welcomeMSG}\`✅\nRole: ${Role}`)], ephemeral: true });

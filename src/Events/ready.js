@@ -1,4 +1,4 @@
-const color = require('colors');
+const colors = require('colors');
 const { Client, Events, ActivityType } = require("discord.js");
 const { connect } = require("mongoose");
 const cron = require('node-cron');
@@ -152,14 +152,14 @@ module.exports = {
 		}) */
 
 		client.guilds.cache.forEach(guild => {
-			console.log(`${guild.name} | ${guild.id} | ${guild.memberCount} Members`.brightRed);
+			console.log(colors.brightRed(`${guild.name} | ${guild.id} | ${guild.memberCount} Members`));
 		})
 
 		allGuilds(client);
 
-		connect(client.config.MONGO_URI, {}).then(() => console.log("Connected to mongoDB".brightGreen));
+		connect(client.config.MONGO_URI, {}).then(() => console.log(colors.brightGreen("Connected to mongoDB")));
 
-		console.log(`${client.user.username} is online!\nIn ${client.guilds.cache.size} Servers!`.brightMagenta.bold);
+		console.log(colors.magenta.bold(`${client.user.username} is online!\nIn ${client.guilds.cache.size} Servers!`));
 		api.load(client);
 	}
 }

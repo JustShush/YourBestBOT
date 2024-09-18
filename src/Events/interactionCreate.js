@@ -1,3 +1,4 @@
+const colors = require("colors");
 const { ChatInputCommandInteraction, EmbedBuilder } = require("discord.js");
 const Schema = require("../schemas/stats.js");
 const UserStats = require("../schemas/userStats.js");
@@ -47,9 +48,9 @@ module.exports = {
 				const webhook = await client.fetchWebhook(webhookId);
 				if (webhook) {
 					const logEmbed = new EmbedBuilder()
-						.setDescription(
+						.setDescription(colors.green(
 							`User: ${interaction.user.globalName}\nUser: <@${interaction.user.id}>\nCommand: "${command.name}"`
-						)
+						))
 						.setTimestamp();
 
 					webhook.send({
@@ -58,10 +59,10 @@ module.exports = {
 				}
 			} catch (error) {
 				console.error(error);
-				console.log(
+				console.log(colors.green(
 					`\nUser: ${interaction.user.globalName}\nCommand: "${command.name}"\nUser: ${interaction.user.tag}`
 						.brightRed
-				);
+				));
 				const errorEmbed = new EmbedBuilder()
 					.setTitle('An error occured')
 					.setDescription(`${error}`)
@@ -91,9 +92,9 @@ module.exports = {
 			try {
 				//if (randomNRange(1000)) AD(interaction, false);
 				await command.execute(interaction, client);
-				console.log(interaction,
+				console.log(colors.green(
 					`\nGuild: ${interaction.member.guild.name}\nChannel: "${interaction.channel.name}"\nCommand: "${command.name}"\nUser: ${interaction.user.tag}\nTimestamp: ${Date().slice(0, -42)}`.brightGreen
-				);
+				));
 				const webhookId = client.config.config.logs[2].webhookId; // logs WEBEX
 				const webhook = await client.fetchWebhook(webhookId);
 				if (webhook) {
@@ -166,10 +167,10 @@ module.exports = {
 				await userData.save();
 			} catch (error) {
 				console.error(error, interaction);
-				console.log(
+				console.log(colors.green(
 					`\nChannel: "${interaction.channel.name}\nCommand: "${command.name}"\nUser: ${interaction.user.tag}`
 						.brightRed
-				);
+				));
 				const errorEmbed = new EmbedBuilder()
 					.setTitle('An error occured')
 					.setDescription(`${error}`)

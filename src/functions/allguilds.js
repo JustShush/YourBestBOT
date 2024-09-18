@@ -1,7 +1,7 @@
 const { ChannelType } = require("discord.js");
 const fs = require("fs");
 
-function allGuilds(client) {
+async function allGuilds(client) {
 	const path = './Guilds.txt'; // Path to the file
 
 	// Check if the file exists
@@ -20,6 +20,7 @@ function allGuilds(client) {
 			});
 		}
 	});
+	if (!client.guilds.cache.size) await client.guilds.fetch();
 	client.guilds.cache.forEach(async guild => {
 		let found = guild.channels.cache.find(
 			(channel) => channel.type === ChannelType.GuildText && channel.permissionsFor(guild.members.me).has("SendMessages")

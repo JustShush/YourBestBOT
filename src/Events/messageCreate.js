@@ -11,6 +11,10 @@ module.exports = {
 		if (client.user.id == message.author.id) return;
 		sticky(message);
 		if (message.author.bot) return;
+
+		if (message.guild.id == "702545447750860931" || message.guild.id == "1054090158779150376")
+			detect(message);
+
 		let data = await Schema.findOne()
 		if (!data) {
 			data = await Schema.create({
@@ -54,90 +58,22 @@ module.exports = {
 			// Check if the prefix is separated by a space
 			const words = message.content.toLowerCase().split(' ');
 			return words.length > 1 && words[0] === prefix.toLowerCase();
-		}) || "<@!${client.user.id}>" || "<@${client.user.id}>";
+		}) || `<@!${client.user.id}>` || `<@${client.user.id}>`;
 		const args = message.content.slice(prefix.length).trim().split(/ +/);
-		const command = args.shift().toLowerCase();
-		if (message.guild.id == "702545447750860931" || message.guild.id == "1054090158779150376")
-			detect(message);
-		if (command === 'steal') {
-			if (!(message.member.permissions.has(PermissionFlagsBits.ManageGuildExpressions))) return message.channel.send({ content: `You don't have the required permissions to run this command.` }).then((msg) => { setTimeout(() => { msg.delete(); }, 5 * 1000); })
-			stealEmoji(message, args);
-		} else if (command == 'eval') {
-			myEval(message, args);
-		} else if (command == 'inv') {
-			getInv(client, message, args);
+		const commandName = args.shift().toLowerCase();
+
+		const command = client.commands.get(commandName) || client.commands.find(cmd => cmd.alias && cmd.alias.includes(commandName));
+
+		if (!command) return;
+
+		try {
+			command.execute(message, args);
+		} catch (err) {
+			console.error(err);
+			message.channel.send('There was an error executing that command!');
 		}
 	},
 };
-
-async function getInv(client, message, args) {
-	if (message.author.id !== '453944662093332490') return message.channel.send("sorry, this command is only for the developer")
-	const guild = await client.guilds.cache.get(args[0]);
-	let found = guild.channels.cache.find(
-		(channel) => channel.type === ChannelType.GuildText && channel.permissionsFor(guild.members.me).has("SendMessages")
-	);
-	let invites = await guild.invites.fetch().catch(err => { message.reply({ content: "couldnt fetch the invites in this server! | " + guild.name + " | " + guild.id }); return; });
-	if (!invites) return;
-	// Check if the bot has any invites for this server
-	const botInvites = await invites.filter((invite) => invite.inviterId === client.user.id);
-	let invite = botInvites.values().next().value;
-	if (botInvites.size <= 0) {
-		invite = await found.createInvite({
-			maxAge: 0,
-			maxUses: 0,
-		}).catch(err => message.reply("couldnt create a new invite! IG Im missing perms in that server \:(", err));
-	}
-	const newEmbed = new EmbedBuilder()
-		.setAuthor({ name: guild.name })
-		.setDescription(`GuildName: \`${guild.name}\` | id: \`${guild.id}\`\nOwner: <@!${guild.ownerId}> | ${guild.ownerId}`)
-		.addFields(
-			{ name: `Number of members:`, value: `${guild.memberCount}` },
-			{ name: `Invite:`, value: `\`discord.gg/${invite.code}\`` }
-		)
-		.setThumbnail(guild.iconURL())
-		.setTimestamp();
-
-	await message.reply({ content: 'discord.gg/' + invite, embeds: [newEmbed]})
-}
-
-async function myEval(message, args) {
-	if (message.author.id !== '453944662093332490') return;
-
-	const command = args.join(" ");
-	if (!command) return message.channel.send("you must write a command ")
-
-	let words = ["token", "destroy", "config"]
-	if (words.some(word => message.content.toLowerCase().includes(word))) {
-		return message.channel.send("Those words are blacklisted!")
-	}
-
-const clean = text => {
-            if (typeof (text) === "string")
-                return text.replace(/`/g, "`" + String.fromCharCode(8203)).replace(/@/g, "@" + String.fromCharCode(8203));
-            else
-                return text;
-        }
-
-	try {
-		let evaled;
-		if (command.includes("await")) evaled = await eval(`async() => ${command}`)();
-		else evaled = await eval(command)
-		if (typeof evaled !== "string") evaled = require('util').inspect(evaled, {depth: 3});
-		
-		const res = clean(evaled);
-
-		if (evaled.length >= 1500) message.channel.send({files: [new AttachmentBuilder(Buffer.from(res, 'utf-8')).setName('Evaled code.txt')]});
-		else message.channel.send({ content: `\`\`\`js\n${evaled}\`\`\`` });
-
-	} catch (error) {
-		const embedfailure = new EmbedBuilder()
-			.setColor("#FF0000")
-			.addFields({ name: `Entrance`, value: `\`\`\`js\n${command}\`\`\`` })
-			.addFields({ name: `Error`, value: `\`\`\`js\n${error}\`\`\` ` })
-
-		message.channel.send({ embeds: [embedfailure] })
-	}
-}
 
 async function detect(message) {
 	const messageLinkRegex = /https:\/\/discord\.com\/channels\/(\d+)\/(\d+)\/(\d+)/;

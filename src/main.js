@@ -29,6 +29,24 @@ for (const folder of commandFolders) {
 	}
 }
 
+client.prefixCmds = new Collection();
+const foldersPathPrefix = path.join(__dirname, 'PrefixCmds');
+const prefixFolders = fs.readdirSync(foldersPathPrefix);
+
+for (const folder of prefixFolders) {
+	const commandsPath = path.join(foldersPathPrefix, folder);
+	const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
+	for (const file of commandFiles) {
+		const filePath = path.join(commandsPath, file);
+		const command = require(filePath);
+		if ('name' in command) {
+			client.prefixCmds.set(command.name, command);
+		} else {
+			console.log(`[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`);
+		}
+	}
+}
+
 const eventsPath = path.join(__dirname, 'Events');
 const eventFiles = fs.readdirSync(eventsPath).filter(file => file.endsWith('.js'));
 

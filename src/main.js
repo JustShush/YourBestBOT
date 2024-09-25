@@ -39,7 +39,7 @@ for (const folder of prefixFolders) {
 	for (const file of commandFiles) {
 		const filePath = path.join(commandsPath, file);
 		const command = require(filePath);
-		if ('name' in command) {
+		if ('name' in command && 'execute' in command) {
 			client.prefixCmds.set(command.name, command);
 		} else {
 			console.log(`[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`);

@@ -1,4 +1,4 @@
-const { Message } = require('discord.js');
+const { Message, PermissionFlagsBits } = require('discord.js');
 const { stealEmoji } = require('../../functions/stealEmoji.js');
 
 module.exports = {

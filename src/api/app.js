@@ -1,6 +1,8 @@
+// https://api.yourbestbot.pt
 const color = require('colors');
 const express = require('express');
 const app = express();
+const { getTimestamp } = require("../functions/utils.js");
 const port = process.env.PORT || 80
 
 app.use((req, res, next) => {
@@ -8,6 +10,8 @@ app.use((req, res, next) => {
 	res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
 	res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 	res.setHeader('Access-Control-Allow-Credentials', 'true');
+
+	console.log(color.yellow(`[${getTimestamp()}]`) + ` ${req.method} ${req.url} | ${req.ip}`);
 
 	next();
 });
@@ -17,6 +21,7 @@ app.options('*', (req, res) => res.status(200).json());
 module.exports.load = (client) => {
 	app.use(express.json());
 
+	app.get("/", (res) => require("./root.js")(res));
 	app.get("/membercount/:id", (req, res) => require("./membercount.js")(req, res, client));
 	app.get("/servercount/", (req, res) => require("./servercount.js")(req, res, client));
 	app.post("/votes", (req, res) => require("./votes.js")(req, res, client));

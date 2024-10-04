@@ -7,7 +7,10 @@ const reqNumber = {
 }
 
 module.exports = model("Votes", new Schema({
-	UserId: reqNumber,
+	UserId: {
+		type: String,
+		default: null
+	},
 	last: {
 		type: String,
 		default: null

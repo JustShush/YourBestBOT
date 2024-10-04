@@ -14,6 +14,8 @@ module.exports = {
 	 */
 	async execute(client) {
 
+		connect(client.config.MONGO_URI, {}).then(() => console.log(colors.brightGreen("Connected to mongoDB")));
+
 		const options = [{
 			type: ActivityType.Watching,
 			text: `Over {servers} servers! 🙂`,
@@ -131,7 +133,11 @@ module.exports = {
 		cron.schedule('0 0 1 * *', monthlyUpdate);
 		cron.schedule('0 0 * * 0', weekUpdate);
 		//cron.schedule('0 0 * * *', dayUpdate);
-		cron.schedule('0 * * * *', RVotingRole); // run every hour
+
+		await RVotingRole(client);
+		setInterval(() => {
+			RVotingRole(client).catch((err) => console.log(err));
+		}, 600_000); // every hour 3_600_000
 
 		/* const users = await UserStats.find() // get all the users
 		users.forEach(async (u) => {
@@ -156,8 +162,6 @@ module.exports = {
 		})
 
 		allGuilds(client);
-
-		connect(client.config.MONGO_URI, {}).then(() => console.log(colors.brightGreen("Connected to mongoDB")));
 
 		console.log(colors.magenta.bold(`${client.user.username} is online!\nIn ${client.guilds.cache.size} Servers!`));
 		api.load(client);

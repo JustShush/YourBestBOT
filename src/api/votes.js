@@ -38,7 +38,7 @@ module.exports = async (req, res, client) => {
 	if (!userData) {
 		userData = await UserStats.create({
 			User: user.username,
-			UserId: user.id,
+			UserId: obj.user,
 			Avatar: user.avatar,
 			Banner: user.banner || "",
 			Messages: 0,
@@ -60,7 +60,7 @@ module.exports = async (req, res, client) => {
 	await stats.save();
 
 	let avatar = user.avatarURL();
-	if (user.avatar) avatar = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`
+	if (user.avatar) avatar = `https://cdn.discordapp.com/avatars/${obj.user}/${user.avatar}.png`
 
 	if (!client.guilds.cache.size) await client.guilds.fetch();
 	const webex = await client.guilds.cache.get(client.config.config.votes.webex.guildId);
@@ -75,9 +75,9 @@ module.exports = async (req, res, client) => {
 	for (const ch of channels) {
 		if (webex) {
 			if (!webex.members.cache.size) await webex.members.fetch();
-			const member = await webex.members.cache.get(user.id);
+			const member = await webex.members.cache.get(obj.user);
 			if (!member) {
-				console.log("couldn't find the ybb member" + __filename);
+				console.log("couldn't find the ybb member " + __filename);
 			} else {
 				const role = await webex.roles.cache.get(client.config.config.votes.webex.roleId);
 				if (!webex.roles.cache.size) await webex.roles.fetch();
@@ -90,9 +90,9 @@ module.exports = async (req, res, client) => {
 		}
 		if (sup) {
 			if (!sup.members.cache.size) await sup.members.fetch();
-			const member = await sup.members.cache.get(user.id);
+			const member = await sup.members.cache.get(obj.user);
 			if (!member) {
-				console.log("couldn't find the sup member" + __filename);
+				console.log("couldn't find the sup member " + user.id + " " + __filename);
 			} else {
 				const role = await sup.roles.cache.get(client.config.config.votes.support.roleId);
 				if (!sup.roles.cache.size) await sup.roles.fetch();
@@ -120,7 +120,7 @@ module.exports = async (req, res, client) => {
 	let votes = await Votes.findOne({ UserId: obj.user });
 	if (!votes) {
 		votes = await Votes.create({
-			UserId: user.id,
+			UserId: obj.user,
 			last: Date.now(),
 		})
 	} else {

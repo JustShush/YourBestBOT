@@ -144,7 +144,6 @@ module.exports = {
 					data.cmds[i].uses = data.cmds[i].uses + 1;
 
 				data.NUsedCmd = data.NUsedCmd + 1;
-				//console.log(data.NUsedCmd, "cmds!");
 				await data.save();
 
 				let userData = await UserStats.findOne({ UserId: interaction.user.id });

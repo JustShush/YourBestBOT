@@ -21,7 +21,6 @@ app.options('*', (req, res) => res.status(200).json());
 module.exports.load = (client) => {
 	app.use(express.json());
 
-	app.get("/", (res) => require("./root.js")(res));
 	app.get("/membercount/:id", (req, res) => require("./membercount.js")(req, res, client));
 	app.get("/servercount/", (req, res) => require("./servercount.js")(req, res, client));
 	app.post("/votes", (req, res) => require("./votes.js")(req, res, client));

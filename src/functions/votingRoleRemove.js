@@ -24,7 +24,7 @@ async function RVotingRole(client) {
 				//? DM the member with the remainder to vote again!
 
 				const newEmbed = new EmbedBuilder()
-					.setTitle(`<3 Yoo, ${ybbMember.user.globalName}`)
+					.setTitle(`<3 Yoo, ${ybbMember.member.user.globalName}`)
 					.setDescription(`<:dot:1289304871467483216> **Looks like you can vote again for me on top.gg! \<3**\n<:dot:1289304871467483216> Vote again to keep awesome perks such as a [voter role in our community server](${client.config.topgg}) and more..\n\nThank you for voting \<3`)
 					.setColor("#2B2D31")
 

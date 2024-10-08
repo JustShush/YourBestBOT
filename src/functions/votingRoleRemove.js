@@ -19,8 +19,11 @@ async function RVotingRole(client) {
 	data.forEach(async (user) => {
 		if (Date.now() - user.last >= timer) {
 			try {
+				console.log(user);
 				if (!ybbS.members.cache.size) await ybbS.members.fetch();
+				console.log(ybbS.members.cache[0]);
 				const ybbMember = await ybbS.members.cache.get(user.UserId);
+				console.log(ybbMember)
 				//? DM the member with the remainder to vote again!
 
 				const newEmbed = new EmbedBuilder()

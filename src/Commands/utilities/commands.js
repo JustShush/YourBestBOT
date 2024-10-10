@@ -51,6 +51,7 @@ module.exports = {
 			economyArray = [];
 			otherArray = [];
 			setupArray = [];
+			votersArray = [];
 			
 			client.commands.map(async (c) => {
 				if (c.type === "Utility") {
@@ -58,19 +59,16 @@ module.exports = {
 					//utilityArray.push(`\`${c.name}\``);
 				} else if (c.type === "Fun") {
 					getSubcommand(interaction, funArray, c.name);
-					//funArray.push(`\`${c.name}\``);
 				} else if (c.type === "Moderation") {
 					getSubcommand(interaction, moderationArray, c.name);
-					//moderationArray.push(`\`${c.name}\``);
 				} else if (c.type === "Economy") {
 					getSubcommand(interaction, economyArray, c.name);
-					//economyArray.push(`\`${c.name}\``);
 				} else if (c.type === "Other") {
 					getSubcommand(interaction, otherArray, c.name);
-					//otherArray.push(`\`${c.name}\``);
 				} else if (c.type === "Setup") {
 					getSubcommand(interaction, setupArray, c.name);
-					//setupArray.push(`\`${c.name}\``);
+				} else if (c.type === "Voter") {
+					getSubcommand(interaction, votersArray, c.name);
 				}
 			});
 
@@ -89,6 +87,9 @@ module.exports = {
 	${setupArray.join(' ')}
 	Other Commands:
 	${otherArray.join(' ')}
+
+	> **Voters exclusive Commands:**\n-# To get access to this commands run </vote:1294067743296847944> for more info \<3
+	${votersArray.join(' ')}
 
 	*Legacy(+) commands*
 	${legacyArr.join(", ")}

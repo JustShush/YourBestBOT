@@ -28,7 +28,7 @@ module.exports = {
 
 		const userData = await UserStatsSchema.findOne({ UserId: interaction.user.id });
 		if (!userData) return console.log('ERROR -> getting user stats');
-		if (userData.isVoter) baseMsg = baseMsg + `\nyou have already voted today, come back <t:${userData.Votes.last + 43200}:R> to vote again!`
+		if (userData.isVoter) baseMsg = baseMsg + `\n\nyou have already voted today, come back <t:${Math.floor((userData.Votes.last / 1000) + 43200)}:R> to vote again!`
 
 		newEmbed.setDescription(baseMsg);
 

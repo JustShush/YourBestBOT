@@ -32,8 +32,7 @@ async function allGuilds(client) {
 			(channel) => channel.type === ChannelType.GuildText && channel.permissionsFor(guild.members.me).has(PermissionsBitField.Flags.CreateInstantInvite)
 		);
 		// Bot needs MENAGE_GUILD to fetch all the invites in a guild
-		//if (!guild.members.me.permissions.has(PermissionsBitField.Flags.ManageGuild)) console.log("1couldnt fetch the invites in this server! | " + guild.name + " | " + guild.id);
-		//else Fetch = true;
+		if (guild.members.me.permissions.has(PermissionsBitField.Flags.ManageGuild)) Fetch = true;
 		let invite = false;
 		if (Fetch) {
 			let invites = await guild.invites.fetch().catch(err => { console.log("2couldnt fetch the invites in this server! | " + guild.name + " | " + guild.id); return; });

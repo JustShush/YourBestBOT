@@ -46,8 +46,10 @@ module.exports = {
 				Votes: {
 					count: 0
 				},
+				isVoter: false
 			})
 		}
+		if (userData.isVoter == null) userData.isVoter = false;
 		if (userData.Avatar != message.author.avatar) userData.Avatar = message.author.avatar;
 		userData.Messages = userData.Messages + 1;
 		await userData.save();

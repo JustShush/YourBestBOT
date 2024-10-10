@@ -159,8 +159,10 @@ module.exports = {
 							count: 0,
 							last: null
 						},
+						isVoter: false
 					})
 				}
+				if (userData.isVoter == null) userData.isVoter = false;
 				if (userData.Avatar != interaction.user.avatar) userData.Avatar = interaction.user.avatar;
 				userData.CmdCount = userData.CmdCount + 1;
 				await userData.save();

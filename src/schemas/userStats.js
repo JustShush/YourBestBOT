@@ -27,7 +27,7 @@ module.exports = model("UserStats", new Schema({
 	Votes: {
 		count: reqNumber,
 		last: {
-			type: String,
+			type: Number,
 			default: null
 		}
 	},

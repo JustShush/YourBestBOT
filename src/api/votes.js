@@ -47,11 +47,13 @@ module.exports = async (req, res, client) => {
 				count: 0,
 				last: Date.now()
 			},
+			isVoter: false
 		})
 	}
 	if (!userData.Votes) userData.Votes = {};
 	userData.Votes.count += 1;
 	userData.Votes.last = Date.now();
+	userData.isVoter = true;
 	await userData.save().catch((err) => console.log("error idk", err));
 	// General Stats
 	const stats = await Stats.findOne();

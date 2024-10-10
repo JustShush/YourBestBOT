@@ -11,6 +11,12 @@ const reqNumber = {
 	default: 0
 }
 
+const reqBoolean = {
+	type: Boolean,
+	required: true,
+	defalut: false
+}
+
 module.exports = model("UserStats", new Schema({
 	User: reqString,
 	UserId: reqNumber,
@@ -24,6 +30,7 @@ module.exports = model("UserStats", new Schema({
 			type: String,
 			default: null
 		}
-	}
+	},
+	isVoter: reqBoolean
 
 }), "UserStats")

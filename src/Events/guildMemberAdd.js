@@ -1,5 +1,5 @@
 const color = require("colors");
-const { EmbedBuilder, GuildMember } = require("discord.js");
+const { EmbedBuilder, GuildMember, ActionRowBuilder, ButtonBuilder } = require("discord.js");
 const Schema = require("../schemas/welcome");
 const db = require("../schemas/nickSys");
 
@@ -42,10 +42,25 @@ module.exports = {
 			)
 			.setFooter({ text: `We are now a server with ${guild.memberCount} members \<3` });
 
-		console.log(`${user.tag} has joined ${data.GuildName}`.brightPurple);
+			console.log(`${user.tag} has joined ${data.GuildName}`.brightPurple);
 
 		try {
-			Channel.send({ content: `<@${member.id}>`, embeds: [welEmbed], ephemeral: true });
+			if (member.guild.id == "702545447750860931") {
+				const row = new ActionRowBuilder()
+				.addComponents(
+					new ButtonBuilder()
+						.setLabel("Rules")
+						.setEmoji("🔗")
+						.setURL(`https://discord.com/channels/${member.guild.id}/722524614768590889`)
+						.setStyle(ButtonStyle.Link),
+					new ButtonBuilder()
+						.setLabel(`${member.guild.memberCount}`)
+						.setStyle(ButtonStyle.Secondary)
+						.setDisabled(true)
+				);
+				Channel.send({ content: `<@${member.id}>`, embeds: [welEmbed], components: [row] });
+			} else
+				Channel.send({ content: `<@${member.id}>`, embeds: [welEmbed] });
 		} catch (err) {
 			console.log(err);
 			console.log("error on guildMemberAdd\nthey prob deleted the channel.");

@@ -4,7 +4,7 @@ const UserStatsSchema = require('../../schemas/userStats.js');
 
 module.exports = {
 	name: "nsfw",
-	description: "Share your code using this links.",
+	description: "Get Various NSFW imgs/gifs",
 	permission: "`SEND_MESSAGES`",
 	subcommand: true,
 	type: "Voter",

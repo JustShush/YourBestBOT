@@ -15,6 +15,6 @@ module.exports = {
 	 * @param {ChatInputCommandInteraction} interaction
 	 */
 	execute(interaction) {
-		interaction.reply({ content: 'Please share your source code using https://srcshare.io/or https://sourceb.in.', ephemeral: true });
+		interaction.reply({ content: 'Please share your source code using https://sourceb.in.', ephemeral: true });
 	}
 }

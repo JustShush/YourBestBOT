@@ -5,9 +5,15 @@ module.exports = model("economy_checker", new Schema({
 	Guild: String,
 	User: String,
 	UserTag: String,
-	balance: Number,
+	balance: {
+		type: Number,
+		default: 0
+	},
 	inventory: Array,
-	ask_cooldown: Number,
+	ask_cooldown: {
+		type: Number,
+		default: 0
+	},
 	search_cooldown: Number,
 	daily_cooldown: Number,
 	daily_streak: Number,

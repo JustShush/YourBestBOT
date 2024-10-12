@@ -16,12 +16,12 @@ module.exports = {
 	async execute(interaction, client) {
 		try {
 
-			const userData = await EconomyChecker.findOne({
+			let userData = await EconomyChecker.findOne({
 				Guild: interaction.guild.id,
 				User: interaction.user.id,
 			});
 			if (!userData) {
-				await EconomyChecker.create({
+				userData = await EconomyChecker.create({
 					GuildName: interaction.guild.name,
 					Guild: interaction.guild.id,
 					User: interaction.user.id,
@@ -32,11 +32,11 @@ module.exports = {
 				});
 			}
 
-			const jobData = await jobsChecker.findOne({
+			let jobData = await jobsChecker.findOne({
 				Guild: interaction.guild.id
 			});
 			if (!jobData) {
-				await jobsChecker.create({
+				jobData = await jobsChecker.create({
 					GuildName: interaction.guild.name,
 					Guild: interaction.guild.id,
 					User: interaction.user.id,

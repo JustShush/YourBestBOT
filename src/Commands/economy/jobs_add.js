@@ -35,7 +35,7 @@ module.exports = {
 			let Time = options.getNumber("time");
 			let Salary = options.getNumber("salary");
 
-			const userData = await EconomyChecker.findOne({
+			let userData = await EconomyChecker.findOne({
 				Guild: interaction.guild.id
 			});
 			if (!userData) {

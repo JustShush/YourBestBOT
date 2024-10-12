@@ -22,12 +22,12 @@ module.exports = {
 			const resColor = colors[color];
 			// end of the color randomization
 
-			const userData = await EconomyChecker.findOne({
+			let userData = await EconomyChecker.findOne({
 				Guild: interaction.guild.id,
 				User: interaction.user.id,
 			});
 			if (!userData) {
-				await EconomyChecker.create({
+				userData = await EconomyChecker.create({
 					GuildName: interaction.guild.name,
 					Guild: interaction.guild.id,
 					User: interaction.user.id,
@@ -38,11 +38,11 @@ module.exports = {
 				});
 			}
 
-			const jobData = await JobChecker.findOne({
+			let jobData = await JobChecker.findOne({
 				Guild: interaction.guild.id,
 			});
 			if (!jobData) {
-				await JobChecker.create({
+				jobData = await JobChecker.create({
 					GuildName: interaction.guild.name,
 					Guild: interaction.guild.id,
 					User: interaction.user.id,

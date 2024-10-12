@@ -47,12 +47,12 @@ module.exports = {
 			}
 
 			if (target !== null) {
-				const targetdb = await EconomyChecker.findOne({
+				let targetdb = await EconomyChecker.findOne({
 					Guild: interaction.guild.id,
 					User: interaction.user.id
 				});
 				if (!targetdb) {
-					await EconomyChecker.create({
+					targetdb = await EconomyChecker.create({
 						GuildName: interaction.guild.name,
 						Guild: interaction.guild.id,
 						User: interaction.user.id,

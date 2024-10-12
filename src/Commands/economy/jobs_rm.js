@@ -27,7 +27,7 @@ module.exports = {
 
 			if (Number < 1 || Number > 5) return interaction.reply({ content: `**Invalied input!**\nThere is no job with that number.Please verify the numbers of the jobs by running the command </work-list:1052682873158770869>`, ephemeral: true });
 
-			const userData = await EconomyChecker.findOne({
+			let userData = await EconomyChecker.findOne({
 				Guild: interaction.guild.id
 			});
 			if (!userData) {

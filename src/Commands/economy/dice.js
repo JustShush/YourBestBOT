@@ -29,12 +29,12 @@ module.exports = {
 
 			const Coins = options.getNumber("amount");
 
-			const userData = await EconomyChecker.findOne({
+			let userData = await EconomyChecker.findOne({
 				Guild: interaction.guild.id,
 				User: interaction.user.id,
 			});
 			if (!userData) {
-				await EconomyChecker.create({
+				userData = await EconomyChecker.create({
 					GuildName: interaction.guild.name,
 					Guild: interaction.guild.id,
 					User: interaction.user.id,

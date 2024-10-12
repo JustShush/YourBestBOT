@@ -21,10 +21,10 @@ module.exports = {
 			const resColor = colors[color];
 			// end of the color randomization
 
-			const userData = await EconomyChecker.findOne({ Guild: interaction.guild.id, User: interaction.user.id });
+			let userData = await EconomyChecker.findOne({ Guild: interaction.guild.id, User: interaction.user.id });
 
 			if (!userData) {
-				await EconomyChecker.create({ Guild: interaction.guild.id, User: interaction.user.id, balance: 0 });
+				userData = await EconomyChecker.create({ Guild: interaction.guild.id, User: interaction.user.id, balance: 0 });
 				return interaction.reply({ embeds: [new EmbedBuilder().setDescription("You haven't create an account on our bank please run the command again \:).")] });
 			}
 			var users = await EconomyChecker.find({ Guild: interaction.guild.id }).sort("-balance");

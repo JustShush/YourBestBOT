@@ -16,7 +16,7 @@ module.exports = {
 	async execute(interaction, client) {
 		try {
 
-			const userData = await EconomyChecker.findOne({
+			let userData = await EconomyChecker.findOne({
 				Guild: interaction.guild.id,
 				User: interaction.user.id,
 			});
@@ -29,7 +29,7 @@ module.exports = {
 				});
 			}
 
-			const jobData = await jobsChecker.findOne({
+			let jobData = await jobsChecker.findOne({
 				Guild: interaction.guild.id
 			});
 			if (!jobData) {
@@ -49,9 +49,6 @@ module.exports = {
 				worked = job.Profession;
 			});
 
-			//console.log(userData.Profession)
-			//console.log(jobData.Jobs[userData.Profession - 1].Profession)
-			//console.log(jobData.Jobs[Job - 1].Profession)
 			const embed = new EmbedBuilder()
 				.setTitle(`${interaction.user.username} you are no longer working has a \`${jobData.Jobs[userData.Profession - 1].Profession}\``)
 				.setColor("#2f3136")

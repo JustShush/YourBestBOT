@@ -16,13 +16,13 @@ async function RVotingRole(client) {
 	if (!client.guilds.cache.size) await client.guilds.fetch().catch((err) => console.log(err));
 	const ybbS = await client.guilds.cache.get(ybb);
 	if (!ybbS) return console.log('Can\'t find the ybb server to remove vote role');
-	
+
 	data.forEach(async (user) => {
 		if (Date.now() - user.last >= timer) {
 			try {
 				if (!ybbS.members.cache.size) await ybbS.members.fetch();
 				let ybbMember = await ybbS.members.cache.get(user.UserId);
-				if (!ybbMember) ybbMember = await ybbS.members.fetch(user.UserId);
+				if (!ybbMember) ybbMember = await ybbS.members.fetch(user.UserId).catch((err) => console.log(`${user.UserId} is not in the server`, err));
 
 				//? DM the member with the remainder to vote again!
 				const newEmbed = new EmbedBuilder()
@@ -44,7 +44,7 @@ async function RVotingRole(client) {
 				if (!ybbMember) console.log('Couldn\'t get the ybb member voting');
 				await ybbMember.roles.remove(ybbR).catch(console.error);
 
-				const userStats = await UserStatsSchema.findOne({ UserId: user.UserId});
+				const userStats = await UserStatsSchema.findOne({ UserId: user.UserId });
 				userStats.isVoter = false;
 				await userStats.save();
 

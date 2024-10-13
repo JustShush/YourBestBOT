@@ -18,27 +18,30 @@ async function RVotingRole(client) {
 	if (!ybbS) return console.log('Can\'t find the ybb server to remove vote role');
 
 	data.forEach(async (user) => {
+		let send = true;
 		if (Date.now() - user.last >= timer) {
 			try {
 				if (!ybbS.members.cache.size) await ybbS.members.fetch();
 				let ybbMember = await ybbS.members.cache.get(user.UserId);
-				if (!ybbMember) ybbMember = await ybbS.members.fetch(user.UserId).catch((err) => console.log(`${user.UserId} is not in the server`, err));
+				if (!ybbMember) ybbMember = await ybbS.members.fetch(user.UserId).catch((err) => console.log(`${user.UserId} is not in the server`, err), send = false);
 
-				//? DM the member with the remainder to vote again!
-				const newEmbed = new EmbedBuilder()
+				if (send) {
+					//? DM the member with the remainder to vote again!
+					const newEmbed = new EmbedBuilder()
 					.setTitle(`<3 Yoo, ${ybbMember.user.globalName}`)
 					.setDescription(`<:dot:1289304871467483216> **Looks like you can vote again for me on top.gg! \<3**\n<:dot:1289304871467483216> Vote again to keep awesome perks such as a [voter role in our community server](${client.config.topgg}) and more..\n\nThank you for voting \<3`)
 					.setColor("#2B2D31")
 
-				const row = new ActionRowBuilder()
+					const row = new ActionRowBuilder()
 					.addComponents(
 						new ButtonBuilder()
-							.setLabel("Vote for YourBestBot")
-							.setStyle(ButtonStyle.Link)
-							.setURL(`${Config.topgg}`)
+						.setLabel("Vote for YourBestBot")
+						.setStyle(ButtonStyle.Link)
+						.setURL(`${Config.topgg}`)
 					)
 
-				await ybbMember.send({ embeds: [newEmbed], components: [row] });
+					await ybbMember.send({ embeds: [newEmbed], components: [row] });
+				}
 
 				//? Remove the Voting role from the member
 				if (!ybbMember) console.log('Couldn\'t get the ybb member voting');

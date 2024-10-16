@@ -23,13 +23,13 @@ module.exports = {
 				.setTitle('**Help Menu**')
 				.addFields({
 					name: 'See all the commands using:',
-					value: "</commands:1052662424718815282>"
+					value: "</commands:1222174029813776518>"
 				}, {
 					name: 'If you need any extra help or have any question feel free to join YourBestBOT\'s support server using:',
-					value: "</support:1052662424790106150> or click [here](https://discord.gg/uaZjU2pdVd)"
+					value: "</support:1222174029813776522> or click [here](https://discord.gg/uaZjU2pdVd)"
 				}, {
 					name: 'Invite me to your server using:',
-					value: '</bot:1052662424790106148>'
+					value: '</bot:1222174029813776517>'
 				},)
 			await interaction.reply({ embeds: [embed] })
 		} catch (error) {

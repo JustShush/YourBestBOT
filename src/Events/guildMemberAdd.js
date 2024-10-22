@@ -23,9 +23,12 @@ module.exports = {
 
 		if (!data) return console.log(`\n${user.tag} joined in ${guild.name}\nerror in file: \"guildMemberAdd.js\"`); // this server hasnt setup the welcome command
 		let Channel = guild.channels.cache.get(data.Channel);
-		let MSG = data.MSG;
-		if (!MSG) MSG = "Welcome to the server.";
+		let preMSG = data.MSG || "Welcome to the server.";
 		let Role = data.Role;
+
+		const MSG = preMSG.replaceAll('{member-count}', member.guild.memberCount)
+			.replaceAll('{user-mention}', member)
+			.replaceAll('{server-name}', member.guild.name)
 
 		if (Role) {
 			member.roles.add(Role);
@@ -54,6 +57,7 @@ module.exports = {
 						.setURL(`https://discord.com/channels/${member.guild.id}/722524614768590889`)
 						.setStyle(ButtonStyle.Link),
 					new ButtonBuilder()
+						.setCustomId('z')
 						.setLabel(`${member.guild.memberCount}`)
 						.setStyle(ButtonStyle.Secondary)
 						.setDisabled(true)

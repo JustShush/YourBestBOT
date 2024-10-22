@@ -29,6 +29,7 @@ module.exports = {
 		const MSG = preMSG.replaceAll('{member-count}', member.guild.memberCount)
 			.replaceAll('{user-mention}', member)
 			.replaceAll('{server-name}', member.guild.name)
+			.replaceAll('{rules}', member.guild.rulesChannel)
 
 		if (Role) {
 			member.roles.add(Role);

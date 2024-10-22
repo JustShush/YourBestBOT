@@ -44,7 +44,7 @@ module.exports = {
 			.setDescription('pussy pictures, includes boobies too')
 		)
 		.setDefaultMemberPermissions(PermissionFlagsBits.UseApplicationCommands, PermissionFlagsBits.SendMessages)
-		.setDMPermission(false)
+		.setDMPermission(true)
 		.setNSFW(false),
 	/**
 	 * @param {ChatInputCommandInteraction} interaction

@@ -12,15 +12,15 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName("giveaway")
 		.setDescription("An advanced giveaway system.")
-		.addSubcommand( sub => sub
+		.addSubcommand(sub => sub
 			.setName('start')
 			.setDescription('Starts a giveaway.')
-			.addStringOption( o => o
+			.addStringOption(o => o
 				.setName('prize')
 				.setDescription('The prize of the giveaway. (1 month of nitro)')
 				.setRequired(true)
 			)
-			.addIntegerOption( o => o
+			.addIntegerOption(o => o
 				.setName('winners')
 				.setDescription('The number of winners')
 				.setRequired(true)
@@ -31,7 +31,7 @@ module.exports = {
 				.setRequired(true)
 			)
 		)
-		.addSubcommand( sub => sub
+		.addSubcommand(sub => sub
 			.setName('end')
 			.setDescription('Ends a giveaway.')
 			.addStringOption(o => o
@@ -40,7 +40,7 @@ module.exports = {
 				.setRequired(true)
 			)
 		)
-		.addSubcommand( sub => sub
+		.addSubcommand(sub => sub
 			.setName('pause')
 			.setDescription('Pauses a giveaway.')
 			.addStringOption(o => o
@@ -49,7 +49,7 @@ module.exports = {
 				.setRequired(true)
 			)
 		)
-		.addSubcommand( sub => sub
+		.addSubcommand(sub => sub
 			.setName('resume')
 			.setDescription('Resumes a giveaway.')
 			.addStringOption(o => o
@@ -58,7 +58,7 @@ module.exports = {
 				.setRequired(true)
 			)
 		)
-		.addSubcommand( sub => sub
+		.addSubcommand(sub => sub
 			.setName('reroll')
 			.setDescription('Resumes a giveaway.')
 			.addStringOption(o => o
@@ -67,7 +67,7 @@ module.exports = {
 				.setRequired(true)
 			)
 		)
-		.addSubcommand( sub => sub
+		.addSubcommand(sub => sub
 			.setName('delete')
 			.setDescription('Deletes a giveaway.')
 			.addStringOption(o => o
@@ -91,10 +91,10 @@ module.exports = {
 
 		const gwDisableBtn = new ActionRowBuilder().addComponents(
 			new ButtonBuilder()
-			.setCustomId('z')
-			.setLabel('🎉')
-			.setStyle(ButtonStyle.Secondary)
-			.setDisabled(true)
+				.setCustomId('z')
+				.setLabel('🎉')
+				.setStyle(ButtonStyle.Secondary)
+				.setDisabled(true)
 		);
 
 		if (options.getSubcommand() !== 'start') {
@@ -137,9 +137,9 @@ module.exports = {
 
 				row = new ActionRowBuilder().addComponents(
 					new ButtonBuilder()
-					.setCustomId('giveawayBtn')
-					.setLabel('🎉')
-					.setStyle(ButtonStyle.Secondary)
+						.setCustomId('giveawayBtn')
+						.setLabel('🎉')
+						.setStyle(ButtonStyle.Secondary)
 				);
 
 				const gwMsg = await interaction.channel.send({ embeds: [embed], components: [row] });
@@ -175,17 +175,17 @@ module.exports = {
 					interaction.reply({ content: 'Giveaway Ended!', ephemeral: true });
 
 					embed = new EmbedBuilder()
-					.setTitle('`🛑` Giveaway Ended!')
-					.setDescription(`This giveaway ended <t:${Math.floor(schema.EndTimestamp / 1000)}:R>`)
-					.setColor('#FFFFFF')
-					.addFields(
-						{ name: '`👤` Entries', value: `\`${schema.Participants.length}\``, inline: true },
-						{ name: '`🏆` Winners', value: '*No one entered the giveaway*', inline: true }
-					)
+						.setTitle('`🛑` Giveaway Ended!')
+						.setDescription(`This giveaway ended <t:${Math.floor(schema.EndTimestamp / 1000)}:R>`)
+						.setColor('#FFFFFF')
+						.addFields(
+							{ name: '`👤` Entries', value: `\`${schema.Participants.length}\``, inline: true },
+							{ name: '`🏆` Winners', value: '*No one entered the giveaway*', inline: true }
+						)
 
 					const endMessage = await message.edit({ embeds: [newEmbed], components: [row] });
 
-					endMessage.reply({ content: '*Giveaway ended, but no one joined the giveaway.*'});
+					endMessage.reply({ content: `*Giveaway ended, but no one joined the giveaway.*[↗](https://discord.com/channels/${endMessage.guildId}/${endMessage.channelId}/${endMessage.id})` });
 
 					schema.Ended = true;
 					await schema.save().catch(err => console.log(err));
@@ -193,17 +193,17 @@ module.exports = {
 					interaction.reply({ embeds: [new EmbedBuilder().setDescription('Ended the giveaway!').setColor('White')], ephemeral: true });
 					mentions = shuffledWinners.map(w => `<@${w}>`).join(', ');
 					newEmbed = new EmbedBuilder()
-					.setTitle('`🛑` Giveaway Ended!')
-					.setDescription(`This giveaway ended <t:${Math.floor(schema.EndTimestamp / 1000)}:R>`)
-					.setColor('#FFFFFF')
-					.addFields(
-						{ name: '`👤` Entries', value: `\`${schema.Participants.length}\``, inline: true },
-						{ name: '`🏆` Winners', value: `${mentions}`, inline: true }
-					)
+						.setTitle('`🛑` Giveaway Ended!')
+						.setDescription(`This giveaway ended <t:${Math.floor(schema.EndTimestamp / 1000)}:R>`)
+						.setColor('#FFFFFF')
+						.addFields(
+							{ name: '`👤` Entries', value: `\`${schema.Participants.length}\``, inline: true },
+							{ name: '`🏆` Winners', value: `${mentions}`, inline: true }
+						)
 
 					const endMessage = await message.edit({ embeds: [newEmbed], components: [row] });
 
-					endMessage.reply({ content: `Congratularions ${mentions}! You won the **${schema.Prize}** giveaway!`});
+					endMessage.reply({ content: `Congratulations ${mentions}! You won the **${schema.Prize}** giveaway![↗](https://discord.com/channels/${endMessage.guildId}/${endMessage.channelId}/${endMessage.id})` });
 
 					schema.Ended = true;
 					await schema.save().catch(err => console.log(err));
@@ -221,15 +221,16 @@ module.exports = {
 				schema.Paused = true;
 				await schema.save().catch((err) => console.log(err));
 
-				await interaction.reply({ content: 'Giveaway paused successfully!', ephemeral: true });
-
 				embed = new EmbedBuilder()
 					.setTitle('`⏹️` Giveaway paused')
 					.setDescription(`This giveaway was paused by: ${interaction.user.displayName}\nPaused: <t:${Math.floor(new Date().getTime() / 1000)}:R>\nRemaining Time: <t:${Math.floor(remaniningTime / 1000)}`)
 					.setColor('White');
 
-					row = gwDisableBtn;
-					message.edit({ embeds: [embed], components: [row] });
+				row = gwDisableBtn;
+				message.edit({ embeds: [embed], components: [row] });
+
+				await interaction.reply({ content: `Giveaway paused successfully![↗](https://discord.com/channels/${message.guildId}/${message.channelId}/${message.id})`, ephemeral: true });
+
 				break;
 			case 'resume':
 				if (schema.Ended)
@@ -263,14 +264,14 @@ module.exports = {
 
 				row = new ActionRowBuilder().addComponents(
 					new ButtonBuilder()
-					.setCustomId('giveawayBtn')
-					.setLabel('🎉')
-					.setStyle(ButtonStyle.Secondary)
+						.setCustomId('giveawayBtn')
+						.setLabel('🎉')
+						.setStyle(ButtonStyle.Secondary)
 				);
 
 				message.edit({ embeds: [embed], components: [row] });
 
-				await interaction.reply({ content: 'Giveaway resumed successfully!', ephemeral: true });
+				await interaction.reply({ content: `Giveaway resumed successfully![↗](https://discord.com/channels/${message.guildId}/${message.channelId}/${message.id})`, ephemeral: true });
 				break;
 
 			case 'reroll':
@@ -296,11 +297,11 @@ module.exports = {
 					)
 					.setColor('FFFFFF');
 
-					row = gwDisableBtn;
+				row = gwDisableBtn;
 
-					const rerollMsg = await message.edit({ embeds: [embed], components: [row] });
+				const rerollMsg = await message.edit({ embeds: [embed], components: [row] });
 
-					rerollMsg.reply({ content: `Congratulations ${mentions}! You won the rerolled giveaway for **${schema.Prize}**!`});
+				rerollMsg.reply({ content: `Congratulations ${mentions}! You won the rerolled giveaway for **${schema.Prize}**![↗](https://discord.com/channels/${rerollMsg.guildId}/${rerollMsg.channelId}/${rerollMsg.id})` });
 				break;
 
 			case 'delete':

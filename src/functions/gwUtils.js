@@ -71,7 +71,7 @@ async function checkGWs(client) {
 
 				const endMessage = await message.edit({ embeds: [newEmbed], components: [row] });
 
-				endMessage.reply({ content: '*Giveaway ended, but no one joined the giveaway.*' });
+				endMessage.reply({ content: `*Giveaway ended, but no one joined the giveaway.*[↗](https://discord.com/channels/${endMessage.guildId}/${endMessage.channelId}/${endMessage.id})` });
 
 				gw.Ended = true;
 				await gwSchema.save().catch(err => console.log(err));
@@ -92,7 +92,7 @@ async function checkGWs(client) {
 
 				const endMessage = await message.edit({ embeds: [newEmbed], components: [row] });
 
-				endMessage.reply({ content: `Congratularions ${mentions}! You won the **${gw.Prize}** giveaway!` });
+				endMessage.reply({ content: `Congratularions ${mentions}! You won the **${gw.Prize}** giveaway![↗](https://discord.com/channels/${endMessage.guildId}/${endMessage.channelId}/${endMessage.id})` });
 
 				gw.Ended = true;
 				await gwSchema.save().catch(err => console.log(err));
@@ -147,4 +147,4 @@ async function gwBtn(interaction) {
 
 }
 
-module.exports = { checkGWs, shuffledArray, gwBtn };
+module.exports = { checkGWs, shuffledArray, gwBtn, deleteExpiredGW };

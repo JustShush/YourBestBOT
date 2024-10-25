@@ -185,7 +185,7 @@ module.exports = {
 
 					const endMessage = await message.edit({ embeds: [newEmbed], components: [row] });
 
-					endMessage.reply({ content: `*Giveaway ended, but no one joined the giveaway.*[↗](https://discord.com/channels/${endMessage.guildId}/${endMessage.channelId}/${endMessage.id})` });
+					endMessage.reply({ content: `*Giveaway ended, but no one joined the giveaway.* [↗](https://discord.com/channels/${endMessage.guildId}/${endMessage.channelId}/${endMessage.id})` });
 
 					schema.Ended = true;
 					await schema.save().catch(err => console.log(err));
@@ -203,7 +203,7 @@ module.exports = {
 
 					const endMessage = await message.edit({ embeds: [newEmbed], components: [row] });
 
-					endMessage.reply({ content: `Congratulations ${mentions}! You won the **${schema.Prize}** giveaway![↗](https://discord.com/channels/${endMessage.guildId}/${endMessage.channelId}/${endMessage.id})` });
+					endMessage.reply({ content: `Congratulations ${mentions}! You won the **${schema.Prize}** giveaway! [↗](https://discord.com/channels/${endMessage.guildId}/${endMessage.channelId}/${endMessage.id})` });
 
 					schema.Ended = true;
 					await schema.save().catch(err => console.log(err));
@@ -229,7 +229,7 @@ module.exports = {
 				row = gwDisableBtn;
 				message.edit({ embeds: [embed], components: [row] });
 
-				await interaction.reply({ content: `Giveaway paused successfully![↗](https://discord.com/channels/${message.guildId}/${message.channelId}/${message.id})`, ephemeral: true });
+				await interaction.reply({ content: `Giveaway paused successfully! [↗](https://discord.com/channels/${message.guildId}/${message.channelId}/${message.id})`, ephemeral: true });
 
 				break;
 			case 'resume':
@@ -271,7 +271,7 @@ module.exports = {
 
 				message.edit({ embeds: [embed], components: [row] });
 
-				await interaction.reply({ content: `Giveaway resumed successfully![↗](https://discord.com/channels/${message.guildId}/${message.channelId}/${message.id})`, ephemeral: true });
+				await interaction.reply({ content: `Giveaway resumed successfully! [↗](https://discord.com/channels/${message.guildId}/${message.channelId}/${message.id})`, ephemeral: true });
 				break;
 
 			case 'reroll':
@@ -301,7 +301,7 @@ module.exports = {
 
 				const rerollMsg = await message.edit({ embeds: [embed], components: [row] });
 
-				rerollMsg.reply({ content: `Congratulations ${mentions}! You won the rerolled giveaway for **${schema.Prize}**![↗](https://discord.com/channels/${rerollMsg.guildId}/${rerollMsg.channelId}/${rerollMsg.id})` });
+				rerollMsg.reply({ content: `Congratulations ${mentions}! You won the rerolled giveaway for **${schema.Prize}**! [↗](https://discord.com/channels/${rerollMsg.guildId}/${rerollMsg.channelId}/${rerollMsg.id})` });
 				break;
 
 			case 'delete':

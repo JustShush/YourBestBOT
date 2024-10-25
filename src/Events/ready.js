@@ -4,6 +4,7 @@ const { connect } = require("mongoose");
 const cron = require('node-cron');
 const { allGuilds } = require('../functions/allguilds');
 const { RVotingRole } = require("../functions/votingRoleRemove.js");
+const { checkGWs, deleteExpiredGW } = require('../functions/gwUtils.js');
 const api = require("../api/app.js");
 
 module.exports = {
@@ -134,10 +135,17 @@ module.exports = {
 		cron.schedule('0 0 * * 0', weekUpdate);
 		//cron.schedule('0 0 * * *', dayUpdate);
 
+		//? Vote System
 		await RVotingRole(client);
 		setInterval(() => {
 			RVotingRole(client).catch((err) => console.log(err));
 		}, 600_000); // every hour 3_600_000
+
+		//? Giveaway System
+		setInterval(async () => {
+			await checkGWs(client);
+			await deleteExpiredGW();
+		}, 30_000);
 
 		/* const users = await UserStats.find() // get all the users
 		users.forEach(async (u) => {

@@ -23,7 +23,7 @@ module.exports = {
 		)
 		.addStringOption((option) => option
 			.setName("msg")
-			.setDescription("The welcome message.")
+			.setDescription("The welcome message. You can use {member-count} {user-mention} {server-name} {rules}")
 			.setRequired(true)
 		)
 		.addRoleOption((option) => option
@@ -45,7 +45,6 @@ module.exports = {
 
 		const { options } = interaction; // so that i dont need to do interaction.options all the time
 
-		const member = await interaction.guild.members.fetch(interaction.user.id).catch(console.error);
 		const Channel = options.getChannel("channel");
 		const welcomeMSG = options.getString("msg");
 		let Role = options.getRole("role");

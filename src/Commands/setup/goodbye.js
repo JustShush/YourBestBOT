@@ -23,7 +23,7 @@ module.exports = {
 		)
 		.addStringOption((option) => option
 			.setName("msg")
-			.setDescription("The GoodBye message.")
+			.setDescription("The GoodBye message. You can use {member-count} {user-mention} {server-name} {rules}")
 			.setRequired(true)
 		)
 		.setDMPermission(false)

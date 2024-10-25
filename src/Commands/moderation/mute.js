@@ -80,7 +80,8 @@ module.exports = {
 			IssuerID: member.id,
 			IssuerTag: member.user.tag,
 			Reason: reason,
-			Date: Date.now()
+			
+			Date: Math.floor(new Date().getTime() / 1000)
 		}
 
 		let userData = await db.findOne({
@@ -110,14 +111,12 @@ module.exports = {
 		const logchannel = await logdb.findOne({ Guild: guild.id })
 		if (logchannel) {
 			const check = client.channels.cache.get(logchannel.Channel);
-			//console.log("SIUUU");
 			if (check) {
 				const logEmbed = new EmbedBuilder()
 					.setTitle(`has been TimeOut.`)
 					.setDescription(`By: ${interaction.member}\nReason: \`\`\`${reason}\`\`\``)
 					.setTimestamp()
 
-				//console.log("test");
 				check.send({
 					content: `${target}`,
 					embeds: [logEmbed]
@@ -125,7 +124,7 @@ module.exports = {
 			}
 		}
 
-		return interaction.reply({
+		return await interaction.reply({
 			content: `${target}`,
 			embeds: [successEmbed]
 		});

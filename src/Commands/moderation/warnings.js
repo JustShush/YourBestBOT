@@ -1,6 +1,6 @@
 const color = require('colors');
 const { SlashCommandBuilder, PermissionFlagsBits, ChatInputCommandInteraction, EmbedBuilder } = require("discord.js");
-const db = require("../../schemas/warn");
+const db = require("../../schemas/Infractions");
 const logdb = require("../../schemas/log");
 
 module.exports = {
@@ -32,7 +32,7 @@ module.exports = {
 		const resColor = colors[color];
 		// end of the color randomization
 
-		const { options, guild, member } = interaction;
+		const { options, guild } = interaction;
 
 		const target = options.getMember("user");
 		const User = options.getUser("user");
@@ -50,12 +50,6 @@ module.exports = {
 			ephemeral: true
 		})
 
-		//if (!target.manageable || !target.moderatable)
-		//	errorsArray.push("Selected target is not moderatable by the bot.")
-
-		//if (member.roles.highest.position < target.roles.highest.position)
-		//	errorsArray.push("Selected member has a higher role position than you.")
-
 		if (errorsArray.length) return interaction.reply({
 			embeds: [errorsEmbed.setDescription(errorsArray.join("\n"))],
 			ephemeral: true
@@ -72,16 +66,18 @@ module.exports = {
 				Guild: guild.id,
 				User: target.id,
 				UserTag: target.user.tag,
-				Warns: []
+				Infractions: []
 			});
 		else {
-			const nbr = userData.Warns.length;
+			const nbr = userData.Infractions.length;
 			if (nbr <= 0) return interaction.reply({ content: "There are no warnings for this user.", ephemeral: true });
 			const newEmbed = new EmbedBuilder()
 				.setColor("Red")
 				.setAuthor({ name: `${nbr} for ${User.username} (${User.id})`, iconURL: User.displayAvatarURL()})
-			userData.Warns.forEach((w) => {
-				newEmbed.addFields({ name: `**Moderator: ${w.IssuerTag}**`, value: `${w.Reason} - <t:${w.Date}:R>`})
+			let i = 1;
+			userData.Infractions.forEach((w) => {
+				newEmbed.addFields({ name: `Case ${i}\n**Moderator: ${w.IssuerTag}** | ${w.IssuerID}`, value: `${w.Reason} - <t:${w.Date}:R>`})
+				i++;
 			})
 
 			interaction.reply({ embeds: [newEmbed] });

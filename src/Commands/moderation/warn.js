@@ -1,6 +1,6 @@
 const color = require('colors');
 const { SlashCommandBuilder, PermissionFlagsBits, ChatInputCommandInteraction, EmbedBuilder } = require("discord.js");
-const db = require("../../schemas/warn");
+const db = require("../../schemas/Infractions");
 const logdb = require("../../schemas/log");
 
 module.exports = {
@@ -84,7 +84,7 @@ module.exports = {
 				Guild: guild.id,
 				User: target.id,
 				UserTag: target.user.tag,
-				Warns: [warnObj]
+				Infractions: [warnObj]
 			});
 		else
 			userData.Warns.push(warnObj) && await userData.save();

@@ -2,6 +2,7 @@ const colors = require("colors");
 const { ChatInputCommandInteraction, EmbedBuilder } = require("discord.js");
 const Schema = require("../schemas/stats.js");
 const UserStats = require("../schemas/userStats.js");
+const { gwBtn } = require('../functions/gwUtils.js');
 
 module.exports = {
 	name: "interactionCreate",
@@ -10,6 +11,10 @@ module.exports = {
 	 */
 	async execute(interaction, client) {
 		//if (!interaction.isCommand()) return;
+
+		if (interaction.isButton()) {
+			gwBtn(interaction);
+		}
 
 		if (interaction.isAutocomplete()) {
 			// Handle autocomplete interactions

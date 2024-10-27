@@ -1,11 +1,11 @@
-const { Message } = require('discord.js');
+const { Message, EmbedBuilder, AttachmentBuilder } = require('discord.js');
 
 module.exports = {
 	name: "eval",
 	description: "Eval scripts",
 	permission: "`DEV_ONLY`",
 	usage: "`eval <ARGS>`",
-	type: "Dev_Only",
+	developer: true,
 	/**
 	 * @param {Message} message
 	 */

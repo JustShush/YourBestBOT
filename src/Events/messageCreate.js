@@ -1,8 +1,7 @@
-const { PermissionFlagsBits, TextChannel, EmbedBuilder, ChannelType, AttachmentBuilder } = require("discord.js");
+const { TextChannel, EmbedBuilder } = require("discord.js");
 const Schema = require("../schemas/stats.js");
 const UserStats = require("../schemas/userStats.js");
 const { sticky } = require("../functions/sticky.js");
-const { stealEmoji } = require("../functions/stealEmoji.js");
 
 module.exports = {
 	name: "messageCreate",
@@ -67,6 +66,9 @@ module.exports = {
 		const command = client.prefixCmds.get(commandName) || client.prefixCmds.find(cmd => cmd.alias && cmd.alias.includes(commandName));
 
 		if (!command) return;
+
+		if (command.developer && !message.client.config.Devs.includes(message.author.id))
+			return message.reply('This command is for Devs only. \<3');
 
 		try {
 			command.execute(message, args);

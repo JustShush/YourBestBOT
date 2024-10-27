@@ -6,7 +6,7 @@ module.exports = {
 	description: "Gets the invite URL to a specific guild.",
 	permission: "`DEV_ONLY`",
 	usage: "`inv <GUILD_ID>`",
-	type: "Dev_Only",
+	developer: true,
 	/**
 	 * @param {Message} message
 	 */

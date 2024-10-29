@@ -41,6 +41,7 @@ module.exports = {
 		//console.log('Global command IDs:', globalCommandIds);
 
 		if (!cmd) {
+			await interaction.deferReply();
 
 			// Legacy commands
 			const legacyArr = commandsArr.map(cmd => '+' + cmd);
@@ -52,6 +53,7 @@ module.exports = {
 			otherArray = [];
 			setupArray = [];
 			votersArray = [];
+			gwArray = [];
 			
 			client.commands.map(async (c) => {
 				if (c.type === "Utility") {
@@ -69,6 +71,8 @@ module.exports = {
 					getSubcommand(interaction, setupArray, c.name);
 				} else if (c.type === "Voter") {
 					getSubcommand(interaction, votersArray, c.name);
+				} else if (c.type === "Giveaway") {
+					getSubcommand(interaction, gwArray, c.name);
 				}
 			});
 
@@ -85,6 +89,8 @@ module.exports = {
 	${economyArray.join(' ')}
 	Setup Commands:
 	${setupArray.join(' ')}
+	Giveaway Commands:
+	${gwArray.join(' ')}
 	Other Commands:
 	${otherArray.join(' ')}
 
@@ -99,7 +105,7 @@ module.exports = {
 				.setFooter({ text: `Requested by ${interaction.user.tag}`, iconURL: member.user.displayAvatarURL() })
 				.setTimestamp()
 
-			await interaction.reply({ content: " ", embeds: [newEmbed] });
+			await interaction.editReply({ content: " ", embeds: [newEmbed] });
 		} else {
 			if (commandsArr.includes(cmd)) return interaction.reply({ content: `At this moment legacy commands dont have a detailed description. sorry \<3`, ephemeral: true });
 			embedMessage = false;

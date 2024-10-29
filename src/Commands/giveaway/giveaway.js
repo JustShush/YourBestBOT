@@ -7,11 +7,13 @@ module.exports = {
 	name: "giveaway",
 	description: "An advanced giveaway system.",
 	permission: "`SEND_MESSAGES`",
-	usage: "`/giveaway`",
-	type: "Misc",
+	subcommand: true,
+	permission: "ManageChannels",
+	type: "Giveaway",
 	data: new SlashCommandBuilder()
 		.setName("giveaway")
 		.setDescription("An advanced giveaway system.")
+		.setDefaultMemberPermissions(PermissionFlagsBits.ManageChannels)
 		.addSubcommand(sub => sub
 			.setName('start')
 			.setDescription('Starts a giveaway.')

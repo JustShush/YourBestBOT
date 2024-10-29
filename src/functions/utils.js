@@ -103,6 +103,30 @@ function getTimestamp() {
 	return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 }
 
+function parseDuration(duration) {
+	const regex = /^(\d+)(ms|s|d|w)$/;
+	const match = duration.match(regex);
+
+	if (!match)
+		throw new Error('Invalid duration format');
+
+	const value = parseInt(match[1]);
+	const unit = match[2];
+
+	switch (unit) {
+		case 'ms':
+			return value;
+		case 's':
+			return value * 1000;
+		case 'd':
+			return value * 1000 * 60 * 60 * 24;
+		case 'w':
+			return value * 1000 * 60 * 60 * 24 * 7;
+		default:
+			throw new Error('Invalid duration unit');
+	}
+}
+
 /**
  * Sends a WebHook to a specific channel with the input msg
  * @param {String} msg The message to send
@@ -121,4 +145,4 @@ async function INFO(msg) {
 
 }
 
-module.exports = { randomN, randomNRange, AD, ADMessage, getTopServers, getTimestamp , INFO, embedColor };
+module.exports = { randomN, randomNRange, AD, ADMessage, getTopServers, getTimestamp, INFO, embedColor, parseDuration };

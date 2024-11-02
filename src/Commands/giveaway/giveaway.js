@@ -78,6 +78,8 @@ module.exports = {
 				.setRequired(true)
 			)
 		)
+		.setContexts(0)
+		.setIntegrationTypes(0)
 		.setDMPermission(false)
 		.setNSFW(false),
 	/**

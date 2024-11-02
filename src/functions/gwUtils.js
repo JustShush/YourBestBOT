@@ -74,7 +74,7 @@ async function checkGWs(client) {
 				endMessage.reply({ content: `*Giveaway ended, but no one joined the giveaway.* [↗](https://discord.com/channels/${endMessage.guildId}/${endMessage.channelId}/${endMessage.id})` });
 
 				gw.Ended = true;
-				await giveaways.save().catch(err => console.log(err));
+				await gw.save().catch(err => console.log(err));
 			} else {
 				if (gw.Ended) return;
 				if (gw.Paused) return;
@@ -95,7 +95,7 @@ async function checkGWs(client) {
 				endMessage.reply({ content: `Congratularions ${mentions}! You won the **${gw.Prize}** giveaway! [↗](https://discord.com/channels/${endMessage.guildId}/${endMessage.channelId}/${endMessage.id})` });
 
 				gw.Ended = true;
-				await giveaways.save().catch(err => console.log(err));
+				await gw.save().catch(err => console.log(err));
 			}
 
 		})

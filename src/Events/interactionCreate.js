@@ -12,9 +12,8 @@ module.exports = {
 	async execute(interaction, client) {
 		//if (!interaction.isCommand()) return;
 
-		if (interaction.isButton()) {
+		if (interaction.isButton())
 			gwBtn(interaction);
-		}
 
 		if (interaction.isAutocomplete()) {
 			// Handle autocomplete interactions

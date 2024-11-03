@@ -96,6 +96,7 @@ async function getCachedData(key, cacheMap, fetchFunction, cacheDuration = 6 * 6
 		return cached.data;
 
 	const data = await fetchFunction();
+	if (!data) return null;
 	cacheMap.set(key, { data, timestamp: now });
 	return data;
 }

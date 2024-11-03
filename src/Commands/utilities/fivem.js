@@ -22,9 +22,8 @@ module.exports = {
 
 		const focusedValue = interaction.options.getFocused();
 
-		const choices = [{ name: "🔷 Diamond 🔷", value: "https://cfx.re/join/bqjgz4" }, { name: "AltF4", value: "https://cfx.re/join/ppvp87" },
-		{ name: "Portugalia", value: "https://cfx.re/join/6z6el4" }, { name: "Utopia", value: "https://cfx.re/join/vyxrqx" },
-		{ name: "DarkLife", value: "https://cfx.re/join/758kzd" }, { name: "🔱 Atlantic 🔱", value: "https://cfx.re/join/8lla53" }];
+		const choices = [{ name: "🔷 Diamond 🔷", value: "https://cfx.re/join/bqjgz4" }, { name: "AltF4", value: "https://cfx.re/join/zea3pd" },
+		{ name: "Portugalia", value: "https://cfx.re/join/6z6el4" }, { name: "🔱 Atlantic 🔱", value: "https://cfx.re/join/8lla53" }];
 		const fvalue = { name: focusedValue, value: focusedValue }
 		let list = choices;
 		if (focusedValue) list = [fvalue, ...choices];
@@ -40,6 +39,7 @@ module.exports = {
 		const op = ensureHttps(options.getString("server"))
 
 		const pc = await getServerStatus(op);
+		if (!pc) return await interaction.reply({ content: `Please check if code you provided is valid.`, ephemeral: true });
 
 		const newEmbed = new EmbedBuilder()
 			.setAuthor({ name: pc.name, iconURL: pc.logo })

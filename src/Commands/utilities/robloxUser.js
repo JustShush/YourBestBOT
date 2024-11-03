@@ -1,5 +1,6 @@
 const { SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const noblox = require('noblox.js');
+const axios = require('axios');
 
 const cache = {
 	userInfo: new Map(),
@@ -31,11 +32,13 @@ module.exports = {
 		const nick = interaction.member.displayName;
 
 		let list = [];
-		const id = await getCachedData(nick.toString(), cache.userInfo, () => noblox.getIdFromUsername(nick.toString()));
+		const id = await getCachedData(nick.toString(), cache.userInfo, () => getDataByUsername(nick.toString()));
 		if (!id) list = [];
-		const userData = await getCachedData(id, cache.userInfo, () => noblox.getPlayerInfo({ userId: id }));
+		let userData;
+		if (id) userData = await getCachedData(id, cache.userInfo, () => getDataById(id));
 		if (!userData) list = [];
-		list = [{ name: `${userData.username} (${id})`, value: id.toString() }];
+		else
+			list = [{ name: `${userData.name} (${id})`, value: id.toString() }];
 
 		if (focusedValue && focusedValue.length > 2) {
 			const info = await getInfo(focusedValue);
@@ -52,26 +55,22 @@ module.exports = {
 		let op = options.getString("roblox_name");
 
 		if (isNaN(op))
-			op = await getCachedData(op.toString(), cache.userInfo, () => noblox.getIdFromUsername(op.toString()));
-		const userInfo = await getCachedData(op, cache.userInfo, () => noblox.getPlayerInfo({ userId: op }));
+			op = await getCachedData(op.toString(), cache.userInfo, () => getDataByUsername(op.toString()));
+		const userInfo = await getCachedData(op, cache.userInfo, () => getDataById(op));
 		if (!userInfo) return interaction.reply({ content: `Something went wrong. PLS run the comamnd again. Sorry \<3\nNo user found with the id \`${op}\``, ephemeral: true });
 		const profilePic = await noblox.getPlayerThumbnail([op], '720x720', 'png', false, 'body');
-		const date = new Date(userInfo.joinDate);
+		const date = new Date(userInfo.created);
 
 		const newEmbed = new EmbedBuilder()
-			.setTitle(`👤 Roblox Profile: ${userInfo.username}`)
+			.setTitle(`👤 Roblox Profile: ${userInfo.name}`)
 			.setURL(`https://www.roblox.com/users/${op}/profile`)
 			.setColor('#2B2D31')
 			.setThumbnail(profilePic[0].imageUrl)
 			.addFields(
-				{ name: '✨ Username', value: userInfo.username, inline: true },
+				{ name: '✨ Username', value: userInfo.name, inline: true },
 				{ name: '📛 Display Name', value: userInfo.displayName, inline: true },
 				{ name: '🆔 User ID', value: op.toString(), inline: true },
-				{ name: '📝 Description', value: userInfo.blurb || 'No description', inline: false },
-				{ name: '💬 Status', value: userInfo.status || 'No status', inline: false },
-				{ name: '👥 Friends Count', value: userInfo.friendCount.toString(), inline: true },
-				{ name: '👀 Followers Count', value: userInfo.followerCount.toString(), inline: true },
-				{ name: '🔄 Following Count', value: userInfo.followingCount.toString(), inline: true },
+				{ name: '📝 Description', value: userInfo.description || 'No description', inline: false },
 				{ name: '📅 Account Age', value: convertDays(userInfo.age), inline: true },
 				{ name: '📆 Join Date', value: `<t:${Math.floor(date.getTime() / 1000)}:R>`, inline: true }
 			)
@@ -103,15 +102,15 @@ async function getCachedData(key, cacheMap, fetchFunction, cacheDuration = 6 * 6
 
 async function getInfo(focusedValue) {
 	if (isNaN(focusedValue)) {
-		const userId = await getCachedData(focusedValue.toString(), cache.userInfo, () => noblox.getIdFromUsername(focusedValue.toString()));
+		const userId = await getCachedData(focusedValue.toString(), cache.userInfo, () => getDataByUsername(focusedValue.toString()));
 		if (!userId) return;
-		const userData = await getCachedData(userId, cache.userInfo, () => noblox.getPlayerInfo({ userId: userId }));
+		const userData = await getCachedData(userId, cache.userInfo, () => getDataById(userId));
 		if (!userData) return;
-		return { name: `${userData.username} (${userId})`, value: userId.toString() };
+		return { name: `${userData.name} (${userId})`, value: userId.toString() };
 	}
-	const userData = await getCachedData(focusedValue, cache.userInfo, () => noblox.getPlayerInfo({ userId: focusedValue }));
+	const userData = await getCachedData(focusedValue, cache.userInfo, () => getDataById(focusedValue));
 	if (!userData) return;
-	return { name: `${userData.username} (${focusedValue})`, value: focusedValue.toString() };
+	return { name: `${userData.name} (${focusedValue})`, value: focusedValue.toString() };
 }
 
 function convertDays(days) {
@@ -126,4 +125,60 @@ function convertDays(days) {
 
 	result += `${months} months, and ${remainingDays} days.`;
 	return result;
+}
+
+async function getDataByUsername(name) {
+	try {
+		const response = await axios.post(`https://users.roblox.com/v1/usernames/users`, {
+			"usernames": [name],
+			"excludeBannedUsers": true
+		})
+		//console.log('username:', response.data.data);
+		const data = response.data.data[0];
+		return data.id
+	}
+	catch (err) { return }
+}
+
+async function getDataById(userId) {
+	try {
+		// Make a request to fetch user information by user ID
+		const res = await axios.get(`https://users.roblox.com/v1/users/${userId}`);
+
+		// Return user data
+		//console.log('id:', res.data);
+
+		const data = res.data;
+
+		// Calculate account age
+		const accountCreatedDate = new Date(res.data.created);
+		const currentDate = new Date();
+		const accountAgeInDays = Math.floor((currentDate - accountCreatedDate) / (1000 * 60 * 60 * 24));
+		data.age = accountAgeInDays;
+
+		// this is commented because it returns "error 429 too many requests"
+		/* // Fetch follower count using the user ID
+		const followerCountResponse = await axios.get(`https://friends.roblox.com/v1/users/${userId}/followers/count`);
+
+		// Check if responses are successful
+		if (!followerCountResponse.data || followerCountResponse.data.error)
+			throw new Error("Failed to fetch follower count");
+		const followerCount = followerCountResponse.data.count;
+		data.followerCount = followerCount;
+
+		// Fetch following count using the user ID
+		const followingCountResponse = await axios.get(`https://friends.roblox.com/v1/users/${userId}/followings/count`);
+		if (!followingCountResponse.data || followingCountResponse.data.error)
+			throw new Error("Failed to fetch following count");
+
+		const followingCount = followingCountResponse.data.count;
+		data.followingCount = followingCount; */
+
+		// console.log(data)
+		return data;
+	} catch (error) {
+		console.log(error)
+		console.error("Error fetching user data:", error.message);
+		return { error: "Failed to fetch user data" };
+	}
 }

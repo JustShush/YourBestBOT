@@ -1,4 +1,4 @@
-const { EmbedBuilder, SlashCommandBuilder, Colors } = require('discord.js');
+const { EmbedBuilder, SlashCommandBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 module.exports = {
 	name: "support",
 	description: "Join the bot's support server.",
@@ -29,7 +29,7 @@ module.exports = {
 				.addFields({
 					name: 'Join the support server here:',
 					value: '[Click here](https://discord.gg/WhSYAUtar5) to to join the support server :)'
-				},{
+				}, {
 					name: 'Thank you for helping me grow and reach new palces <3',
 					value: '[Click here](https://discord.com/api/oauth2/authorize?client_id=820324857799245855&permissions=8&scope=bot%20applications.commands) to invite me to your server :)',
 					inline: true
@@ -37,7 +37,24 @@ module.exports = {
 				.setTimestamp()
 				.setFooter({ text: interaction.guild.name, iconURL: interaction.guild.iconURL() })
 
-			await interaction.reply({ embeds: [embed] })
+			const row = new ActionRowBuilder().setComponents(
+				new ButtonBuilder()
+					.setLabel("Add YourBestBOT")
+					.setEmoji("🔗")
+					.setURL("https://yourbestbot.pt/invite")
+					.setStyle(ButtonStyle.Link),
+				new ButtonBuilder()
+					.setLabel("Support Server")
+					.setEmoji("<:discord:1201226391987957901>")
+					.setURL("https://yourbestbot.pt/support")
+					.setStyle(ButtonStyle.Link),
+				new ButtonBuilder()
+					.setLabel("YourBestBOT Website")
+					.setEmoji("🌐")
+					.setURL("https://yourbestbot.pt/")
+					.setStyle(ButtonStyle.Link))
+
+			await interaction.reply({ embeds: [embed], components: [row] });
 		} catch (error) {
 			console.log(error)
 		}

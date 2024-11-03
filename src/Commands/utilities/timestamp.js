@@ -46,6 +46,8 @@ module.exports = {
 			.setDescription('Provide specific date in DD/MM/YYYY format (optional)')
 			.setRequired(false)
 		)
+		.setContexts(0, 1, 2)
+		.setIntegrationTypes(0, 1)
 		.setDMPermission(true)
 		.setNSFW(false),
 	/**

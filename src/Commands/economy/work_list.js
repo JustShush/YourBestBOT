@@ -52,7 +52,7 @@ module.exports = {
 				.setTimestamp();
 
 			let i = 1;
-			if (!jobData.Jobs[0]) return interaction.reply({ content: "This server doesn\'t have any jobs available please run </jobs:1052689735543435349> to add a new job."})
+			if (!jobData.Jobs[0]) return interaction.reply({ content: "This server doesn\'t have any jobs available please run </jobs-add:1222174027301523505> to add a new job."})
 			jobData.Jobs.forEach(job => {
 				embed.addFields({ name: `${i++}: ${job.Profession}`, value: `<:bt1:1053728427879977050> Time Between Shifts: \`${job.Cooldown}\` minutes.\n<:bt2:1053728398586941572> Salary: \`${job.Salary} per shift\`` })
 			});

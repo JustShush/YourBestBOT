@@ -52,7 +52,7 @@ module.exports = {
 
 			if (Job < 1 || Job > 5) return interaction.reply({ content: `Invalid number for the job. Please choose a number between \`1\` and \`5\`.` });
 			if (!userData.Profession) userData.Profession = Job - 1;
-			if (userData.Profession == Job - 1) return interaction.reply({ embeds: [new EmbedBuilder().setTitle(`You already have a job has a \`${jobData.Jobs[userData.Profession].Profession}\``).setDescription(`||Quick question:\nDo you have alzheimer?!?!||`).setColor("#2f3136")] });
+			if (userData.Profession != Job - 1) return interaction.reply({ embeds: [new EmbedBuilder().setTitle(`You already have a job has a \`${jobData.Jobs[userData.Profession].Profession}\``).setDescription(`||Quick question:\nDo you have alzheimer?!?!||`).setColor("#2f3136")] });
 
 			const embed = new EmbedBuilder()
 				.setTitle(`${interaction.user.username} you are now working has a \`${jobData.Jobs[Job - 1].Profession}\``)

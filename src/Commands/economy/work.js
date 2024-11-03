@@ -51,6 +51,8 @@ module.exports = {
 				});
 			}
 
+			if (userData.Profession < 0 || userData.Profession == undefined) return await interaction.reply({ content: `You dont have a profession. If you want one run </work-apply:1222174027787931683>`, ephemeral: true });
+
 			if (Math.floor(Date.now() / 1000) <= userData.work_cooldown) {
 				return interaction.reply({
 					embeds: [

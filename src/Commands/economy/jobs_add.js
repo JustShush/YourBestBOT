@@ -75,7 +75,7 @@ module.exports = {
 			const embed = new EmbedBuilder()
 				.setTitle(`${interaction.user.username} you have added \`${Job}\` to the list of jobs.`)
 				.setColor("#2f3136")
-				.setDescription(`This job has been set to a **Cooldown** of: \`${Time}\`minutes and a **Salary** of: \`${Salary}\` Coins.\nIf you want to see all the jobs do </job list:>`)
+				.setDescription(`This job has been set to a **Cooldown** of: \`${Time}\`minutes and a **Salary** of: \`${Salary}\` Coins.\nIf you want to see all the jobs do </work-list:1222174027787931684>`)
 				.setFooter({ text: `Requested by ${interaction.user.tag}` })
 				.setTimestamp();
 

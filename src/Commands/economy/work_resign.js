@@ -50,7 +50,7 @@ module.exports = {
 			});
 
 			const embed = new EmbedBuilder()
-				.setTitle(`${interaction.user.username} you are no longer working has a \`${jobData.Jobs[userData.Profession - 1].Profession}\``)
+				.setTitle(`${interaction.user.username} you are no longer working has a \`${jobData.Jobs[userData.Profession].Profession}\``)
 				.setColor("#2f3136")
 				.setDescription(`You are now unemployed. Shame on you!`)
 				.setFooter({ text: `Requested by ${interaction.user.tag}` })

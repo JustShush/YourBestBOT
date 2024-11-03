@@ -35,6 +35,10 @@ module.exports = {
 			let Time = options.getNumber("time");
 			let Salary = options.getNumber("salary");
 
+			if (!isNaN(Job)) return interaction.reply({ content: `Make sure the Job name isnt just numbers.`, ephemeral: true });
+			if (Time <= 10) return interaction.reply({ content: `Make sure the job cooldown is higher then 10 minutes.`, ephemeral: true });
+			if (Salary > 100000) return interaction.reply({ content: `Make sure the job Salary is not higher then 100k.`, ephemeral: true });
+
 			let userData = await EconomyChecker.findOne({
 				Guild: interaction.guild.id
 			});

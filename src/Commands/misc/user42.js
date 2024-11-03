@@ -31,7 +31,7 @@ module.exports = {
 
 		const user = await User42(User); // ifreire-
 
-		if (!user) return interaction.editReply({ content: `There was a problem trying to fetch the user data.`, ephemeral: true });
+		if (!user) return interaction.editReply({ content: `There was a problem trying to fetch the user data.\nPlease join the support server and msg the bot owner to update the API key for the 42 command \<3 </support:1222174029813776522>`, ephemeral: true });
 
 		const embed = new EmbedBuilder()
 			.setColor("Green")

@@ -40,6 +40,7 @@ async function checkGWs(client) {
 	try {
 		const giveaways = await gwSchema.find();
 		giveaways.forEach(async gw => {
+			if (Math.floor(Date.now() / 1000) <= gw.EndTimestamp / 1000) return;
 			const channel = client.channels.cache.get(gw.ChannelId);
 			const message = await channel.messages.fetch(gw.MessageId).catch(err => { return console.log(err); });
 

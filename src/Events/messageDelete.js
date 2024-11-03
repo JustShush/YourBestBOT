@@ -5,6 +5,7 @@ module.exports = {
 	name: "messageDelete",
 	async execute(message, client) {
 		if (message.author == null || message.author.bot) return;
+		if (message.partial) await message.fetch();
 		const data = await logs.findOne({ Guild: message.guild.id });
 		if (!data) return;
 		const newEmbed = new EmbedBuilder()

@@ -5,6 +5,7 @@ module.exports = model("economy_checker", new Schema({
 	Guild: String,
 	User: String,
 	UserTag: String,
+	Profession: Number,
 	balance: {
 		type: Number,
 		default: 0
@@ -14,10 +15,26 @@ module.exports = model("economy_checker", new Schema({
 		type: Number,
 		default: 0
 	},
-	search_cooldown: Number,
-	daily_cooldown: Number,
-	daily_streak: Number,
-	daily_last_claimed: Number,
+	work_cooldown: {
+		type: Number,
+		default: 0
+	},
+	search_cooldown: {
+		type: Number,
+		default: 0
+	},
+	daily_cooldown: {
+		type: Number,
+		default: 0
+	},
+	daily_streak: {
+		type: Number,
+		default: 0
+	},
+	daily_last_claimed: {
+		type: Number,
+		default: 0
+	},
 	claimed_level_5: Boolean,
 	claimed_level_10: Boolean,
 	claimed_level_20: Boolean,

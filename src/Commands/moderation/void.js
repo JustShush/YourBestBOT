@@ -22,7 +22,9 @@ module.exports = {
 			.setDescription("The id of the warn to void.")
 			.setRequired(true)
 			.setMaxLength(512)
-		),
+		)
+		.setContexts(0)
+		.setIntegrationTypes(0),
 	/**
 	 * @param {ChatInputCommandInteraction} interaction
 	 */

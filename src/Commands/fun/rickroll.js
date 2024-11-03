@@ -9,11 +9,13 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('rickroll')
 		.setDescription('RickRoll I guess')
+		.setContexts(0, 1, 2)
+		.setIntegrationTypes(0, 1)
 		.setDMPermission(true)
 		.setNSFW(false),
 	async execute(interaction, client) {
 		try {
-			await interaction.reply({ content: 'http://tiny.cc/y8hiuz', ephemeral: true})
+			await interaction.reply({ content: 'https://youtu.be/dQw4w9WgXcQ?si=UdZBJzwP6WuOPgTN', ephemeral: true})
 		} catch (error) {
 			console.log(error)
 		}

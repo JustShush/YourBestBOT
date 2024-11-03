@@ -11,7 +11,7 @@ module.exports = {
 		sticky(message);
 		if (message.author.bot) return;
 
-		if (message.guild.id == "702545447750860931" || message.guild.id == "1054090158779150376")
+		if (message.guild.id == "702545447750860931" || message.guild.id == "1054090158779150376" || message.guild.id == '946518364216520774')
 			detect(message);
 
 		let data = await Schema.findOne()

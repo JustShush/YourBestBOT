@@ -1,4 +1,4 @@
-const { TextChannel, EmbedBuilder } = require("discord.js");
+const { TextChannel, EmbedBuilder, ChannelType } = require("discord.js");
 const Schema = require("../schemas/stats.js");
 const UserStats = require("../schemas/userStats.js");
 const { sticky } = require("../functions/sticky.js");
@@ -89,7 +89,7 @@ async function detect(message) {
 		if (serverId === message.guild.id) {
 			try {
 				const linkedChannel = message.guild.channels.cache.get(channelId);
-				if (linkedChannel && linkedChannel instanceof TextChannel) {
+				if (linkedChannel && (linkedChannel instanceof TextChannel || linkedChannel.type === ChannelType.GuildAnnouncement)) {
 					const linkedMessage = await linkedChannel.messages.fetch(messageId);
 					//console.log(linkedMessage);
 

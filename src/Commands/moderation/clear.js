@@ -39,14 +39,12 @@ module.exports = {
 
 			deleteMessages(interaction.channel, parseInt(n), user);
 
-			const logchannel = await logdb.findOne({ Guild: guild.id })
+			const logchannel = await logdb.findOne({ Guild: guild.id });
 			if (logchannel) {
-				const check = client.channels.cache.get(logchannel.Channel);
-				if (check) {
-					check.send({
-						content: `${interaction.member} has cleared ${n} messages succesfully in <#${interaction.channel.id}>.`,
-					})
-				}
+				// get the webhook from client
+				const webhook = await client.fetchWebhook(logchannel.General.webhookId);
+				if (webhook)
+					webhook.send({ content: `${interaction.member.displayName} | (${interaction.member.id}) has cleared ${n} messages succesfully in <#${interaction.channel.id}>.` });
 			}
 
 			await interaction.followUp({ content: `You have deleted ${n} messages succesfully.`, ephemeral: true })

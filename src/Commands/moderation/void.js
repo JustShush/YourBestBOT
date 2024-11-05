@@ -1,6 +1,7 @@
 const color = require('colors');
 const { SlashCommandBuilder, PermissionFlagsBits, ChatInputCommandInteraction, EmbedBuilder } = require("discord.js");
 const db = require("../../schemas/Infractions");
+const logdb = require("../../schemas/log");
 
 module.exports = {
 	name: "void",
@@ -68,7 +69,22 @@ module.exports = {
 			embeds: [newEmbed.setTitle(`Voided Case (${id + 1})`)]
 		});
 
-		await userData.Infractions.splice(id, 1);
+		const logchannel = await logdb.findOne({ Guild: guild.id });
+		if (logchannel) {
+			// get the webhook from client
+			const webhook = await client.fetchWebhook(logchannel.General.webhookId);
+			if (webhook) {
+				const logEmbed = new EmbedBuilder()
+					.setTitle(`${interaction.member.displayName} | (${interaction.member.id}) Voided Case (${id + 1})`)
+					.setDescription(`By: <@${userData.Infractions[id].IssuerID}>\nReason: \`\`\`${userData.Infractions[id].Reason}\`\`\`\nbringing your infractions total to **${userData.Infractions.length - 1} points**.`)
+					.setColor(resColor)
+					.setTimestamp()
+
+				webhook.send({ embeds: [logEmbed] });
+			}
+		}
+
+		userData.Infractions.splice(id, 1);
 		await userData.save();
 
 	}

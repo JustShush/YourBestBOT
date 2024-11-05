@@ -59,7 +59,7 @@ module.exports = {
 			const webhook = await client.fetchWebhook(logchannel.General.webhookId);
 			if (webhook) {
 				const logEmbed = new EmbedBuilder()
-					.setTitle(`has been banned.`)
+					.setTitle(`${user.username} (${user.id}) has been banned.`)
 					.setDescription(`By: ${interaction.member}\nReason: \`\`\`${reason}\`\`\``)
 					.setTimestamp()
 

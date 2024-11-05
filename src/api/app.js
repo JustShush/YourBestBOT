@@ -33,6 +33,15 @@ app.options('*', (req, res) => res.status(200).json());
 module.exports.load = (client) => {
 	app.use(express.json());
 
+	//? THE START
+	// dashboard login
+	/**
+	 * First go to https://api.yourbestbot.pt/oauth and authorize the bot, then
+	 * it should redirect to /login and it should be good.
+	 */
+	app.get('/oauth', (req, res) => require('./oauth.js')(req, res));
+	app.get('/login', (req, res) => require('./login.js')(req, res));
+
 	app.get("/membercount/:id", (req, res) => require("./membercount.js")(req, res, client));
 	app.get("/servercount/", (req, res) => require("./servercount.js")(req, res, client));
 	app.post("/votes", (req, res) => require("./votes.js")(req, res, client));

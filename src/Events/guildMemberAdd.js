@@ -1,5 +1,5 @@
 const color = require("colors");
-const { EmbedBuilder, GuildMember, ActionRowBuilder, ButtonBuilder } = require("discord.js");
+const { EmbedBuilder, GuildMember, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 const Schema = require("../schemas/welcome");
 const db = require("../schemas/nickSys");
 
@@ -95,7 +95,6 @@ module.exports = {
 		//if (nickData.Nicksys === false) console.log("nickData.nicksys === false");
 		if (nickData.Nicksys === true) {
 			//console.log("nickData.nicksys === true")
-			console.log(member)
 			if (!member.nickname) return;
 			if (member.nickname.includes("Moderated Nickname ")) return; //console.log(`${newMember.user.tag} | ${newMember.user.id} already has a mod nickname: ${oldMember.nickname}`);
 			const newNick = member.nickname || member.displayName;

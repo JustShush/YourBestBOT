@@ -29,7 +29,7 @@ module.exports = {
 				.setThumbnail('https://i.imgur.com/GhT4rY2.png') // por a foto do bot aqui depois.
 				.addFields({
 					name: 'Invitation link:',
-					value: '[Click here](https://discord.com/api/oauth2/authorize?client_id=820324857799245855&permissions=8&scope=bot%20applications.commands) to invite me to your server :)',
+					value: '[Click here](https://discord.com/oauth2/authorize?client_id=747412110782234654&permissions=8&scope=bot%20applications.commands) to invite me to your server :)',
 					inline: true
 				},{
 					name: 'Vote for YourBestBOT',

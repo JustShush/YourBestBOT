@@ -1,4 +1,4 @@
-const { EmbedBuilder, SlashCommandBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const { EmbedBuilder, SlashCommandBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder } = require('discord.js');
 module.exports = {
 	name: "support",
 	description: "Join the bot's support server.",
@@ -10,6 +10,7 @@ module.exports = {
 		.setDescription('Join YourBestBot\'s support server.')
 		.setDMPermission(false)
 		.setNSFW(false),
+	
 	async execute(interaction, client) {
 		try {
 
@@ -19,7 +20,7 @@ module.exports = {
 			const resColor = colors[color];
 			// end of the color randomization 
 
-			const { member } = interaction
+			const { member } = interaction.member;
 
 			const embed = new EmbedBuilder()
 				.setColor(member.displayHexColor || resColor)
@@ -28,35 +29,40 @@ module.exports = {
 				.setThumbnail('https://i.imgur.com/GhT4rY2.png') // por a foto do bot aqui depois.
 				.addFields({
 					name: 'Join the support server here:',
-					value: '[Click here](https://discord.gg/WhSYAUtar5) to to join the support server :)'
+					value: '[Click here](https://discord.gg/WhSYAUtar5) to to join the support server :)',
+					inline: true,
 				}, {
 					name: 'Thank you for helping me grow and reach new palces <3',
-					value: '[Click here](https://discord.com/api/oauth2/authorize?client_id=820324857799245855&permissions=8&scope=bot%20applications.commands) to invite me to your server :)',
-					inline: true
+					value: '[Click here](https://discord.com/oauth2/authorize?client_id=747412110782234654&permissions=8&scope=bot%20applications.commands) to invite me to your server :)',
+					inline: true,
 				})
 				.setTimestamp()
-				.setFooter({ text: interaction.guild.name, iconURL: interaction.guild.iconURL() })
+				.setFooter({ text: interaction.guild.name, iconURL: interaction.guild.iconURL() });
 
-			const row = new ActionRowBuilder().setComponents(
-				new ButtonBuilder()
+				const button1 = new ButtonBuilder()
 					.setLabel("Add YourBestBOT")
 					.setEmoji("🔗")
 					.setURL("https://yourbestbot.pt/invite")
-					.setStyle(ButtonStyle.Link),
-				new ButtonBuilder()
+					.setStyle(ButtonStyle.Link)
+			
+				const button2 = new ButtonBuilder()
 					.setLabel("Support Server")
 					.setEmoji("<:discord:1201226391987957901>")
 					.setURL("https://yourbestbot.pt/support")
-					.setStyle(ButtonStyle.Link),
-				new ButtonBuilder()
+					.setStyle(ButtonStyle.Link)
+			
+				const button3 = new ButtonBuilder()
 					.setLabel("YourBestBOT Website")
 					.setEmoji("🌐")
 					.setURL("https://yourbestbot.pt/")
-					.setStyle(ButtonStyle.Link))
+					.setStyle(ButtonStyle.Link)
+
+			      const row = new ActionRowBuilder().addComponents(button1, button2, button3);
+
 
 			await interaction.reply({ embeds: [embed], components: [row] });
 		} catch (error) {
 			console.log(error)
 		}
-	}
-}
+	},
+};

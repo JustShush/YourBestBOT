@@ -23,7 +23,7 @@ module.exports = {
 		if (!data) return console.log(`\nThis server hasn\'t setup the goodbye command.\nServer: ${guild.name}. Member: ${user.tag}\nin file: \"guildMemberRemove.js\"`); // this server hasnt setup the welcome command
 		let Channel = guild.channels.cache.get(data.Channel);
 		let preMSG = data.MSG || "Bye... \:( hope he enjoyed his stay here.";
-		if (!Channel) Channel = "704028617595682876";
+		if (!Channel) return;
 
 		const MSG = preMSG.replaceAll('{member-count}', member.guild.memberCount)
 			.replaceAll('{user-mention}', member)

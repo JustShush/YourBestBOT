@@ -25,9 +25,7 @@ module.exports = {
 			});
 		else
 			await data.save();
-		//if (data.Nicksys === false) console.log("data.nicksys === false");
 		if (data.Nicksys === true) {
-			//console.log("data.nicksys === true")
 			if (newMember.nickname && oldMember.nickname !== newMember.nickname) {
 				if (newMember.nickname.includes("Moderated Nickname ")) return; //console.log(`${newMember.user.tag} | ${newMember.user.id} already has a mod nickname: ${oldMember.nickname}`);
 

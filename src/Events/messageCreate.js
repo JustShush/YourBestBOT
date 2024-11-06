@@ -2,6 +2,7 @@ const { TextChannel, EmbedBuilder, ChannelType } = require("discord.js");
 const Schema = require("../schemas/stats.js");
 const UserStats = require("../schemas/userStats.js");
 const { sticky } = require("../functions/sticky.js");
+const { WBlacklist } = require('../functions/WBlacklist.js');
 
 module.exports = {
 	name: "messageCreate",
@@ -9,6 +10,7 @@ module.exports = {
 	async execute(message, client) {
 		if (client.user.id == message.author.id) return;
 		sticky(message);
+		WBlacklist(message);
 		if (message.author.bot) return;
 
 		if (message.guild.id == "702545447750860931" || message.guild.id == "1054090158779150376" || message.guild.id == '946518364216520774')

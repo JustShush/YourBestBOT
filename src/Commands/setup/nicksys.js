@@ -28,9 +28,7 @@ module.exports = {
 		const { guild, member } = interaction;
 
 		let data = await db.findOne({
-			Guild: guild.id,
-			User: member.id,
-			UserTag: interaction.user.tag,
+			Guild: guild.id
 		});
 
 		if (!data)
@@ -41,8 +39,6 @@ module.exports = {
 				UserTag: interaction.user.tag,
 				Nicksys: false
 			});
-		else
-			await data.save();
 
 		const newEmbed = new EmbedBuilder()
 			.setAuthor({ name: "Nickname System" })
@@ -55,19 +51,17 @@ module.exports = {
 				embeds: [newEmbed.setDescription("Nickname System has been **disabled**.")],
 			});
 			data.Nicksys = false;
-			await data.save();
 		} else if (data.Nicksys === false) {
 			interaction.reply({
 				embeds: [newEmbed.setDescription("Nickname System has been **enabled**.")],
 			});
 			data.Nicksys = true;
-			await data.save();
 		} else {
 			interaction.reply({
 				embeds: [newEmbed.setDescription("Nickname System has been **enabled.**")],
 			});
 			data.Nicksys = true;
-			await data.save();
 		}
+		await data.save();
 	}
 }

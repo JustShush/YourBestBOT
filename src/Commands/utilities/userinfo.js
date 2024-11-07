@@ -31,7 +31,14 @@ module.exports = {
 		const avatar = user.displayAvatarURL()
 		const joined = `<t:${parseInt(member.joinedAt / 1000)}:R>`
 		const created = `<t:${parseInt(user.createdAt / 1000)}:R>`
-		const roles = member.roles.cache.map(r => r).join(` \n `)
+
+		const roles = member.roles.cache.sort((a, b) => b.position - a.position);
+
+		const Roles = roles
+				.filter(role => role.name !== '@everyone') // Exclude @everyone role
+				.map(r => r)
+				.slice(0, 10) // Get only the first 10 roles
+				.join(`, `) + (roles.size > 10 ? ` and ${roles.size - 10} more...` : '')
 		/* const buffer = await profileImage(user.id, {
 			presenceStatus: 'online',
 			badgesFrame: true,
@@ -43,7 +50,7 @@ module.exports = {
 			.addFields({ name: `Username:`, value: `${username}` })
 			.addFields({ name: `🧾 • ${username} Created their account at:`, value: `${created}`, inline: true })
 			.addFields({ name: `🧾 • ${username} joined this server at:`, value: `${joined}`, inline: true })
-			.addFields({ name: `📚 • ${username}'s Roles`, value: roles, inline: true })
+			.addFields({ name: `📚 • ${username}'s Roles`, value: Roles, inline: false })
 			.setAuthor({ iconURL: avatar, name: `User ID: ${user.id}` })
 			.setTimestamp()
 			.setColor('Red')

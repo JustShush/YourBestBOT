@@ -146,6 +146,7 @@ module.exports = {
 				}
 				break;
 			case "view":
+				if (!data) return interaction.reply({ content: `You have no words in the blacklist filter.`, ephemeral: true });
 				if (!data.words) return interaction.reply({ content: `You have no words in the blacklist filter.`, ephemeral: true });
 				if (data.words.length === 0)
 					return interaction.reply({

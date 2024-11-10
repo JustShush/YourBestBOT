@@ -3,6 +3,7 @@ const { ChatInputCommandInteraction, EmbedBuilder } = require("discord.js");
 const Schema = require("../schemas/stats.js");
 const UserStats = require("../schemas/userStats.js");
 const { gwBtn } = require('../functions/gwUtils.js');
+const { TicketSystem } = require('../functions/ticketSys.js');
 
 module.exports = {
 	name: "interactionCreate",
@@ -12,8 +13,10 @@ module.exports = {
 	async execute(interaction, client) {
 		//if (!interaction.isCommand()) return;
 
-		if (interaction.isButton())
+		if (interaction.isButton()) {
 			gwBtn(interaction);
+			TicketSystem(interaction);
+		}
 
 		if (interaction.isAutocomplete()) {
 			// Handle autocomplete interactions

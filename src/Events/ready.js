@@ -48,32 +48,6 @@ module.exports = {
 			})
 		}, 5 * 60 * 1000);
 
-		const upTimeFunction = () => {
-			let totalSeconds = (client.uptime / 1000);
-			let days = Math.floor(totalSeconds / 86400);
-			totalSeconds %= 86400;
-			let hours = Math.floor(totalSeconds / 3600);
-			totalSeconds %= 3600;
-			let minutes = Math.floor(totalSeconds / 60);
-			let seconds = Math.floor(totalSeconds % 60);
-
-			/* if (days == 1) {
-				// execute reload of the events
-				for (const [key, value] of client.events)
-					client.removeListener(`${key}`, value, true);
-				loadEvents(client);
-				// execute realod of the commands
-				loadCommands(client);
-				console.log("Events and Commands Reloaded.");
-			} */
-			if (days == 31) {
-				console.log(`${client.user.username} 31 dias!`.brightRed)
-				Channel.send({ content: `឵\n\n\n\n**${client.user} is GODLIKE!!!!**\n\n\n\n឵ \n||<@453944662093332490>||` })
-			}
-			setTimeout(upTimeFunction, 1000)
-		}
-		upTimeFunction()
-
 		const Stats = require("../schemas/stats.js");
 		const { config, pretty } = require("../../config.json");
 
@@ -146,24 +120,6 @@ module.exports = {
 			await checkGWs(client);
 			await deleteExpiredGW();
 		}, 30_000);
-
-		/* const users = await UserStats.find() // get all the users
-		users.forEach(async (u) => {
-			if (((new Date(u.votes.last).getTime() + 1000) - Date.now()) < 1) {
-				const webex = client.guilds.cache.get(client.config.config.votes.webex.guildId);
-				const sup = client.guilds.cache.get(client.config.config.votes.support.guildId);
-				if (webex) {
-					const member = webex.members.cache.get(u.UserId);
-					const role = webex.roles.cache.get(client.config.config.votes.webex.roleId);
-					await member.roles.remove(role).catch((err) => console.log("there was an error trying to remove voter role", err));
-				}
-				if (sup) {
-					const member = webex.members.cache.get(u.UserId);
-					const role = webex.roles.cache.get(client.config.config.votes.support.roleId);
-					await member.roles.remove(role).catch((err) => console.log("there was an error trying to remove voter role", err));
-				}
-			}
-		}) */
 
 		client.guilds.cache.forEach(guild => {
 			console.log(colors.brightRed(`${guild.name} | ${guild.id} | ${guild.memberCount} Members`));

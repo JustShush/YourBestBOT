@@ -31,9 +31,8 @@ module.exports = {
 			.replaceAll('{server-name}', member.guild.name)
 			.replaceAll('{rules}', member.guild.rulesChannel)
 
-		if (Role) {
-			member.roles.add(Role);
-		}
+		if (Role)
+			await member.roles.add(Role).catch(err => console.log(err));
 
 		let welEmbed = new EmbedBuilder()
 			.setTitle(`${user.tag} joined.`)
@@ -46,7 +45,7 @@ module.exports = {
 			)
 			.setFooter({ text: `We are now a server with ${guild.memberCount} members \<3` });
 
-			console.log(`${user.tag} has joined ${data.GuildName}`.brightPurple);
+			console.log(`${user.tag} has joined ${member.guild.name} | ${member.guild.id}`.brightCyan);
 
 		try {
 			if (member.guild.id == "702545447750860931") {

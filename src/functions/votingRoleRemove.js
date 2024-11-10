@@ -54,7 +54,7 @@ async function RVotingRole(client) {
 			} catch (err) {
 				console.log(err);
 			}
-			await INFO('removing the voting role from ' + user.UserId);
+			await INFO('removing the voting role from ' + `<@${user.UserId}>` + user.UserId);
 			await Schema.findOneAndDelete({ UserId: user.UserId });
 		}
 	});

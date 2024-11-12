@@ -24,11 +24,21 @@ async function RVotingRole(client) {
 				if (!ybbS.members.cache.size) await ybbS.members.fetch();
 				let ybbMember = await ybbS.members.cache.get(user.UserId);
 				if (!ybbMember) ybbMember = await ybbS.members.fetch(user.UserId).catch((err) => console.log(`${user.UserId} is not in the server`, err), send = false);
+				let name = ybbMember.user.globalName;
+				let ybbUser;
+				if (!send) {
+					ybbUser = await client.users.fetch(user.UserId).catch(err => console.log('cant get user', err))
+					if (ybbUser) {
+						send = true
+						name = ybbUser.globalName;
+					}
+				}
 
+				console.log(`Member:`, ybbMember, 'User:', ybbUser, 'SEND?:', send, 'Name:', name);
 				if (send) {
 					//? DM the member with the remainder to vote again!
 					const newEmbed = new EmbedBuilder()
-					.setTitle(`<3 Yoo, ${ybbMember.user.globalName}`)
+					.setTitle(`<3 Yoo, ${name}`)
 					.setDescription(`<:dot:1289304871467483216> **Looks like you can vote again for me on top.gg! \<3**\n<:dot:1289304871467483216> Vote again to keep awesome perks such as a [voter role in our community server](${client.config.topgg}) and more..\n\nThank you for voting \<3`)
 					.setColor("#2B2D31")
 
@@ -40,7 +50,7 @@ async function RVotingRole(client) {
 						.setURL(`${Config.topgg}`)
 					)
 
-					await ybbMember.send({ embeds: [newEmbed], components: [row] });
+					await ybbUser.send({ embeds: [newEmbed], components: [row] });
 				}
 
 				//? Remove the Voting role from the member

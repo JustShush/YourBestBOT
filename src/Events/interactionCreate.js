@@ -32,7 +32,7 @@ module.exports = {
 				}
 			}
 		// handle dm commands
-		} else if (interaction.isChatInputCommand() && !interaction.guildId) {
+		} else if (interaction.isChatInputCommand() && !interaction.guild) {
 			const command = client.commands.get(interaction.commandName);
 			if (!command)
 				return interaction.reply({
@@ -48,16 +48,16 @@ module.exports = {
 
 			try {
 				await command.execute(interaction, client);
-				console.log(
-					`\nUser: ${interaction.user.globalName}\n\nCommand: \`/${command.name}\ ${command.subcommand ? interaction.options.getSubcommand(false) : ''}\`\nUser: ${interaction.user.tag}\nTimestamp: ${Date().slice(0, -42)}`.brightGreen
-				);
+				console.log(colors.green(
+					`\nUser: ${interaction.user.globalName}\n\nCommand: \`/${command.name}\ ${command.subcommand ? interaction.options.getSubcommand(false) : ''}\`\nUser: ${interaction.user.tag}\nTimestamp: ${Date().slice(0, -42)}`
+				));
 				const webhookId = client.config.config.logs[2].webhookId; // logs WEBEX
 				const webhook = await client.fetchWebhook(webhookId);
 				if (webhook) {
 					const logEmbed = new EmbedBuilder()
-						.setDescription(colors.green(
+						.setDescription(
 							`User: ${interaction.user.globalName}\nUser: <@${interaction.user.id}>\nCommand: "${command.name}"`
-						))
+						)
 						.setTimestamp();
 
 					webhook.send({
@@ -66,7 +66,7 @@ module.exports = {
 				}
 			} catch (error) {
 				console.error(error);
-				console.log(colors.green(
+				console.log(colors.red(
 					`\nUser: ${interaction.user.globalName}\nCommand: \`/${command.name}\ ${command.subcommand ? interaction.options.getSubcommand(false) : ''}\`\nUser: ${interaction.user.tag}`
 						.brightRed
 				));
@@ -100,7 +100,7 @@ module.exports = {
 				//if (randomNRange(1000)) AD(interaction, false);
 				await command.execute(interaction, client);
 				console.log(colors.green(
-					`\nGuild: ${interaction.member.guild.name}\nChannel: "${interaction.channel.name}"\nCommand: \`/${command.name}\ ${command.subcommand ? interaction.options.getSubcommand(false) : ''}\`\nUser: ${interaction.user.tag}\nTimestamp: ${Date().slice(0, -42)}`.brightGreen
+					`\nGuild: ${interaction.member.guild.name}\nChannel: "${interaction.channel.name}"\nCommand: \`/${command.name}\ ${command.subcommand ? interaction.options.getSubcommand(false) : ''}\`\nUser: ${interaction.user.tag}\nTimestamp: ${Date().slice(0, -42)}`
 				));
 				const webhookId = client.config.config.logs[2].webhookId; // logs WEBEX
 				const webhook = await client.fetchWebhook(webhookId);
@@ -176,7 +176,7 @@ module.exports = {
 			} catch (error) {
 				console.error(error, interaction);
 				console.log(colors.green(
-					`\nChannel: "${interaction.channel.name}\nCommand: "${command.name}"\nUser: ${interaction.user.tag}`
+					`Guild: ${interaction.guild.name}\nChannel: "${interaction.channel.name}"<#${interaction.channel.id}>\nUser: <@${interaction.user.id}>\nCommand: \`/${command.name}\ ${command.subcommand ? interaction.options.getSubcommand(false) : ''}\``
 						.brightRed
 				));
 				const errorEmbed = new EmbedBuilder()

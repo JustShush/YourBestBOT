@@ -34,7 +34,6 @@ async function RVotingRole(client) {
 					}
 				}
 
-				console.log(`Member:`, ybbMember, 'User:', ybbUser, 'SEND?:', send, 'Name:', name);
 				if (send) {
 					//? DM the member with the remainder to vote again!
 					const newEmbed = new EmbedBuilder()

@@ -32,7 +32,8 @@ async function RVotingRole(client) {
 						send = true
 						name = ybbUser.globalName;
 					}
-				}
+				} else
+					ybbUser = ybbMember;
 
 				if (send) {
 					//? DM the member with the remainder to vote again!

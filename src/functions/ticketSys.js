@@ -20,7 +20,17 @@ async function newTicket(interaction) {
 				},
 				{
 					id: interaction.user.id,
-					allow: [PermissionsBitField.Flags.ViewChannel, PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ReadMessageHistory]
+					allow: [
+						PermissionsBitField.Flags.ViewChannel,
+						PermissionsBitField.Flags.SendMessages,
+						PermissionsBitField.Flags.ReadMessageHistory,
+						PermissionsBitField.Flags.AttachFiles,
+						PermissionsBitField.Flags.EmbedLinks,
+						PermissionsBitField.Flags.AddReactions,
+						PermissionsBitField.Flags.UseExternalStickers,
+						PermissionsBitField.Flags.UseExternalEmojis,
+						PermissionsBitField.Flags.SendVoiceMessages
+					]
 				}
 			]
 		});
@@ -66,7 +76,17 @@ async function closeTicket(interaction) {
 			},
 			{
 				id: member.id,
-				deny: [PermissionsBitField.Flags.ViewChannel, PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ReadMessageHistory]
+				deny: [
+					PermissionsBitField.Flags.ViewChannel,
+					PermissionsBitField.Flags.SendMessages,
+					PermissionsBitField.Flags.ReadMessageHistory,
+					PermissionsBitField.Flags.AttachFiles,
+					PermissionsBitField.Flags.EmbedLinks,
+					PermissionsBitField.Flags.AddReactions,
+					PermissionsBitField.Flags.UseExternalStickers,
+					PermissionsBitField.Flags.UseExternalEmojis,
+					PermissionsBitField.Flags.SendVoiceMessages
+				]
 			}
 		]).catch((err) => { console.error("Error trying to overwrite a member's perms: ", err) });
 
@@ -74,7 +94,7 @@ async function closeTicket(interaction) {
 			.setDescription(`Ticket Closed by ${interaction.user}`)
 			.setColor("Yellow")
 		const embed = new EmbedBuilder()
-			.setDescription('````Support team ticket controls```')
+			.setDescription('```Support team ticket controls```')
 			.setColor("#36393F")
 
 		const btn = new ActionRowBuilder().setComponents(
@@ -127,8 +147,8 @@ async function deleteTicket(interaction) {
 		const ticketData = await ticketSchema.findOne({ GuildId: interaction.guild.id });
 		const i = ticketData.Tickets.findIndex((e) => e.ChannelId == interaction.channel.id);
 		const user = await interaction.guild.members.cache.get(ticketData.Tickets[i].MemberId);
-		channel.setName(`closed-${user.username}`).catch(console.error);
-		channel.delete().catch((err) => {
+		await channel.setName(`closed-${user.username}`).catch(console.error);
+		await channel.delete().catch((err) => {
 			interaction.reply({ content: "There was an error trying to delete the channel.", ephemeral: true });
 			return console.error("Error trying to delete the ticket! (interactionCreate.js)", err);
 		});

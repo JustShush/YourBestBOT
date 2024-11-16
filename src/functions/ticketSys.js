@@ -146,8 +146,9 @@ async function deleteTicket(interaction) {
 
 		const ticketData = await ticketSchema.findOne({ GuildId: interaction.guild.id });
 		const i = ticketData.Tickets.findIndex((e) => e.ChannelId == interaction.channel.id);
-		const user = await interaction.guild.members.cache.get(ticketData.Tickets[i].MemberId);
-		await channel.setName(`closed-${user.username}`).catch(console.error);
+		let member = await interaction.guild.members.cache.get(ticketData.Tickets[i].MemberId);
+		if (!member) user = await interaction.guild.members.fetch(ticketData.Tickets[i].MemberId);
+		await channel.setName(`closed-${member.user.username}`).catch(console.error);
 		await channel.delete().catch((err) => {
 			interaction.reply({ content: "There was an error trying to delete the channel.", ephemeral: true });
 			return console.error("Error trying to delete the ticket! (interactionCreate.js)", err);

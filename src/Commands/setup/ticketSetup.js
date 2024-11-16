@@ -12,29 +12,29 @@ module.exports = {
 		.setDescription('Manage the ticket System.')
 		.setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
 		.addSubcommand(sub => sub
-				.setName('send')
-				.setDescription('Send the ticket message.')
-				.addStringOption(o => o
-					.setName("title")
-					.setDescription('The Title of the embed.')
-					.setRequired(true),
-				)
-				.addStringOption(o => o
-					.setName("description")
-					.setDescription("The Description of the embed."))
+			.setName('send')
+			.setDescription('Send the ticket message.')
+			.addStringOption(o => o
+				.setName("title")
+				.setDescription('The Title of the embed.')
+				.setRequired(true),
+			)
+			.addStringOption(o => o
+				.setName("description")
+				.setDescription("The Description of the embed."))
 		)
 		.addSubcommand(sub => sub
-				.setName('setup')
-				.setDescription('Setup the ticket category')
-				.addChannelOption(o => o
-					.setName("category")
-					.setDescription("The category to send the tickets in")
-					.addChannelTypes(ChannelType.GuildCategory)
-					.setRequired(true))
+			.setName('setup')
+			.setDescription('Setup the ticket category')
+			.addChannelOption(o => o
+				.setName("category")
+				.setDescription("The category to send the tickets in")
+				.addChannelTypes(ChannelType.GuildCategory)
+				.setRequired(true))
 		)
 		.addSubcommand(sub => sub
-				.setName('disable')
-				.setDescription('Disable the ticket system.'),
+			.setName('disable')
+			.setDescription('Disable the ticket system.'),
 		)
 		.addSubcommand(sub => sub
 			.setName('add')
@@ -43,6 +43,14 @@ module.exports = {
 				.setName('user')
 				.setDescription('The user to add')
 				.setRequired(true))
+		)
+		.addSubcommand(sub => sub
+			.setName('remove')
+			.setDescription('Remove a user from the ticket.')
+			.addUserOption(o => o
+				.setName('user')
+				.setDescription('The user to remove')
+				.setRequired(true))
 		),
 	async execute(interaction) {
 
@@ -50,7 +58,7 @@ module.exports = {
 		const cmd = options.getSubcommand();
 
 		const ticketSys = await ticketSchema.findOne({ GuildId: interaction.guild.id });
-		let ticketData, newEmbed;
+		let ticketData, newEmbed, user, channel;
 
 		switch (cmd) {
 			case "send":
@@ -70,10 +78,10 @@ module.exports = {
 
 				const btn = new ActionRowBuilder().setComponents(
 					new ButtonBuilder()
-					.setCustomId("newticket")
-					.setLabel("Create ticket")
-					.setEmoji("📩")
-					.setStyle(ButtonStyle.Secondary))
+						.setCustomId("newticket")
+						.setLabel("Create ticket")
+						.setEmoji("📩")
+						.setStyle(ButtonStyle.Secondary))
 
 				await interaction.reply({ content: 'Ticket Msg sent!', ephemeral: true });
 				await interaction.channel.send({ embeds: [newEmbed], components: [btn] });
@@ -81,57 +89,86 @@ module.exports = {
 				break;
 
 			case "setup":
-					if (ticketSys) return await interaction.reply({ content: `Looks like you already have a ticket system set to \`<#${ticketSys.CategoryId}>\``, ephemeral: true });
+				if (ticketSys) return await interaction.reply({ content: `Looks like you already have a ticket system set to \`<#${ticketSys.CategoryId}>\``, ephemeral: true });
 
-					const category = options.getChannel("category");
+				const category = options.getChannel("category");
 
-					ticketData = await ticketSchema.create({
-						GuildId: interaction.guild.id,
-						CategoryId: category.id,
-						TicketId: '0',
-						Tickets: [],
-					});
+				ticketData = await ticketSchema.create({
+					GuildId: interaction.guild.id,
+					CategoryId: category.id,
+					TicketId: '0',
+					Tickets: [],
+				});
 
-					await interaction.reply({ content: `Ticket category has been set to **${category}**! Use </ticket send:1305164630213267487> to send a ticket create message`, ephemeral: true });
-					await ticketData.save();
-					break;
+				await interaction.reply({ content: `Ticket category has been set to **${category}**! Use </ticket send:1305164630213267487> to send a ticket create message`, ephemeral: true });
+				await ticketData.save();
+				break;
 
 			case "disable":
-					if (!ticketSys) return await interaction.reply({ content: `Looks like you don't already have a ticket system set`, ephemeral: true });
-					else {
-						await interaction.reply({ content: `Ticket system has been disable!`, ephemeral: true });
-						await ticketSchema.deleteOne({ GuildId: interaction.guild.id });
-					}
-					break;
+				if (!ticketSys) return await interaction.reply({ content: `Looks like you don't already have a ticket system set`, ephemeral: true });
+				else {
+					await interaction.reply({ content: `Ticket system has been disable!`, ephemeral: true });
+					await ticketSchema.deleteOne({ GuildId: interaction.guild.id });
+				}
+				break;
 
 			case "add":
-					ticketData = await ticketSchema.findOne({ GuildId: interaction.guild.id });
-					if (!ticketData) return await interaction.reply({ content: `Looks like you don\'t have the ticket system setup in this server.\nUse </ticket setup:1305164630213267487> to set it up \<3`, ephemeral: true });
+				ticketData = await ticketSchema.findOne({ GuildId: interaction.guild.id });
+				if (!ticketData) return await interaction.reply({ content: `Looks like you don\'t have the ticket system setup in this server.\nUse </ticket setup:1305164630213267487> to set it up \<3`, ephemeral: true });
 
-					const user = await options.getUser('user');
+				user = await options.getUser('user');
 
-					const channel = interaction.channel;
-					if (channel.parentId !== ticketData.CategoryId) return await interaction.reply({ content: `Sorry but you aren\'t using the command in a ticket channel, you can only do that inside Category: \`${ticketData.CategoryId}\` | "<#${ticketData.CategoryId}>"`, ephemeral: true });
+				channel = interaction.channel;
+				if (channel.parentId !== ticketData.CategoryId) return await interaction.reply({ content: `Sorry but you aren\'t using the command in a ticket channel, you can only do that inside Category: \`${ticketData.CategoryId}\` | "<#${ticketData.CategoryId}>"`, ephemeral: true });
 
-					await channel.permissionOverwrites.edit(user.id, {
-						ViewChannel: true,
-						SendMessages: true,
-						AttachFiles: true,
-						EmbedLinks: true,
-						AddReactions: true,
-						UseExternalStickers: true,
-						UseExternalEmojis: true,
-						SendVoiceMessages: true,
-						ReadMessageHistory: true
-					}).catch(err => console.log(err));
+				await channel.permissionOverwrites.edit(user.id, {
+					ViewChannel: true,
+					SendMessages: true,
+					AttachFiles: true,
+					EmbedLinks: true,
+					AddReactions: true,
+					UseExternalStickers: true,
+					UseExternalEmojis: true,
+					SendVoiceMessages: true,
+					ReadMessageHistory: true
+				}).catch(err => console.log(err));
 
-					newEmbed = new EmbedBuilder()
-						.setDescription(`<@${user.id}> added to ticket ${channel}`)
-						.setColor('Green')
+				newEmbed = new EmbedBuilder()
+					.setDescription(`<@${user.id}> added to ticket ${channel}`)
+					.setColor('Green')
 
-					await interaction.reply({ embeds: [newEmbed] });
+				await interaction.reply({ embeds: [newEmbed] });
 
-					break;
+				break;
+
+			case "remove":
+				ticketData = await ticketSchema.findOne({ GuildId: interaction.guild.id });
+				if (!ticketData) return await interaction.reply({ content: `Looks like you don\'t have the ticket system setup in this server.\nUse </ticket setup:1305164630213267487> to set it up \<3`, ephemeral: true });
+
+				user = await options.getUser('user');
+
+				channel = interaction.channel;
+				if (channel.parentId !== ticketData.CategoryId) return await interaction.reply({ content: `Sorry but you aren\'t using the command in a ticket channel, you can only do that inside Category: \`${ticketData.CategoryId}\` | "<#${ticketData.CategoryId}>"`, ephemeral: true });
+
+				await channel.permissionOverwrites.edit(user.id, {
+					ViewChannel: false,
+					SendMessages: false,
+					AttachFiles: false,
+					EmbedLinks: false,
+					AddReactions: false,
+					UseExternalStickers: false,
+					UseExternalEmojis: false,
+					SendVoiceMessages: false,
+					ReadMessageHistory: false
+				}).catch(err => console.log(err));
+
+				newEmbed = new EmbedBuilder()
+					.setDescription(`<@${user.id}> removed from the ticket ${channel}`)
+					.setColor('Green')
+
+				await interaction.reply({ embeds: [newEmbed] });
+
+				break;
 			default:
 				// theres no need for default but ya its here ig
 				break;

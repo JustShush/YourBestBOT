@@ -127,7 +127,7 @@ module.exports = {
 
 		allGuilds(client);
 
-		console.log(colors.magenta.bold(`${client.user.username} is online!\nIn ${client.guilds.cache.size} Servers!`));
+		console.log(colors.magenta.bold(`${client.user.username} is online!\nIn ${client.guilds.cache.size} Servers! ${client.guilds.cache.reduce((a, b) => a + b.memberCount, 0)} Members!`));
 		api.load(client);
 	}
 }

@@ -24,7 +24,7 @@ async function RVotingRole(client) {
 				if (!ybbS.members.cache.size) await ybbS.members.fetch();
 				let ybbMember = await ybbS.members.cache.get(user.UserId);
 				if (!ybbMember) ybbMember = await ybbS.members.fetch(user.UserId).catch((err) => console.log(`${user.UserId} is not in the server`, err), send = false);
-				let name = ybbMember.user.globalName;
+				let name = ybbMember?.user.globalName || undefined;
 				let ybbUser;
 				if (!send) {
 					ybbUser = await client.users.fetch(user.UserId).catch(err => console.log('cant get user', err))

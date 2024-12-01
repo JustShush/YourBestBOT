@@ -42,6 +42,7 @@ module.exports.load = (client) => {
 	app.get('/oauth', (req, res) => require('./oauth.js')(req, res));
 	app.get('/login', (req, res) => require('./login.js')(req, res));
 
+	app.get('/', (req, res) => require('./main.js')(req, res, client));
 	app.get("/membercount/:id", (req, res) => require("./membercount.js")(req, res, client));
 	app.get("/servercount/", (req, res) => require("./servercount.js")(req, res, client));
 	app.post("/votes", (req, res) => require("./votes.js")(req, res, client));

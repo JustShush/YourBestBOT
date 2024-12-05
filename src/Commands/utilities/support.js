@@ -4,7 +4,7 @@ module.exports = {
 	description: "Join the bot's support server.",
 	permission: "`SEND_MESSAGES`",
 	usage: "`/support`",
-	type: "Utility",
+	type: "Utility ⚙️",
 	data: new SlashCommandBuilder()
 		.setName('support')
 		.setDescription('Join YourBestBot\'s support server.')

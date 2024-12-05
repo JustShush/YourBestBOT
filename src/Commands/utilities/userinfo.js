@@ -6,7 +6,7 @@ module.exports = {
 	description: "Get information about a user.",
 	permission: "`SEND_MESSAGES`",
 	usage: "`/userinfo`, `/userinfo <Member>`",
-	type: "Utility",
+	type: "Utility ⚙️",
 	data: new SlashCommandBuilder()
 		.setName('userinfo')
 		.setDescription('Get information about a user')

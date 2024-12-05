@@ -8,7 +8,7 @@ module.exports = {
 	description: "Vote for YourBestBot <3",
 	permission: "`SEND_MESSAGES`",
 	usage: "`/vote`",
-	type: "Utility",
+	type: "Utility ⚙️",
 	data: new SlashCommandBuilder()
 		.setName("vote")
 		.setDescription("Vote for YourBestBot <3")

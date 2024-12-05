@@ -4,7 +4,7 @@ const { getServerStatus } = require('../../functions/fivem');
 module.exports = {
 	name: "fivem",
 	description: "Get the number of players from the cfx server website",
-	type: "Utility",
+	type: "Utility ⚙️",
 	subcommand: false,
 	permissions: "UseApplicationCommands",
 	data: new SlashCommandBuilder()

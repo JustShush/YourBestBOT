@@ -5,7 +5,7 @@ module.exports = {
 	description: "Ping the bot to see if it's alive.",
 	permission: "`SEND_MESSAGES`",
 	usage: "`/ping`",
-	type: "Utility",
+	type: "Utility ⚙️",
 	data: new SlashCommandBuilder()
 		.setName("ping")
 		.setDescription("Will respond with pong!")

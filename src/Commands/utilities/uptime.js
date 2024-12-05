@@ -5,7 +5,7 @@ module.exports = {
 	description: "Check bot's uptime.",
 	permission: "`SEND_MESSAGES`",
 	usage: "`/uptime`",
-	type: "Utility",
+	type: "Utility ⚙️",
 	data: new SlashCommandBuilder()
 		.setName("uptime")
 		.setDescription("Will respond with pong!")

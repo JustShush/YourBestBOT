@@ -7,7 +7,7 @@ module.exports = {
 	description: "Send a message to the devs \<3",
 	permission: "`SEND_MESSAGES`",
 	subcommand: true,
-	type: "Utility",
+	type: "Utility ⚙️",
 	data: new SlashCommandBuilder()
 		.setName("send")
 		.setDescription("Send a message to the devs")

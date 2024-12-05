@@ -10,7 +10,7 @@ const cache = {
 module.exports = {
 	name: "getinfo",
 	description: "Retrieve the Roblox information of a user.",
-	type: "Utility",
+	type: "Utility ⚙️",
 	subcommand: false,
 	permissions: "UseApplicationCommands",
 	data: new SlashCommandBuilder()

@@ -6,7 +6,7 @@ module.exports = {
 	permission: "`SEND_MESSAGES`",
 	usage: "`/emoji <customEmoji>`",
 	subcommand: true,
-	type: "Utility",
+	type: "Utility ⚙️",
 	data: new SlashCommandBuilder()
 		.setName('emoji')
 		.setDescription('Get a larger version of a custom emoji')

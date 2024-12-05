@@ -5,7 +5,7 @@ module.exports = {
 	description: "Share your code using this links.",
 	permission: "`SEND_MESSAGES`",
 	usage: "`/bin`",
-	type: "Utility",
+	type: "Utility ⚙️",
 	data: new SlashCommandBuilder()
 		.setName("bin")
 		.setDescription("Share your code.")

@@ -5,7 +5,7 @@ module.exports = {
 	description: "Get a larger version of a user\'s avatar",
 	permission: "`SEND_MESSAGES`",
 	usage: "`/avatar`, `/avatar <Member>`",
-	type: "Utility",
+	type: "Utility ⚙️",
 	data: new SlashCommandBuilder()
 		.setName('avatar')
 		.setDescription('Get a larger version of a user\'s avatar')

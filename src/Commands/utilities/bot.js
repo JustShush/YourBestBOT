@@ -4,7 +4,7 @@ module.exports = {
 	description: "Read a message written by the developer. <3",
 	permission: "`SEND_MESSAGES`",
 	usage: "`/bot`",
-	type: "Utility",
+	type: "Utility ⚙️",
 	data: new SlashCommandBuilder()
 		.setName('bot')
 		.setDescription('Info about YourBestBOT')

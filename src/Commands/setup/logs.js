@@ -8,7 +8,7 @@ module.exports = {
 	description: "Setup the logs channel so you know when someone uses a command.",
 	permission: "`MANAGE_CHANNELS`, `MANAGE_GUILD`",
 	usage: "`/setup-logs [channel_id]`",
-	type: "Setup",
+	type: "Setup 🔨",
 	data: new SlashCommandBuilder()
 		.setName("setup-logs")
 		.setDescription("Set the channel log.")

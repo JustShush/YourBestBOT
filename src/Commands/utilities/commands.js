@@ -56,22 +56,22 @@ module.exports = {
 			gwArray = [];
 			
 			client.commands.map(async (c) => {
-				if (c.type === "Utility") {
+				if (c.type === "Utility ⚙️") {
 					getSubcommand(interaction, utilityArray, c.name);
 					//utilityArray.push(`\`${c.name}\``);
-				} else if (c.type === "Fun") {
+				} else if (c.type === "Fun 🤪") {
 					getSubcommand(interaction, funArray, c.name);
-				} else if (c.type === "Moderation") {
+				} else if (c.type === "Moderation 🛠️") {
 					getSubcommand(interaction, moderationArray, c.name);
-				} else if (c.type === "Economy") {
+				} else if (c.type === "Economy 💸") {
 					getSubcommand(interaction, economyArray, c.name);
 				} else if (c.type === "Other") {
 					getSubcommand(interaction, otherArray, c.name);
-				} else if (c.type === "Setup") {
+				} else if (c.type === "Setup 🔨") {
 					getSubcommand(interaction, setupArray, c.name);
-				} else if (c.type === "Voter") {
+				} else if (c.type === "Voter ❤️") {
 					getSubcommand(interaction, votersArray, c.name);
-				} else if (c.type === "Giveaway") {
+				} else if (c.type === "Giveaway 🎉") {
 					getSubcommand(interaction, gwArray, c.name);
 				}
 			});
@@ -79,17 +79,17 @@ module.exports = {
 			const newEmbed = new EmbedBuilder()
 				.setDescription(
 					`**Welcome to the help command. You can view more information on the commands with /commands [command].**
-	Utility Commands:
+	Utility ⚙️ Commands:
 	${utilityArray.join(' ')}
-	Fun Commands:
+	Fun 🤪 Commands:
 	${funArray.join(' ')}
-	Moderation Commands:
+	Moderation 🛠️ Commands:
 	${moderationArray.join(' ')}
-	Economy Commands:
+	Economy 💸 Commands:
 	${economyArray.join(' ')}
-	Setup Commands:
+	Setup 🔨 Commands:
 	${setupArray.join(' ')}
-	Giveaway Commands:
+	Giveaway 🎉 Commands:
 	${gwArray.join(' ')}
 	Other Commands:
 	${otherArray.join(' ')}
@@ -97,7 +97,7 @@ module.exports = {
 	> **Voters exclusive Commands:**\n-# To get access to this commands run </vote:1294067743296847944> for more info \<3
 	${votersArray.join(' ')}
 
-	*Legacy(+) commands*
+	*Legacy(+prefix) commands*
 	${legacyArr.join(", ")}
 	`
 				)

@@ -6,7 +6,7 @@ module.exports = {
 	description: "Block custom words from being used.",
 	permission: "`ADMINISTRATOR`",
 	subcommand: true,
-	type: "Moderation",
+	type: "Moderation 🛠️",
 	data: new SlashCommandBuilder()
 		.setName("badword")
 		.setDescription("Block custom words from being used.")

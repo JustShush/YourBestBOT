@@ -6,7 +6,7 @@ module.exports = {
 	description: "Change a member's nickname.",
 	permission: "`MANAGE_NICKNAMES`",
 	usage: "`/setnick [member], /setnick [member] [newNick]`",
-	type: "Moderation",
+	type: "Moderation 🛠️",
 	data: new SlashCommandBuilder()
 		.setName("setnick")
 		.setDescription("Change the nickname of a member.")

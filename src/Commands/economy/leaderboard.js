@@ -6,7 +6,7 @@ module.exports = {
 	description: "View the top 10 richest users in this server.",
 	permission: "`SEND_MESSAGES`",
 	usage: "`/leaderboard`",
-	type: "Economy",
+	type: "Economy 💸",
 	data: new SlashCommandBuilder()
 		.setName('leaderboard')
 		.setDescription('View the top 10 richest users in this server.')

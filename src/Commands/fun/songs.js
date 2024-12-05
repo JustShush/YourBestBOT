@@ -5,7 +5,7 @@ module.exports = {
 	description: "Tell me if you like it or not. :)",
 	permission: "`SEND_MESSAGES`",
 	usage: "`/songs`",
-	type: "Fun",
+	type: "Fun 🤪",
 	data: new SlashCommandBuilder()
 		.setName('songs')
 		.setDescription('All the songs made by Midwell')

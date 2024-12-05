@@ -6,7 +6,7 @@ module.exports = {
 	description: "Setup the welcome message for when a member joins the server.",
 	permission: "`MANAGE_CHANNELS`, `MANAGE_GUILD`",
 	usage: "`/setup-welcome [channel_id] [msg], /welcome [channel_id] [msg] [role]`",
-	type: "Setup",
+	type: "Setup 🔨",
 	data: new SlashCommandBuilder()
 		.setName("setup-welcome")
 		.setDescription("Set the greetings embed.")

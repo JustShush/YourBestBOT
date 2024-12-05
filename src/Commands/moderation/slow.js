@@ -6,7 +6,7 @@ module.exports = {
 	description: "Change the slowmode of the current channel.",
 	permission: "`MANAGE_CHANNELS`, `MANAGE_GUILD`",
 	usage: "`/slowmode [time]`",
-	type: "Moderation",
+	type: "Moderation 🛠️",
 	data: new SlashCommandBuilder()
 		.setName("slowmode")
 		.setDescription("Change the Slowmode.")

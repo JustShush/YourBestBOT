@@ -5,7 +5,7 @@ module.exports = {
 	description: "Use this link to rickroll your friends. 🤫",
 	permission: "`SEND_MESSAGES`",
 	usage: "`/rickroll`",
-	type: "Fun",
+	type: "Fun 🤪",
 	data: new SlashCommandBuilder()
 		.setName('rickroll')
 		.setDescription('RickRoll I guess')

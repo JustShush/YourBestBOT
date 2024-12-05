@@ -6,7 +6,7 @@ module.exports = {
 	description: "Search for coins.",
 	permission: "`SEND_MESSAGES`",
 	usage: "`/search`",
-	type: "Economy",
+	type: "Economy 💸",
 	data: new SlashCommandBuilder()
 		.setName('search')
 		.setDescription('Search for coins.')

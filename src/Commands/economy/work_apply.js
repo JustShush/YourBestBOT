@@ -7,7 +7,7 @@ module.exports = {
 	description: "Aplly for a job.",
 	permission: "`SEND_MESSAGES`",
 	usage: "`/work-apply [job_number]`",
-	type: "Economy",
+	type: "Economy 💸",
 	data: new SlashCommandBuilder()
 		.setName('work-apply')
 		.setDescription('Start working.')

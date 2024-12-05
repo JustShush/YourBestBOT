@@ -7,7 +7,7 @@ module.exports = {
 	description: "Remove a job.",
 	permission: "`ADMINISTRATOR`",
 	usage: "`/jobs-remove [job_number]`",
-	type: "Economy",
+	type: "Economy 💸",
 	data: new SlashCommandBuilder()
 		.setName('jobs-remove')
 		.setDescription('Add jobs to the server.')

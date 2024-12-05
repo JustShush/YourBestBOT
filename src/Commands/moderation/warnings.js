@@ -8,7 +8,7 @@ module.exports = {
 	description: "Get the warnings for a user",
 	permission: "`MODERATE_MEMBERS`",
 	usage: "`/warnings [member]`",
-	type: "Moderation",
+	type: "Moderation 🛠️",
 	data: new SlashCommandBuilder()
 		.setName("warnings")
 		.setDescription("Get the warnings for a user")

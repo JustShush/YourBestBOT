@@ -5,7 +5,7 @@ module.exports = {
 	description: "Random dadjokes.",
 	permission: "`SEND_MESSAGES`",
 	usage: "`/dadjokes`",
-	type: "Fun",
+	type: "Fun 🤪",
 	data: new SlashCommandBuilder()
 		.setName('dadjokes')
 		.setDescription('Random dadjokes')

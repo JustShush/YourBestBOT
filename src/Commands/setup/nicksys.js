@@ -7,7 +7,7 @@ module.exports = {
 	description: "Enable/Disable the nickname system.",
 	permission: "`MANAGE_CHANNELS`, `MANAGE_GUILD`",
 	usage: "`/setup-nicksys`",
-	type: "Setup",
+	type: "Setup 🔨",
 	data: new SlashCommandBuilder()
 		.setName("setup-nicksys")
 		.setDescription("Enable/Disable the nickname System.")

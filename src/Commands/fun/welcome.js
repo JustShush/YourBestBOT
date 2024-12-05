@@ -5,7 +5,7 @@ module.exports = {
 	description: "Welcome the new members with a cool msg.",
 	permission: "`SEND_MESSAGES`",
 	usage: "`/welcome`",
-	type: "Fun",
+	type: "Fun 🤪",
 	data: new SlashCommandBuilder()
 		.setName('welcome')
 		.setDescription('Welcome new members.')

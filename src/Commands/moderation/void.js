@@ -8,7 +8,7 @@ module.exports = {
 	description: "Remove an Infraction from a member.",
 	permission: "`MEDERATE_MEMBERS`",
 	usage: "`/void <member> <caseId>`",
-	type: "Moderation",
+	type: "Moderation 🛠️",
 	data: new SlashCommandBuilder()
 		.setName("void")
 		.setDescription("Remove a warn from someone")

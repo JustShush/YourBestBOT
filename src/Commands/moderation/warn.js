@@ -8,7 +8,7 @@ module.exports = {
 	description: "Warn a member.",
 	permission: "`MODERATE_MEMBERS`",
 	usage: "`/warn [member], /warn [member] [reason]`",
-	type: "Moderation",
+	type: "Moderation 🛠️",
 	data: new SlashCommandBuilder()
 		.setName("warn")
 		.setDescription("Warn a member.")

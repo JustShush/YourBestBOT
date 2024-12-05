@@ -6,7 +6,7 @@ module.exports = {
 	description: "Kick a member from this server.",
 	permission: "`KICK_MEMBERS`",
 	usage: "`/kick [member], /kick [member] [reason]`",
-	type: "Moderation",
+	type: "Moderation 🛠️",
 	data: new SlashCommandBuilder()
 		.setName("kick")
 		.setDescription("Kicks the member given.")

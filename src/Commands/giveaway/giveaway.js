@@ -9,7 +9,7 @@ module.exports = {
 	permission: "`SEND_MESSAGES`",
 	subcommand: true,
 	permission: "ManageChannels",
-	type: "Giveaway",
+	type: "Giveaway 🎉",
 	data: new SlashCommandBuilder()
 		.setName("giveaway")
 		.setDescription("An advanced giveaway system.")

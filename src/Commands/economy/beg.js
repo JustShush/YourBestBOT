@@ -6,7 +6,7 @@ module.exports = {
 	description: "Beg YourBestBOT money, maybe you get something, or not.",
 	permission: "`SEND_MESSAGES`",
 	usage: "`/beg`",
-	type: "Economy",
+	type: "Economy 💸",
 	data: new SlashCommandBuilder()
 		.setName('beg')
 		.setDescription('Beg YourBestBOT money, maybe you get something, or not.')

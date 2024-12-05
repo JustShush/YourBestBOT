@@ -7,7 +7,7 @@ module.exports = {
 	description: "Resign from your current job.",
 	permission: "`SEND_MESSAGES`",
 	usage: "`/work-resign`",
-	type: "Economy",
+	type: "Economy 💸",
 	data: new SlashCommandBuilder()
 		.setName('work-resign')
 		.setDescription('Resign from your current job.')

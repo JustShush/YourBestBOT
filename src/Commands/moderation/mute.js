@@ -9,7 +9,7 @@ module.exports = {
 	description: "Mute a member.",
 	permission: "`MODERATE_MEMBERS`",
 	usage: "`/mute [member] [duration], /mute [member] [duration] [reason]`",
-	type: "Moderation",
+	type: "Moderation 🛠️",
 	data: new SlashCommandBuilder()
 		.setName("mute")
 		.setDescription("Restrict a member's ability to communicate.")

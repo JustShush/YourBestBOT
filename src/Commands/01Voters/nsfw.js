@@ -7,7 +7,7 @@ module.exports = {
 	description: "Get Various NSFW imgs/gifs",
 	permission: "`SEND_MESSAGES`",
 	subcommand: true,
-	type: "Voter",
+	type: "Voter ❤️",
 	data: new SlashCommandBuilder()
 		.setName("nsfw")
 		.setDescription("nsfw")

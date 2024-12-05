@@ -7,7 +7,7 @@ module.exports = {
 	description: "Get random cat images.",
 	permission: "`SEND_MESSAGES`",
 	usage: "`/cat`",
-	type: "Fun",
+	type: "Fun 🤪",
 	data: new SlashCommandBuilder()
 		.setName('cat')
 		.setDescription('Get random cat images.')

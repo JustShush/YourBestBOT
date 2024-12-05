@@ -6,7 +6,7 @@ module.exports = {
 	description: "Claim your daily coins.",
 	permission: "`SEND_MESSAGES`",
 	usage: "`/daily`",
-	type: "Economy",
+	type: "Economy 💸",
 	data: new SlashCommandBuilder()
 		.setName('daily')
 		.setDescription('Claim your daily coins!')

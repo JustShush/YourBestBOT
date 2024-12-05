@@ -6,7 +6,7 @@ module.exports = {
 	description: "Clear x amount of messages.",
 	permission: "`MANAGE_MESSAGES`, `MANAGE_CHANNELS`",
 	usage: "`/clear [number]`, `/clear [number] [user]`",
-	type: "Moderation",
+	type: "Moderation 🛠️",
 	data: new SlashCommandBuilder()
 		.setName('clear')
 		.setDescription('Clear messages.')

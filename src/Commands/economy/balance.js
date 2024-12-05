@@ -6,7 +6,7 @@ module.exports = {
 	description: "See your balance.",
 	permission: "`SEND_MESSAGES`",
 	usage: "`/balance`",
-	type: "Economy",
+	type: "Economy 💸",
 	data: new SlashCommandBuilder()
 		.setName('balance')
 		.setDescription('See your balance.')

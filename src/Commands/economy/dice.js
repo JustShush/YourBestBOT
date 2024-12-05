@@ -6,7 +6,7 @@ module.exports = {
 	description: "Make a bet and roll two dices against the bot, whoever has the higher roll wins.",
 	permission: "`SEND_MESSAGES`",
 	usage: "`/dice [amount]`",
-	type: "Economy",
+	type: "Economy 💸",
 	data: new SlashCommandBuilder()
 		.setName('dice')
 		.setDescription('Make a bet and roll two dice against the bot, whoever has the higher roll wins.')

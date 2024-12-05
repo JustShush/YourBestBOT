@@ -7,7 +7,7 @@ module.exports = {
 	description: "View all available jobs.",
 	permission: "`SEND_MESSAGES`",
 	usage: "`/work-list`",
-	type: "Economy",
+	type: "Economy 💸",
 	data: new SlashCommandBuilder()
 		.setName('work-list')
 		.setDescription('Work to get some coins.')

@@ -4,7 +4,7 @@ const ticketSchema = require('../../schemas/TicketSys.js');
 module.exports = {
 	name: "ticket",
 	description: "Manage the ticket System.",
-	type: "Setup",
+	type: "Setup 🔨",
 	subcommand: true,
 	permissions: "Administrator",
 	data: new SlashCommandBuilder()

@@ -6,7 +6,7 @@ module.exports = {
 	description: "Setup the goodBye message for when a member leaves the server.",
 	permission: "`MANAGE_CHANNELS`, `MANAGE_GUILD`",
 	usage: "`/setup-goodbye [channel_id] [msg]`",
-	type: "Setup",
+	type: "Setup 🔨",
 	data: new SlashCommandBuilder()
 		.setName("setup-goodbye")
 		.setDescription("Set the greetings embed.")

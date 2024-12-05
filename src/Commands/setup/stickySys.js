@@ -4,7 +4,7 @@ const sticky = require("../../schemas/stickySys.js");
 module.exports = {
 	name: "sticky",
 	description: "Manage this server sticky messages.",
-	type: "Setup",
+	type: "Setup 🔨",
 	subcommand: true,
 	permission: "ManageChannels",
 	data: new SlashCommandBuilder()

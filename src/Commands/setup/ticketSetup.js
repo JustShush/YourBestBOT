@@ -51,7 +51,9 @@ module.exports = {
 				.setName('user')
 				.setDescription('The user to remove')
 				.setRequired(true))
-		),
+		)
+		.setContexts(2)
+		.setIntegrationTypes(1),
 	async execute(interaction) {
 
 		const { options } = interaction;

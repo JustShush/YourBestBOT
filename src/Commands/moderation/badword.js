@@ -64,6 +64,8 @@ module.exports = {
 				.setRequired(true)
 			)
 		)
+		.setContexts(2)
+		.setIntegrationTypes(1)
 		.setNSFW(false),
 	/**
 	 * @param {ChatInputCommandInteraction} interaction

@@ -6,7 +6,7 @@ module.exports = {
 	description: "Copy an emoji to the current server.",
 	permission: "`MANAGE_GUILD_EXPRESSIONS`",
 	usage: "`steal`",
-	type: "Utility",
+	type: "Utility ⚙️",
 	/**
 	 * @param {Message} message
 	 */

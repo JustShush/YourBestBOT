@@ -42,10 +42,11 @@ module.exports.load = (client) => {
 	app.get('/oauth', (req, res) => require('./oauth.js')(req, res));
 	app.get('/login', (req, res) => require('./login.js')(req, res));
 
+	app.get("/commands", (req, res) => require("./commands.js")(req, res, client));
+	app.get("/lastfm", (req, res) => require("./lastfm.js")(req, res, client));
 	app.get("/membercount/:id", (req, res) => require("./membercount.js")(req, res, client));
 	app.get("/servercount/", (req, res) => require("./servercount.js")(req, res, client));
 	app.post("/votes", (req, res) => require("./votes.js")(req, res, client));
-	app.get("/commands", (req, res) => require("./commands.js")(req, res, client));
 	app.listen(port)
 	console.log(`🚀 ${client.user.username} API is Up and Running!`.brightYellow.bold);
 }

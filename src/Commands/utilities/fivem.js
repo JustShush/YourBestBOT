@@ -22,8 +22,9 @@ module.exports = {
 
 		const focusedValue = interaction.options.getFocused();
 
-		const choices = [{ name: "🔷 Diamond 🔷", value: "https://cfx.re/join/bqjgz4" }, { name: "AltF4", value: "https://cfx.re/join/zea3pd" },
-		{ name: "Portugalia", value: "https://cfx.re/join/6z6el4" }, { name: "🔱 Atlantic 🔱", value: "https://cfx.re/join/8lla53" }];
+		const choices = [{ name: "🔷 Diamond 🔷", value: "https://cfx.re/join/bqjgz4" }, { name: "Puerto Esperanza 2.0", value: "https://cfx.re/join/kgeobv" },
+		{ name: "AltF4", value: "https://cfx.re/join/zea3pd" }, { name: "Portugalia", value: "https://cfx.re/join/6z6el4" },
+		{ name: "🔱 Atlantic 🔱", value: "https://cfx.re/join/8lla53" }];
 		const fvalue = { name: focusedValue, value: focusedValue }
 		let list = choices;
 		if (focusedValue) list = [fvalue, ...choices];

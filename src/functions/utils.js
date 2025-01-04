@@ -13,8 +13,8 @@ function embedColor() {
 /**
  * This just displays a simple progress bar as a string.
  * 
- * example on how to use it to show 50% : console.log( ProgressBar(50, 100) ) // 50%
- * result for 10%: [ ⣷         ] 10%
+ * - example on how to use it to show 50% : console.log( ProgressBar(50, 100) ) // 50%
+ * - result for 10%: [ ⣷         ] 10%
  * 
  * @param {Number} progress The current progress
  * @param {Number} max The max progress percentage
@@ -22,13 +22,13 @@ function embedColor() {
  */
 function ProgressBar(progress, max) {
 	const PROGRESS = [' ', '⡀', '⣀', '⣄', '⣤', '⣦', '⣶', '⣷', '⣿'];
-    if (progress > max) progress = max;
+	if (progress > max) progress = max;
 
-    const percent = Math.floor((progress / max) * 100);
-    const full = Math.floor((progress / max) * PROGRESS.length);
-    const remainder = Math.floor(((progress / max) * PROGRESS.length - full) * 8);
-    const bar = `${PROGRESS[PROGRESS.length - 1].repeat(full)}${PROGRESS[remainder]}${' '.repeat(PROGRESS.length - full)}`;
-    return `[ ${bar}] ${percent}%`;
+	const percent = Math.floor((progress / max) * 100);
+	const full = Math.floor((progress / max) * PROGRESS.length);
+	const remainder = Math.floor(((progress / max) * PROGRESS.length - full) * 8);
+	const bar = `${PROGRESS[PROGRESS.length - 1].repeat(full)}${PROGRESS[remainder]}${' '.repeat(PROGRESS.length - full)}`;
+	return `[ ${bar}] ${percent}%`;
 }
 
 /**

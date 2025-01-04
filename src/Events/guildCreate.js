@@ -5,6 +5,7 @@ module.exports = {
 	name: "guildCreate",
 	async execute(guild, client) {
 
+		const owner = await guild.members.fetch(guild.ownerId);
 		let data = await Stats.findOne();
 		if (!data.servers) {
 			data.servers = {
@@ -47,6 +48,17 @@ module.exports = {
 			//console.log(`found one: ${guild.name}`);
 			channel.send({ content: `discord.gg/${invite.code}`, embeds: [newEmbed] });
 		}
-		else channel.send({ embeds: {newEmbed} });
+		else channel.send({ embeds: { newEmbed } });
+
+		//const owner = await guild.members.fetch(guild.ownerId);
+		if (!owner) return console.log("Someone added the bot but theres no owner? idk" + __filename);
+
+		const ownerEmbed = new EmbedBuilder()
+			.setColor('#0099ff')
+			.setTitle('Thank You for Adding Me!')
+			.setDescription(`✅Thanks for adding me to your server, ${owner.user.username}!\n**How to Use Me:**\n<:Reply:1299059023349551104> Use </commands:1222174029813776518> to see all my commands \<3`)
+
+		owner.send({ embeds: [ownerEmbed] }).catch(err => (console.log(err, `${owner.user.username} | ${guild.ownerId} => Added the bot but the bot couldnt send the welcome DM.`), channel.send(`${owner.user.username} | ${guild.ownerId} => Added the bot but the bot couldnt send the welcome DM.`) ));
+
 	},
 };

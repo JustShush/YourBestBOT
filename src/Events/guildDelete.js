@@ -1,9 +1,10 @@
-const { EmbedBuilder } = require("discord.js");
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 const Stats = require("../schemas/stats.js");
 
 module.exports = {
 	name: "guildDelete",
 	async execute(guild, client) {
+		const owner = await guild.members.cache.get(guild.ownerId);
 		let data = await Stats.findOne();
 		if (!data.servers) {
 			data.servers = {
@@ -42,5 +43,29 @@ module.exports = {
 		//newEmbed.addFields({ name: `Invite:`, value: `\`discord.gg/${invite.code}\`` })
 		if (found) return channel.send({ content: `discord.gg/${invite.code}`, embeds: [newEmbed] });
 		channel.send({ embeds: [newEmbed] });
+
+		//const owner = await guild.members.fetch(guild.ownerId);
+		if (!owner) return console.log("Someone removed the bot but theres no owner? idk" + __filename);
+
+		const ownerEmbed = new EmbedBuilder()
+			.setColor('#ff0000')
+			.setDescription(`❌ I was removed from \`${guild.name}\`.\n# KICKED ME BY MISTAKE?\nPress the button below to add me again \<3. [Add Me](https://yourbestbot.pt/invite).`);
+
+		const row = new ActionRowBuilder()
+			.addComponents(
+				new ButtonBuilder()
+					.setLabel("Vote for YourBestBOT")
+					.setEmoji('❤️')
+					.setURL(`https://yourbestbot.pt/vote`)
+					.setStyle(ButtonStyle.Link),
+				new ButtonBuilder()
+					.setLabel(`Add YourBestBOT`)
+					.setEmoji("🔗")
+					.setURL('https://yourbestbot.pt/invite')
+					.setStyle(ButtonStyle.Link),
+			);
+
+		owner.send({ content: `${owner.user}`, embeds: [ownerEmbed], components: [row] }).catch(err => (console.log(err, `${owner.user.username} | ${guild.ownerId} => Removed the bot but the bot couldnt send the welcome DM.`), channel.send(`${owner.user.username} | ${guild.ownerId} => Removed the bot but the bot couldnt send the welcome DM.`)));
+
 	},
 };

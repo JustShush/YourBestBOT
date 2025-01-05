@@ -139,7 +139,15 @@ async function transcriptTicket(interaction) {
 		);
 
 		await interaction.user.send({ content: `You can see the Transcript of the ticket [here](https://api.yourbestbot.pt/transcript/${channel.id})`}).catch(err => console.log(err, `Tried to send a DM to the user with the ticket Transcript but didnt worked :(`));
-		ticketsChannelsID.delete(`${channel.id}`); // deletes the data from the MAP
+
+		// still need to make a better system for this, maybe a channel to post all transcripts
+		// maybe just to the user that opened the ticket and print it into the channel so mods can see even when the ticket is closed.
+		// maybe sending to everyone in the ticket is not the best idea, ratelimits and spam
+		const savedTranscriptEmbed = new EmbedBuilder()
+			.setColor('Green')
+			.setDescription(`Transcript saved and sent to <@${interaction.user.id}>`);
+
+		await channel.send({ embeds: [savedTranscriptEmbed] });
 	}
 }
 
@@ -185,6 +193,7 @@ async function deleteTicket(interaction) {
 		});
 		ticketData.Tickets.splice(i, 1);
 		await ticketData.save();
+		ticketsChannelsID.delete(`${channel.id}`); // deletes the data from the MAP
 	}
 }
 

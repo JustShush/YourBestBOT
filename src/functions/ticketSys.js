@@ -1,6 +1,10 @@
 const { ChannelType, PermissionsBitField, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 const ticketSchema = require('../schemas/TicketSys.js');
 
+// array of all the tickets ids
+// so it can later know what channels to read in the messageCreate event.
+const ticketsChannelsID = new Map();
+
 async function newTicket(interaction) {
 	if (interaction.customId === "newticket") {
 		let ticketData = await ticketSchema.findOne({ GuildId: interaction.guild.id });
@@ -34,6 +38,8 @@ async function newTicket(interaction) {
 				}
 			]
 		});
+
+		if (!ticketsChannelsID.has(`${channel.id}`)) ticketsChannelsID.set(`${channel.id}`, []);
 
 		// copy the main obj to a tmp and then save with the ticket id so later I know what channel to delete
 		const obj = { MemberId: interaction.user.id, ChannelId: channel.id };
@@ -118,7 +124,7 @@ async function reopenTicket(interaction) {
 		const channel = interaction.channel;
 
 		const ticketData = await ticketSchema.findOne({ GuildId: interaction.guild.id });
-		const i = ticketData.Tickets.findIndex((e) => e.GuildId == interaction.guild.id);
+		const i = ticketData.Tickets.findIndex((e) => e.ChannelId == interaction.channel.id);
 		const member = await interaction.guild.members.cache.get(ticketData.Tickets[i].MemberId);
 		await channel.permissionOverwrites.set([
 			{
@@ -165,4 +171,4 @@ async function TicketSystem(interaction) {
 	deleteTicket(interaction);
 }
 
-module.exports = { TicketSystem };
+module.exports = { TicketSystem, ticketsChannelsID };

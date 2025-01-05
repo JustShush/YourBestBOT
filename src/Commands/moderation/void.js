@@ -24,8 +24,8 @@ module.exports = {
 			.setRequired(true)
 			.setMaxLength(512)
 		)
-		.setContexts(0)
-		.setIntegrationTypes(0),
+		.setContexts(0) // 0 for guild | 1 for botDM | 2 everywhere
+		.setIntegrationTypes(0), // 0 for guild install | 1 for user install
 	/**
 	 * @param {ChatInputCommandInteraction} interaction
 	 */

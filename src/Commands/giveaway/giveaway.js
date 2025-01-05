@@ -78,9 +78,8 @@ module.exports = {
 				.setRequired(true)
 			)
 		)
-		.setContexts(0)
-		.setIntegrationTypes(0)
-		.setDMPermission(false)
+		.setContexts(0) // 0 for guild | 1 for botDM | 2 everywhere
+		.setIntegrationTypes(0) // 0 for guild install | 1 for user install
 		.setNSFW(false),
 	/**
 	 * @param {ChatInputCommandInteraction} interaction

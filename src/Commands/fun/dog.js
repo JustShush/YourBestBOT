@@ -11,7 +11,8 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('dog')
 		.setDescription('Get random dog images.')
-		.setDMPermission(true)
+		.setContexts(0, 1, 2) // 0 for guild | 1 for botDM | 2 everywhere
+		.setIntegrationTypes(0, 1) // 0 for guild install | 1 for user install
 		.setNSFW(false),
 	async execute(interaction) {
 

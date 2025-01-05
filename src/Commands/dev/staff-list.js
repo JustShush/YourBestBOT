@@ -7,7 +7,6 @@ module.exports = {
 		.setName("staff")
 		.setDescription("Gives you all the staff members on Webex mas aqui!")
 		.setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
-		.setDMPermission(true)
 		.setNSFW(false),
 	/**
 	 * @param {ChatInputCommandInteraction} interaction

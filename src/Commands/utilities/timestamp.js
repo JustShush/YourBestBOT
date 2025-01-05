@@ -46,9 +46,8 @@ module.exports = {
 			.setDescription('Provide specific date in DD/MM/YYYY format (optional)')
 			.setRequired(false)
 		)
-		.setContexts(0, 1, 2)
-		.setIntegrationTypes(0, 1)
-		.setDMPermission(true)
+		.setContexts(0, 1, 2) // 0 for guild | 1 for botDM | 2 everywhere
+		.setIntegrationTypes(0, 1) // 0 for guild install | 1 for user install
 		.setNSFW(false),
 	/**
 	 * @param {ChatInputCommandInteraction} interaction

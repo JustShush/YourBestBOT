@@ -52,8 +52,8 @@ module.exports = {
 				.setDescription('The user to remove')
 				.setRequired(true))
 		)
-		.setContexts(2)
-		.setIntegrationTypes(1),
+		.setContexts(0) // 0 for guild | 1 for botDM | 2 everywhere
+		.setIntegrationTypes(0), // 0 for guild install | 1 for user install
 	async execute(interaction) {
 
 		const { options } = interaction;

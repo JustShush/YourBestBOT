@@ -1,5 +1,6 @@
 const { ChannelType, PermissionsBitField, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 const ticketSchema = require('../schemas/TicketSys.js');
+const TTranscriptSchema = require('../schemas/TicketTranscripts.js');
 
 // array of all the tickets ids
 // so it can later know what channels to read in the messageCreate event.
@@ -105,6 +106,11 @@ async function closeTicket(interaction) {
 
 		const btn = new ActionRowBuilder().setComponents(
 			new ButtonBuilder()
+				.setCustomId("transcriptTicket")
+				.setLabel("Transcript")
+				.setEmoji("📝")
+				.setStyle(ButtonStyle.Secondary),
+			new ButtonBuilder()
 				.setCustomId("reopenTicket")
 				.setLabel("Open")
 				.setEmoji("🔓")
@@ -114,8 +120,26 @@ async function closeTicket(interaction) {
 				.setLabel("Delete")
 				.setEmoji("⛔")
 				.setStyle(ButtonStyle.Secondary))
-		
+
 		await channel.send({ embeds: [newEmbed, embed], components: [btn] });
+	}
+}
+
+async function transcriptTicket(interaction) {
+	if (interaction.customId === "transcriptTicket") {
+		const channel = interaction.channel;
+
+		const messages = ticketsChannelsID.get(`${channel.id}`);
+		if (!messages) return interaction.reply({ content: `There are no messages to save here.` });
+
+		await TTranscriptSchema.findOneAndUpdate(
+			{ ticketId: channel.id },
+			{ messages },
+			{ upsert: true, new: true }
+		);
+
+		await interaction.user.send({ content: `You can see the Transcript of the ticket [here](https://api.yourbestbot.pt/transcript/${channel.id})`}).catch(err => console.log(err, `Tried to send a DM to the user with the ticket Transcript but didnt worked :(`));
+		ticketsChannelsID.delete(`${channel.id}`); // deletes the data from the MAP
 	}
 }
 
@@ -138,8 +162,8 @@ async function reopenTicket(interaction) {
 		]).catch((err) => { console.error("Error trying to overwrite a member's perms: ", err) });
 
 		const newEmbed = new EmbedBuilder()
-		.setDescription(`Ticket Re-Openned by ${interaction.user}`)
-		.setColor("Green")
+			.setDescription(`Ticket Re-Openned by ${interaction.user}`)
+			.setColor("Green")
 
 		await interaction.message.delete().catch(console.error);
 		await channel.send({ embeds: [newEmbed] });
@@ -167,6 +191,7 @@ async function deleteTicket(interaction) {
 async function TicketSystem(interaction) {
 	newTicket(interaction);
 	closeTicket(interaction);
+	transcriptTicket(interaction);
 	reopenTicket(interaction);
 	deleteTicket(interaction);
 }

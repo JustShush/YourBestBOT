@@ -3,6 +3,7 @@ const Schema = require("../schemas/stats.js");
 const UserStats = require("../schemas/userStats.js");
 const { sticky } = require("../functions/sticky.js");
 const { WBlacklist } = require('../functions/WBlacklist.js');
+const { ticketsChannelsID } = require('../functions/ticketSys.js');
 
 module.exports = {
 	name: "messageCreate",
@@ -12,6 +13,13 @@ module.exports = {
 		sticky(message);
 		WBlacklist(message);
 		if (message.author.bot) return;
+		if (ticketsChannelsID.has(`${message.channel.id}`)) {
+			ticketsChannelsID.get(`${message.channel.id}`).push({
+				author: message.author.tag,
+				content: message.content,
+				timestamp: new Date(message.createdAt).toLocaleString()
+			})
+		}
 
 		if (message.guild.id == "702545447750860931" || message.guild.id == "1054090158779150376" || message.guild.id == '946518364216520774')
 			detect(message);

@@ -5,6 +5,7 @@ const cron = require('node-cron');
 const { allGuilds } = require('../functions/allguilds');
 const { RVotingRole } = require("../functions/votingRoleRemove.js");
 const { checkGWs, deleteExpiredGW } = require('../functions/gwUtils.js');
+const { rmTranscripts } = require('../functions/rmTranscripts.js');
 const api = require("../api/app.js");
 
 module.exports = {
@@ -97,6 +98,7 @@ module.exports = {
 			const Stotal = data.servers.total;
 			const channel = await client.channels.cache.get(config.logs[1].id);
 			await channel.send({ content: `${pretty.BlueSquare} **[WeeklyUpdate]:** Votes Total:${total} Diff:${diff} Last:${current}\nServers Total:${Stotal} Diff:${Sdiff} Last: ${Scurrent}` });
+			rmTranscripts(); // Removes old transcripts
 		}
 
 		async function dayUpdate() {

@@ -14,4 +14,5 @@ module.exports = model("TTranscripts", new Schema({
 			timestamp: Date,
 		},
 	],
+	createdAt: { type: Date, default: Date.now }, // Automatically set to current date
 }), "TTranscripts")

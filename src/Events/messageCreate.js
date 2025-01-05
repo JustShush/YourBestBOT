@@ -16,8 +16,16 @@ module.exports = {
 		if (ticketsChannelsID.has(`${message.channel.id}`)) {
 			ticketsChannelsID.get(`${message.channel.id}`).push({
 				author: message.author.tag,
+				avatar: message.author.displayAvatarURL({ dynamic: true, size: 512 }),
 				content: message.content,
-				timestamp: new Date(message.createdAt).toLocaleString()
+				timestamp: new Date(message.createdAt).toLocaleString('en-US', {
+					year: 'numeric',
+					month: 'short', // Short month (e.g., "Dec")
+					day: 'numeric',
+					hour: 'numeric',
+					minute: '2-digit',
+					hour12: true // Enables 12-hour format with AM/PM
+				})
 			})
 		}
 

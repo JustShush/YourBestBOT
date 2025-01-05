@@ -25,7 +25,7 @@ module.exports = async (req, res) => {
 			<title>Transcript - Ticket ${ticketId}</title>
 			<style>
 				body { font-family: Arial, sans-serif; margin: 20px; background-color: #36393F; }
-				.message { margin-bottom: 10px; }
+				.message { margin-bottom: 10px; color: white; }
 				.author { font-weight: bold; color: #3498db; }
 				.timestamp { font-size: 0.9em; color: #7f8c8d; }
 			</style>
@@ -34,20 +34,26 @@ module.exports = async (req, res) => {
 			<h1>Transcript for Ticket ${ticketId}</h1>
 			<div>
 				${messages
-					.map(
-						msg => `
+			.map(
+				msg => `
 							<div class="message">
 								<span class="timestamp">[${msg.timestamp}]</span>
 								<span class="author">${msg.author}:</span>
-								<span class="content">${msg.content}</span>
+								<span class="content">${formatMessageContent(msg.content)}</span>
 							</div>
 						`
-					)
-					.join('')}
+			)
+			.join('')}
 			</div>
 		</body>
 		</html>
 	`;
 
 	res.send(transcriptHTML);
+}
+
+function formatMessageContent(content) {
+	const urlRegex = /(https?:\/\/[^\s]+)/g;
+	// Replace URLs with clickable links
+	return content.replace(urlRegex, (url) => `<a href="${url}" target="_blank">${url}</a>`);
 }

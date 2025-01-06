@@ -3,6 +3,7 @@ Guilds.txt
 Invites.json
 userStats.json
 package-lock.json
+cache.json
 
 # Examples of stuff
 zclient_example.json

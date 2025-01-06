@@ -74,7 +74,8 @@ async function closeTicket(interaction) {
 		const ticketData = await ticketSchema.findOne({ GuildId: interaction.guild.id });
 
 		const i = ticketData.Tickets.findIndex((e) => e.ChannelId == interaction.channel.id);
-		const member = await interaction.guild.members.cache.get(ticketData.Tickets[i].MemberId);
+		let member = await interaction.guild.members.cache.get(ticketData.Tickets[i].MemberId);
+		if (!member) member = await interaction.guild.members.fetch(ticketData.Tickets[i].MemberId);
 
 		await channel.permissionOverwrites.set([
 			{
@@ -132,22 +133,32 @@ async function transcriptTicket(interaction) {
 		const messages = ticketsChannelsID.get(`${channel.id}`);
 		if (!messages) return interaction.reply({ content: `There are no messages to save here.` });
 
+		const userId = channel.topic.match(/\|\s(\d+)$/)?.[1];
+		if (!userId) return interaction.reply({ content: 'Could not find the user ID in the channel topic.\n Make sure its there or if its the correct one.', ephemeral: true });
+		const userOpenTicket = await interaction.guild.members.cache.get(userId);
+		if (!userOpenTicket) userOpenTicket = await interaction.guild.members.fetch(userId);
+		if (!userOpenTicket) await interaction.reply({ content: `❌ Something when wrong!\nThe user that opened the ticket is no longer in the server so i will not be able to send them the transcript.` });
+
 		await TTranscriptSchema.findOneAndUpdate(
 			{ ticketId: channel.id },
 			{ messages },
 			{ upsert: true, new: true }
 		);
 
+		if (userOpenTicket) await userOpenTicket.send({ content: `You can see the Transcript of the ticket [here](https://api.yourbestbot.pt/transcript/${channel.id})`}).catch(err => console.log(err, `Tried to send a DM to the user with the ticket Transcript but didnt worked :(`));
 		await interaction.user.send({ content: `You can see the Transcript of the ticket [here](https://api.yourbestbot.pt/transcript/${channel.id})`}).catch(err => console.log(err, `Tried to send a DM to the user with the ticket Transcript but didnt worked :(`));
+		console.log(`https://api.yourbestbot.pt/transcript/${channel.id}`)
 
 		// still need to make a better system for this, maybe a channel to post all transcripts
 		// maybe just to the user that opened the ticket and print it into the channel so mods can see even when the ticket is closed.
 		// maybe sending to everyone in the ticket is not the best idea, ratelimits and spam
-		const savedTranscriptEmbed = new EmbedBuilder()
+		function TranscriptEmbed(userID) {
+			return new EmbedBuilder()
 			.setColor('Green')
-			.setDescription(`Transcript saved and sent to <@${interaction.user.id}>`);
+			.setDescription(`Transcript saved and sent to <@${userID}>`);
+		}
 
-		await channel.send({ embeds: [savedTranscriptEmbed] });
+		await channel.send({ embeds: userOpenTicket ? [TranscriptEmbed(interaction.user.id), TranscriptEmbed(userId)] : [TranscriptEmbed(interaction.user.id)] });
 	}
 }
 

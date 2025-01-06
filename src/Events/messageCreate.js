@@ -17,6 +17,7 @@ module.exports = {
 			ticketsChannelsID.get(`${message.channel.id}`).push({
 				id: message.id,
 				author: message.author.tag,
+				authorId: message.member.id,
 				avatar: message.author.displayAvatarURL({ dynamic: true, size: 512 }),
 				content: message.content,
 				reference: message.reference ? message.reference.messageId : null,

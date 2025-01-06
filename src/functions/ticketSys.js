@@ -146,7 +146,8 @@ async function transcriptTicket(interaction) {
 		);
 
 		if (userOpenTicket) await userOpenTicket.send({ content: `You can see the Transcript of the ticket [here](https://api.yourbestbot.pt/transcript/${channel.id})`}).catch(err => console.log(err, `Tried to send a DM to the user with the ticket Transcript but didnt worked :(`));
-		await interaction.user.send({ content: `You can see the Transcript of the ticket [here](https://api.yourbestbot.pt/transcript/${channel.id})`}).catch(err => console.log(err, `Tried to send a DM to the user with the ticket Transcript but didnt worked :(`));
+		if (interaction.user.id != userId)
+			await interaction.user.send({ content: `You can see the Transcript of the ticket [here](https://api.yourbestbot.pt/transcript/${channel.id})`}).catch(err => console.log(err, `Tried to send a DM to the user with the ticket Transcript but didnt worked :(`));
 		console.log(`https://api.yourbestbot.pt/transcript/${channel.id}`)
 
 		// still need to make a better system for this, maybe a channel to post all transcripts
@@ -158,7 +159,7 @@ async function transcriptTicket(interaction) {
 			.setDescription(`Transcript saved and sent to <@${userID}>`);
 		}
 
-		await channel.send({ embeds: userOpenTicket ? [TranscriptEmbed(interaction.user.id), TranscriptEmbed(userId)] : [TranscriptEmbed(interaction.user.id)] });
+		await channel.send({ embeds: userOpenTicket ? interaction.member.id == userId ? [TranscriptEmbed(userId)] : [TranscriptEmbed(interaction.user.id), TranscriptEmbed(userId)] : [TranscriptEmbed(interaction.user.id)] });
 	}
 }
 

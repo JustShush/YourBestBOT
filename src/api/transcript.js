@@ -19,10 +19,6 @@ module.exports = async (req, res) => {
 		return cache;
 	}, {});
 
-/*
-Transcript page coded by Noxic - https://github.com/noxic-dev 😀
-*/
-
 	const transcriptHTML = `
 	<!DOCTYPE html>
 	<html lang="en">
@@ -33,10 +29,10 @@ Transcript page coded by Noxic - https://github.com/noxic-dev 😀
 		<title>Transcript - Ticket ${ticketId}</title>
 		<style>
 			:root {
-    			--font-noto-sans: 'Noto Sans', sans-serif;
+				--font-noto-sans: 'Noto Sans', sans-serif;
 			}
 			body {
-    			font-family: var(--font-noto-sans);
+				font-family: var(--font-noto-sans);
 				margin: 20px;
 				background-color: #2C2F33;
 				color: #FFFFFF;
@@ -171,40 +167,39 @@ Transcript page coded by Noxic - https://github.com/noxic-dev 😀
 			Made with ❤ by <a href="https://github.com/JustShush" target="_blank">JustShush</a> <br>
 			Transcript page coded by <a href="https://github.com/noxic-dev" target="_blank">Noxic</a>
 		</div>
-<script>
-    function highlightMessage(messageId) {
-        const message = document.getElementById('message-' + messageId).querySelector('.message-content');
-        console.log(message);
-        if (message) {
-            message.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-            });
-            toggleClasses(message);
-        }
-    }
+	<script>
+		function highlightMessage(messageId) {
+			const message = document.getElementById('message-' + messageId).querySelector('.message-content');
+			console.log(message);
+			if (message) {
+				message.scrollIntoView({
+					behavior: 'smooth',
+					block: 'start'
+				});
+				toggleClasses(message);
+			}
+		}
+		function toggleClasses(message) {
+			let times = 0;
+			const interval = 350;
 
-    function toggleClasses(message) {
-        let times = 0;
-        const interval = 350;
+			const loop = setInterval(() => {
+				if (times < 5) {
+					message.classList.add('highlight');
+					message.classList.remove('message-content');
 
-        const loop = setInterval(() => {
-            if (times < 5) {
-                message.classList.add('highlight');
-                message.classList.remove('message-content');
+					setTimeout(() => {
+						message.classList.remove('highlight');
+						message.classList.add('message-content');
+					}, interval);
 
-                setTimeout(() => {
-                    message.classList.remove('highlight');
-                    message.classList.add('message-content');
-                }, interval);
-
-                times++;
-            } else {
-                clearInterval(loop);
-            }
-        }, interval * 2);
-    }
-</script>
+					times++;
+				} else {
+					clearInterval(loop);
+				}
+			}, interval * 2);
+		}
+	</script>
 
 	</body>
 	</html>
@@ -214,28 +209,27 @@ Transcript page coded by Noxic - https://github.com/noxic-dev 😀
 };
 
 function formatMessageContent(content, messages) {
-    let message = content;
-    const urlRegex = /(https?:\/\/[^\s]+)/g;
-    
-    message = message.replace(urlRegex, (url) => `<a href="${url}" class="url" target="_blank">${url}</a>`);
-    
-    const args = message.split(" ");
-    
-    args.forEach((arg, index) => {
-        if (arg.startsWith("<@") && arg.endsWith(">")) {
-            const userId = arg.slice(2, -1);
-            const user = messages.find(m => m.authorId === userId);
-            
-            if (user) {
-                args[index] = `@${user.author}`;
-            } else {
-                args[index] = "@unknown" + " " + "(" + userId + ")";
-            }
-        }
-    });
-    message = args.join(" ");
+	let message = content;
+	const urlRegex = /(https?:\/\/[^\s]+)/g;
 
-    return message;
+	message = message.replace(urlRegex, (url) => `<a href="${url}" class="url" target="_blank">${url}</a>`);
+
+	const args = message.split(" ");
+
+	args.forEach((arg, index) => {
+		if (arg.startsWith("<@") && arg.endsWith(">")) {
+			const userId = arg.slice(2, -1);
+			const user = messages.find(m => m.authorId === userId);
+			
+			if (user)
+				args[index] = `@${user.author}`;
+			else
+				args[index] = "@unknown" + " " + "(" + userId + ")";
+		}
+	});
+	message = args.join(" ");
+
+	return message;
 }
 
 function truncateMessageContent(content) {

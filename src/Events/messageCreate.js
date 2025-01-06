@@ -4,6 +4,7 @@ const UserStats = require("../schemas/userStats.js");
 const { sticky } = require("../functions/sticky.js");
 const { WBlacklist } = require('../functions/WBlacklist.js');
 const { ticketsChannelsID } = require('../functions/ticketSys.js');
+const { getTimestamp } = require('../functions/utils.js');
 
 module.exports = {
 	name: "messageCreate",
@@ -12,22 +13,18 @@ module.exports = {
 		if (client.user.id == message.author.id) return;
 		sticky(message);
 		WBlacklist(message);
-		if (message.author.bot) return;
 		if (ticketsChannelsID.has(`${message.channel.id}`)) {
 			ticketsChannelsID.get(`${message.channel.id}`).push({
+				id: message.id,
 				author: message.author.tag,
 				avatar: message.author.displayAvatarURL({ dynamic: true, size: 512 }),
 				content: message.content,
-				timestamp: new Date(message.createdAt).toLocaleString('en-US', {
-					year: 'numeric',
-					month: 'short', // Short month (e.g., "Dec")
-					day: 'numeric',
-					hour: 'numeric',
-					minute: '2-digit',
-					hour12: true // Enables 12-hour format with AM/PM
-				})
+				reference: message.reference ? message.reference.messageId : null,
+				guildIcon: message.guild.iconURL({ dynamic: true, size: 512 }),
+				timestamp: getTimestamp()
 			})
 		}
+		if (message.author.bot) return;
 
 		if (message.guild.id == "702545447750860931" || message.guild.id == "1054090158779150376" || message.guild.id == '946518364216520774')
 			detect(message);
@@ -144,3 +141,4 @@ async function detect(message) {
 		}
 	}
 }
+

@@ -9,13 +9,19 @@ module.exports = model("TTranscripts", new Schema({
 	ticketId: { type: String, required: true, unique: true },
 	messages: [
 		{
+			id: String,
 			author: reqString,
 			avatar: {
 				type: String,
 				default: 'https://cdn.discordapp.com/embed/avatars/0.png'
 			},
 			content: String,
-			timestamp: Date,
+			reference: String,
+			guildIcon: {
+				type: String,
+				default: 'https://cdn.discordapp.com/embed/avatars/0.png'
+			},
+			timestamp: String,
 		},
 	],
 	createdAt: { type: Date, default: Date.now }, // Automatically set to current date

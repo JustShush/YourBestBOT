@@ -4,7 +4,7 @@ const TTranscriptSchema = require('../schemas/TicketTranscripts.js');
 
 // array of all the tickets ids
 // so it can later know what channels to read in the messageCreate event.
-let ticketsChannelsID = new Map();
+let ticketsChannelsID = {};
 
 async function newTicket(interaction) {
 	if (interaction.customId === "newticket") {
@@ -40,7 +40,7 @@ async function newTicket(interaction) {
 			]
 		});
 
-		if (!ticketsChannelsID.has(`${channel.id}`)) ticketsChannelsID.set(`${channel.id}`, []);
+		if (!ticketsChannelsID[channel.id]) ticketsChannelsID[channel.id] = [];
 
 		// copy the main obj to a tmp and then save with the ticket id so later I know what channel to delete
 		const obj = { MemberId: interaction.user.id, ChannelId: channel.id };
@@ -130,7 +130,7 @@ async function transcriptTicket(interaction) {
 	if (interaction.customId === "transcriptTicket") {
 		const channel = interaction.channel;
 
-		const messages = ticketsChannelsID.get(`${channel.id}`);
+		const messages = ticketsChannelsID[channel.id];
 		if (!messages) return interaction.reply({ content: `There are no messages to save here.` });
 
 		const userId = channel.topic.match(/\|\s(\d+)$/)?.[1];
@@ -205,7 +205,7 @@ async function deleteTicket(interaction) {
 		});
 		ticketData.Tickets.splice(i, 1);
 		await ticketData.save();
-		ticketsChannelsID.delete(`${channel.id}`); // deletes the data from the MAP
+		delete ticketsChannelsID[channel.id]; // deletes the data from the obj
 	}
 }
 

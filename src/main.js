@@ -65,12 +65,10 @@ const process = require("node:process");
 // just a dumb way to restore the save of the tickets for the transcript
 const { ticketsChannelsID } = require('./functions/ticketSys.js');
 const { saveCacheToFile } = require('./functions/utils.js');
-process.on('exit', saveCacheToFile);
+//process.on('exit', saveCacheToFile);
 process.on('SIGINT', () => {
-	console.log(ticketsChannelsID, typeof ticketsChannelsID);
-	if (ticketsChannelsID instanceof Map)
-		saveCacheToFile(ticketsChannelsID);
-	console.log("dddddddddddddddddddddddddddddd", ticketsChannelsID instanceof Map);
+	saveCacheToFile(ticketsChannelsID);
+	console.log("dddddddddddddddddddddddddddddd Object: ", ticketsChannelsID instanceof Object);
 	process.exit();
 });
 

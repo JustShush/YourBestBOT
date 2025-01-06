@@ -13,8 +13,8 @@ module.exports = {
 		if (client.user.id == message.author.id) return;
 		sticky(message);
 		WBlacklist(message);
-		if (ticketsChannelsID.has(`${message.channel.id}`)) {
-			ticketsChannelsID.get(`${message.channel.id}`).push({
+		if (ticketsChannelsID[message.channel.id]) {
+			ticketsChannelsID[message.channel.id].push({
 				id: message.id,
 				author: message.author.tag,
 				authorId: message.member.id,

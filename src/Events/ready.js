@@ -127,10 +127,11 @@ module.exports = {
 		let { ticketsChannelsID } = require('../functions/ticketSys.js');
 		const { loadCacheFromFile } = require('../functions/utils.js');
 		ticketsChannelsID = loadCacheFromFile('cache.json');
+		console.log(ticketsChannelsID);
 
 		client.guilds.cache.forEach(guild => {
 			console.log(colors.brightRed(`${guild.name} | ${guild.id} | ${guild.memberCount} Members`));
-		})
+		});
 
 		allGuilds(client);
 

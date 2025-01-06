@@ -15,7 +15,7 @@ function embedColor() {
  * This just displays a simple progress bar as a string.
  * 
  * - example on how to use it to show 50% : console.log( ProgressBar(50, 100) ) // 50%
- * - result for 10%: [ ⣷         ] 10%
+ * - result for 10%: [ ⣷		 ] 10%
  * 
  * @param {Number} progress The current progress
  * @param {Number} max The max progress percentage
@@ -167,16 +167,17 @@ async function INFO(msg) {
 }
 
 function saveCacheToFile(cache) {
-	const cacheObject = Object.fromEntries(cache); // Convert Map to an object
-	fs.writeFileSync('cache.json', JSON.stringify(cacheObject, null, 2), 'utf8');
+	console.log('Type of cache:', typeof cache);
+	console.log('Instance of Map:', cache instanceof Object);
+	console.log('Cache contents:', cache);
+	fs.writeFileSync('cache.json', JSON.stringify(cache, null, 2), 'utf8');
 }
 
 function loadCacheFromFile(filename) {
-	let cache = new Map();
-	if (fs.existsSync(`${filename}`)) {
-		const data = JSON.parse(fs.readFileSync(`${filename}`, 'utf8'));
-		for (const [key, value] of Object.entries(data))
-			cache.set(key, value);
+	let cache = {};
+	if (fs.existsSync(filename)) {
+		const data = JSON.parse(fs.readFileSync(filename, 'utf8'));
+		cache = data;
 	}
 	return cache;
 }

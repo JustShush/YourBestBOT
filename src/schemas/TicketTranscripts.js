@@ -17,6 +17,7 @@ module.exports = model("TTranscripts", new Schema({
 			},
 			content: String,
 			reference: String,
+			attachments: [String],
 			guildIcon: {
 				type: String,
 				default: 'https://cdn.discordapp.com/embed/avatars/0.png'

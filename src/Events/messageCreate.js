@@ -20,9 +20,11 @@ module.exports = {
 				avatar: message.author.displayAvatarURL({ dynamic: true, size: 512 }),
 				content: message.content,
 				reference: message.reference ? message.reference.messageId : null,
+				attachments: message.attachments ? [...Array.from(message.attachments.values()).map((attachment) => attachment.url)] : null,
 				guildIcon: message.guild.iconURL({ dynamic: true, size: 512 }),
 				timestamp: getTimestamp()
 			})
+			//console.log(ticketsChannelsID.get(`${message.channel.id}`));
 		}
 		if (message.author.bot) return;
 

@@ -15,7 +15,7 @@ const limiter = rateLimit({
 });
 
 // Apply the rate limiting middleware globally
-app.use(limiter);
+//app.use(limiter);
 
 app.use((req, res, next) => {
 	res.setHeader('Access-Control-Allow-Origin', '*');

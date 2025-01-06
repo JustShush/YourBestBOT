@@ -1,5 +1,6 @@
 const { Integration, EmbedBuilder, Message, Client } = require("discord.js");
 const axios = require("axios");
+const fs = require('fs');
 
 function embedColor() {
 	// random colors from one dark color palette 
@@ -163,7 +164,19 @@ async function INFO(msg) {
 
 	// send the msg
 	await axios.post(wh, data).then((res) => console.log(res.data)).catch((err) => console.log(err));
-
 }
 
-module.exports = { embedColor, ProgressBar, randomN, randomNRange, ADMessage, AD, getTopServers, getTimestamp, parseDuration, INFO };
+function saveCacheToFile(cache) {
+	const cacheObject = Object.fromEntries(cache); // Convert Map to an object
+	fs.writeFileSync('cache.json', JSON.stringify(cacheObject, null, 2), 'utf8');
+}
+
+function loadCacheFromFile(filename) {
+	if (fs.existsSync(`${filename}`)) {
+		const data = JSON.parse(fs.readFileSync(`${filename}`, 'utf8'));
+		for (const [key, value] of Object.entries(data))
+			cache.set(key, value);
+	}
+}
+
+module.exports = { embedColor, ProgressBar, randomN, randomNRange, ADMessage, AD, getTopServers, getTimestamp, parseDuration, INFO, saveCacheToFile, loadCacheFromFile };

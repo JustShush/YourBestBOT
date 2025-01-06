@@ -2,11 +2,11 @@
 const color = require('colors');
 const fs = require('node:fs');
 const path = require('node:path');
-const { Client, GatewayIntentBits, Partials, Collection, Message } = require("discord.js");
-const { Guilds, GuildMembers, GuildMessages, GuildPresences, MessageContent, GuildInvites } = GatewayIntentBits;
+const { Client, GatewayIntentBits, Partials, Collection } = require("discord.js");
+const { Guilds, GuildMembers, GuildMessages, MessageContent, GuildInvites } = GatewayIntentBits;
 
 const client = new Client({
-	intents: [Guilds, GuildMembers, GuildMessages, GuildPresences, MessageContent, GuildInvites],
+	intents: [Guilds, GuildMembers, GuildMessages, MessageContent, GuildInvites],
 	partials: [Partials.User, Partials.Channel, Partials.Message, Partials.GuildMember, Partials.ThreadMember, Partials.Reaction],
 });
 
@@ -61,6 +61,15 @@ for (const file of eventFiles) {
 }
 
 const process = require("node:process");
+
+// just a dumb way to restore the save of the tickets for the transcript
+const { ticketsChannelsID } = require('./functions/ticketSys.js');
+const { saveCacheToFile } = require('./functions/utils.js');
+process.on('exit', saveCacheToFile);
+process.on('SIGINT', () => {
+	saveCacheToFile(ticketsChannelsID);
+	process.exit();
+});
 
 process.on("unhandledRejection", (reason, promise) => {
 	console.error("Unhandled Rejection:", promise, "reason:", reason);

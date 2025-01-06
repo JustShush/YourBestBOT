@@ -25,7 +25,6 @@ module.exports = {
 				guildIcon: message.guild.iconURL({ dynamic: true, size: 512 }),
 				timestamp: getTimestamp()
 			})
-			//console.log(ticketsChannelsID.get(`${message.channel.id}`));
 		}
 		if (message.author.bot) return;
 

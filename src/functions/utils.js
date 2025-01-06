@@ -172,11 +172,13 @@ function saveCacheToFile(cache) {
 }
 
 function loadCacheFromFile(filename) {
+	let cache = new Map();
 	if (fs.existsSync(`${filename}`)) {
 		const data = JSON.parse(fs.readFileSync(`${filename}`, 'utf8'));
 		for (const [key, value] of Object.entries(data))
 			cache.set(key, value);
 	}
+	return cache;
 }
 
 module.exports = { embedColor, ProgressBar, randomN, randomNRange, ADMessage, AD, getTopServers, getTimestamp, parseDuration, INFO, saveCacheToFile, loadCacheFromFile };

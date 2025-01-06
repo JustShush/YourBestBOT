@@ -67,7 +67,10 @@ const { ticketsChannelsID } = require('./functions/ticketSys.js');
 const { saveCacheToFile } = require('./functions/utils.js');
 process.on('exit', saveCacheToFile);
 process.on('SIGINT', () => {
-	saveCacheToFile(ticketsChannelsID);
+	console.log(ticketsChannelsID, typeof ticketsChannelsID);
+	if (ticketsChannelsID instanceof Map)
+		saveCacheToFile(ticketsChannelsID);
+	console.log("dddddddddddddddddddddddddddddd", ticketsChannelsID instanceof Map);
 	process.exit();
 });
 

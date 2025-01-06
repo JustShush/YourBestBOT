@@ -4,7 +4,7 @@ const TTranscriptSchema = require('../schemas/TicketTranscripts.js');
 
 // array of all the tickets ids
 // so it can later know what channels to read in the messageCreate event.
-const ticketsChannelsID = new Map();
+let ticketsChannelsID = new Map();
 
 async function newTicket(interaction) {
 	if (interaction.customId === "newticket") {

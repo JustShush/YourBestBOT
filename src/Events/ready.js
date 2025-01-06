@@ -124,8 +124,9 @@ module.exports = {
 		}, 30_000);
 
 		// Restore the cache of the tickets for the transcript (maybe conside using redis?)
+		let { ticketsChannelsID } = require('../functions/ticketSys.js');
 		const { loadCacheFromFile } = require('../functions/utils.js');
-		loadCacheFromFile('cache.json');
+		ticketsChannelsID = loadCacheFromFile('cache.json');
 
 		client.guilds.cache.forEach(guild => {
 			console.log(colors.brightRed(`${guild.name} | ${guild.id} | ${guild.memberCount} Members`));

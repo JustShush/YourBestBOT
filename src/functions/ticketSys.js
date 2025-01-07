@@ -2,9 +2,12 @@ const { ChannelType, PermissionsBitField, EmbedBuilder, ActionRowBuilder, Button
 const ticketSchema = require('../schemas/TicketSys.js');
 const TTranscriptSchema = require('../schemas/TicketTranscripts.js');
 
+// this is to restore the data thats in the cache of the tickets.
+const { loadCacheFromFile } = require('../functions/utils.js');
+
 // array of all the tickets ids
 // so it can later know what channels to read in the messageCreate event.
-let ticketsChannelsID = {};
+var ticketsChannelsID = loadCacheFromFile('cache.json') || {};
 
 async function newTicket(interaction) {
 	if (interaction.customId === "newticket") {

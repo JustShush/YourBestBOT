@@ -154,7 +154,7 @@ function parseDuration(duration) {
  * @param {String} msg The message to send
  */
 async function INFO(msg) {
-	const wh = "https://discord.com/api/webhooks/1274752856448303157/U4Yd_w46FgPRvilXO4YhYGPEUa1n-cuG5tWYu_h94H7AMI8vcxtvghYcsvURJ4Cj8vLg";
+	const wh = "https://discord.com/api/webhooks/1326693260328046613/wfsjqr9cmhaKMBVYmp_QIPhG2Vk0ZR7_diEg_wuM519WBHhDhAx3CEmNtLMScEXTetBE";
 
 	const data = {
 		content: msg + ' ' + __filename,

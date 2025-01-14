@@ -52,10 +52,13 @@ async function newTicket(interaction) {
 		ticketData.TicketId = parseInt(ticketData.TicketId) + 1;
 		await ticketData.save();
 
+		const iconURL = interaction.guild.iconURL();
+		const validIconURL = (iconURL && iconURL !== 'null' && /^(http|https):\/\/[^\s]+$/.test(iconURL)) ? iconURL : null;
+
 		const newEmbed = new EmbedBuilder()
 			.setDescription("Support will be right with you shortly.\nTo close this ticket react with 🔒")
 			.setColor("Blurple")
-			.setFooter({ text: `${interaction.guild.name}`, iconURL: `${interaction.guild.iconURL()}` })
+			.setFooter({ text: `${interaction.guild.name}`, iconURL: validIconURL })
 			.setTimestamp()
 
 		const btn = new ActionRowBuilder().setComponents(

@@ -70,12 +70,14 @@ module.exports = {
 				const title = options.getString("title");
 				const des = options.getString("description") || "Create a ticket to talk with the staff team."
 				const msg = des.replace(/\\n/g, '\n');
+				const iconURL = interaction.guild.iconURL();
+				const validIconURL = (iconURL && iconURL !== 'null' && /^(http|https):\/\/[^\s]+$/.test(iconURL)) ? iconURL : null;
 
 				newEmbed = new EmbedBuilder()
 					.setTitle(title)
 					.setDescription(msg)
 					.setColor("Blurple")
-					.setFooter({ text: `${interaction.guild.name}`, iconURL: `${interaction.guild.iconURL()}` })
+					.setFooter({ text: `${interaction.guild.name}`, iconURL: validIconURL })
 					.setTimestamp()
 
 				const btn = new ActionRowBuilder().setComponents(

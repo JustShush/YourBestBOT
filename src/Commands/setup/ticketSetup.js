@@ -38,11 +38,16 @@ module.exports = {
 		)
 		.addSubcommand(sub => sub
 			.setName('add')
-			.setDescription('Add a user to the ticket.')
+			.setDescription('Add a user/role to the ticket.')
 			.addUserOption(o => o
 				.setName('user')
 				.setDescription('The user to add')
-				.setRequired(true))
+				.setRequired(false))
+			.addRoleOption(o => o
+				.setName('role')
+				.setDescription('The role to add')
+				.setRequired(false)
+			)
 		)
 		.addSubcommand(sub => sub
 			.setName('remove')
@@ -60,7 +65,7 @@ module.exports = {
 		const cmd = options.getSubcommand();
 
 		const ticketSys = await ticketSchema.findOne({ GuildId: interaction.guild.id });
-		let ticketData, newEmbed, user, channel;
+		let ticketData, newEmbed, user, role, channel;
 
 		switch (cmd) {
 			case "send":
@@ -121,11 +126,13 @@ module.exports = {
 				if (!ticketData) return await interaction.reply({ content: `Looks like you don\'t have the ticket system setup in this server.\nUse </ticket setup:1305164630213267487> to set it up \<3`, ephemeral: true });
 
 				user = await options.getUser('user');
+				role = await options.getRole('role');
+				if (!user && !role) return interaction.reply({ content: `You need to provide a user or a role to add to the ticket.`, flags:'ephemeral' });
 
 				channel = interaction.channel;
 				if (channel.parentId !== ticketData.CategoryId) return await interaction.reply({ content: `Sorry but you aren\'t using the command in a ticket channel, you can only do that inside Category: \`${ticketData.CategoryId}\` | "<#${ticketData.CategoryId}>"`, ephemeral: true });
 
-				await channel.permissionOverwrites.edit(user.id, {
+				await channel.permissionOverwrites.edit(user ? user.id : role.id, {
 					ViewChannel: true,
 					SendMessages: true,
 					AttachFiles: true,
@@ -138,7 +145,7 @@ module.exports = {
 				}).catch(err => console.log(err));
 
 				newEmbed = new EmbedBuilder()
-					.setDescription(`<@${user.id}> added to ticket ${channel}`)
+					.setDescription(`<${user ? `@${user.id}` : `@&${role.id}`}> added to ticket ${channel}`)
 					.setColor('Green')
 
 				await interaction.reply({ embeds: [newEmbed] });

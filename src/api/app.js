@@ -45,6 +45,7 @@ module.exports.load = (client) => {
 	app.get("/commands", (req, res) => require("./commands.js")(req, res, client));
 	app.get("/lastfm", (req, res) => require("./lastfm.js")(req, res, client));
 	app.get("/membercount/:id", (req, res) => require("./membercount.js")(req, res, client));
+	app.get("/transcript/data/raw", (req, res) => require("./rawTranscript.js")(req, res));
 	app.get("/servercount/", (req, res) => require("./servercount.js")(req, res, client));
 	app.get("/transcript/:ticketid", (req, res) => require("./transcript.js")(req, res));
 	app.post("/votes", (req, res) => require("./votes.js")(req, res, client));

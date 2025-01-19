@@ -13,7 +13,7 @@ async function sticky(message) {
 		if (message.id != dataFind.MSGID) {
 			const msg = dataFind.MSG.replace(/\\n/g, '\n');
 			const fetchedMessage = await message.channel.messages.fetch(dataFind.MSGID);
-			fetchedMessage.delete();
+			fetchedMessage.delete().catch((err) => console.error(err, `Tried to delete a sticky msg but something went wrong.`));
 			const sentMsg = await message.channel.send({ content: msg });
 			dataFind.MSGID = sentMsg.id;
 			await data.save();

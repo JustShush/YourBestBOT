@@ -30,7 +30,27 @@ module.exports = async (req, res) => {
 		<style>
 			:root {
 				--font-noto-sans: 'Noto Sans', sans-serif;
+				--main-color: #ae8aa6;
+				--background: #1d1d1e;
+				--secondary: #262626;
+				--link: #6b516e;
+				--text-color: #fff;
+				--secondary-text-color: #dcdcdc;
 			}
+
+			/* scrool bar*/
+			::-webkit-scrollbar {
+				width: 8px;
+			}
+
+			::-webkit-scrollbar-track {
+				background: var(--background);
+			}
+
+			::-webkit-scrollbar-thumb {
+				background: var(--main-color);
+			}
+
 			body {
 				font-family: var(--font-noto-sans);
 				margin: 20px;
@@ -136,18 +156,18 @@ module.exports = async (req, res) => {
 			<h1>Transcript for Ticket ${ticketId}</h1>
 			<img src="${transcript.guildIcon || 'https://cdn.discordapp.com/embed/avatars/0.png'}" alt="Guild Icon" class="guild-icon">
 			${messages
-				.map(msg => {
-					let replyHTML = '';
-					if (msg.reference) {
-						const refMessage = messages.find(m => m.id === msg.reference)
-						replyHTML = refMessage ? `
+			.map(msg => {
+				let replyHTML = '';
+				if (msg.reference) {
+					const refMessage = messages.find(m => m.id === msg.reference)
+					replyHTML = refMessage ? `
 							<div class="reply" onclick="highlightMessage('${refMessage.id}')">
 								<span class="reply-arrow">↩</span>
 								Reply to ${refMessage.author}: ${truncateMessageContent(refMessage.content)}
 							</div>
 						` : "";
-					}
-					return `
+				}
+				return `
 						<div id="message-${msg.id}" class="message">
 							<img src="${msg.avatar || 'https://cdn.discordapp.com/embed/avatars/0.png'}" alt="Avatar" class="avatar">
 							<div class="message-content">
@@ -160,8 +180,8 @@ module.exports = async (req, res) => {
 							</div>
 						</div>
 					`;
-				})
-				.join('')}
+			})
+			.join('')}
 		</div>
 		<div class="footer">
 			Made with ❤ by <a href="https://github.com/JustShush" target="_blank">JustShush</a> <br>
@@ -220,7 +240,7 @@ function formatMessageContent(content, messages) {
 		if (arg.startsWith("<@") && arg.endsWith(">")) {
 			const userId = arg.slice(2, -1);
 			const user = messages.find(m => m.authorId === userId);
-			
+
 			if (user)
 				args[index] = `@${user.author}`;
 			else

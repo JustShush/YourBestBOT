@@ -177,6 +177,10 @@ function loadCacheFromFile(filename) {
 	let cache = {};
 	if (fs.existsSync(filename)) {
 		const data = JSON.parse(fs.readFileSync(filename, 'utf8'));
+		Object.keys(data).forEach((key) => {
+			if (Array.isArray(data[key]) && data[key].length === 0)
+				delete data[key];
+		})
 		cache = data;
 	}
 	return cache;

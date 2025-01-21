@@ -81,7 +81,10 @@ async function closeTicket(interaction) {
 
 		const i = ticketData.Tickets.findIndex((e) => e.ChannelId == interaction.channel.id);
 		let member = await interaction.guild.members.cache.get(ticketData.Tickets[i].MemberId);
-		if (!member) member = await interaction.guild.members.fetch(ticketData.Tickets[i].MemberId);
+		if (!member) member = await interaction.guild.members.fetch(ticketData.Tickets[i].MemberId).catch(async (err) => {
+			await interaction.channel.send({ content: `The member that openned the ticket left the server so the ticket will be closed in a couple of seconds`}).then((msg) => { setTimeout(() => { msg.channel.delete(); }, 5 * 1000); })
+			console.log(err);
+		});
 
 		await channel.permissionOverwrites.set([
 			{
@@ -215,6 +218,17 @@ async function deleteTicket(interaction) {
 	}
 }
 
+async function rmFromCache(guildId, arrayChannelId) {
+	const ticketData = await ticketSchema.findOne({ GuildId: guildId });
+	arrayChannelId.forEach((channelId) => {
+		const i = ticketData.Tickets.findIndex((e) => e.ChannelId == channelId);
+		ticketData.Tickets.splice(i, 1);
+		delete ticketsChannelsID[channelId]; // deletes the data from the obj
+		console.log(`${channelId} removed`);
+	})
+	await ticketData.save();
+}
+
 async function TicketSystem(interaction) {
 	newTicket(interaction);
 	closeTicket(interaction);
@@ -223,4 +237,4 @@ async function TicketSystem(interaction) {
 	deleteTicket(interaction);
 }
 
-module.exports = { TicketSystem, ticketsChannelsID };
+module.exports = { TicketSystem, ticketsChannelsID, rmFromCache };

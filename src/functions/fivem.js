@@ -11,10 +11,10 @@ async function getServerStatus(url) {
 		const html = response.data;
 
 		// player count
-		const playersRegex = /<span class="players"><span class="material-icons">people_outline<\/span>\s*([^<]*)<\/span>/;
+		const playersRegex = /class="players">.*?(\d+)/;
 		const playersMatch = html.match(playersRegex);
 
-		const playersTextContent = playersMatch ? playersMatch[1].trim() : null;
+		const playersTextContent = playersMatch ? playersMatch[1] : null;
 		obj.playercount = playersTextContent || "Unknown";
 
 		// server name

@@ -67,5 +67,7 @@ module.exports = {
 
 		owner.send({ content: `${owner.user}`, embeds: [ownerEmbed], components: [row] }).catch(err => (console.log(err, `${owner.user.username} | ${guild.ownerId} => Removed the bot but the bot couldnt send the welcome DM.`), channel.send(`${owner.user.username} | ${guild.ownerId} => Removed the bot but the bot couldnt send the welcome DM.`)));
 
+		// delete all saved data from that guild
+		await rmSavedGuildDataFromAll(guild);
 	},
 };

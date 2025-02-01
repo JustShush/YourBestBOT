@@ -25,7 +25,8 @@ module.exports = {
 				.setDescription("Remove a sticky msg from a channel.")
 				.addChannelOption(o => o.setName("channel").setDescription("channel here").setRequired(true).addChannelTypes(ChannelType.GuildText)),
 		)
-		.setDMPermission(false)
+		.setContexts(0) // 0 for guild | 1 for botDM | 2 everywhere
+		.setIntegrationTypes(0) // 0 for guild install | 1 for user install
 		.setNSFW(false),
 	/**
 	 * @param {ChatInputCommandInteraction} interaction

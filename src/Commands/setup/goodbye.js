@@ -26,7 +26,8 @@ module.exports = {
 			.setDescription("The GoodBye message. You can use {member-count} {user-mention} {server-name} {rules}")
 			.setRequired(true)
 		)
-		.setDMPermission(false)
+		.setContexts(0) // 0 for guild | 1 for botDM | 2 everywhere
+		.setIntegrationTypes(0) // 0 for guild install | 1 for user install
 		.setNSFW(false),
 	/**
 	 * @param {ChatInputCommandInteraction} interaction

@@ -30,7 +30,8 @@ module.exports = {
 			.setDescription("Provide a reson for this timeout.")
 			.setMaxLength(512)
 		)
-		.setDMPermission(false)
+		.setContexts(0) // 0 for guild | 1 for botDM | 2 everywhere
+		.setIntegrationTypes(0) // 0 for guild install | 1 for user install
 		.setNSFW(false),
 	/**
 	 * @param {ChatInputCommandInteraction} interaction
@@ -80,7 +81,7 @@ module.exports = {
 			IssuerID: member.id,
 			IssuerTag: member.user.tag,
 			Reason: reason,
-			
+
 			Date: Math.floor(new Date().getTime() / 1000)
 		}
 
@@ -118,7 +119,7 @@ module.exports = {
 					.setDescription(`By: ${interaction.member}\nReason: \`\`\`${reason}\`\`\``)
 					.setTimestamp()
 
-				webhook.send({ content: `${target}` , embeds: [logEmbed] });
+				webhook.send({ content: `${target}`, embeds: [logEmbed] });
 			}
 		}
 

@@ -21,7 +21,8 @@ module.exports = {
 			.setDescription("The new new nickname for the member.")
 			.setRequired(true)
 		)
-		.setDMPermission(false)
+		.setContexts(0) // 0 for guild | 1 for botDM | 2 everywhere
+		.setIntegrationTypes(0) // 0 for guild install | 1 for user install
 		.setNSFW(false),
 	/**
 	 * @param {ChatInputCommandInteraction} interaction
@@ -45,7 +46,7 @@ module.exports = {
 					.setDescription(`<@${user}>'s nickname has been set to: \`${newnick}\`\nBy: ${interaction.member}`)
 					.setTimestamp()
 
-				webhook.send({ content: `${target}` , embeds: [logEmbed] });
+				webhook.send({ content: `${target}`, embeds: [logEmbed] });
 			}
 		}
 

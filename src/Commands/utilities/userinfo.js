@@ -14,7 +14,10 @@ module.exports = {
 			.setName('target')
 			.setDescription('Target to get info on this user')
 			.setRequired(false)
-		),
+		)
+		.setContexts(0) // 0 for guild | 1 for botDM | 2 everywhere
+		.setIntegrationTypes(0) // 0 for guild install | 1 for user install
+		.setNSFW(false),
 	async execute(interaction) {
 		interaction.deferReply()
 

@@ -14,7 +14,8 @@ module.exports = {
 			.setName("command")
 			.setDescription("View information on a certain command.")
 			.setRequired(false))
-		.setDMPermission(false)
+		.setContexts(0, 1, 2) // 0 for guild | 1 for botDM | 2 everywhere
+		.setIntegrationTypes(0, 1) // 0 for guild install | 1 for user install
 		.setNSFW(false),
 	/**
 	 * @param {ChatInputCommandInteraction} interaction
@@ -54,7 +55,7 @@ module.exports = {
 			setupArray = [];
 			votersArray = [];
 			gwArray = [];
-			
+
 			client.commands.map(async (c) => {
 				if (c.type === "Utility ⚙️") {
 					getSubcommand(interaction, utilityArray, c.name);
@@ -148,9 +149,9 @@ function getSlashCommand(client, name, subcommand) {
 function getSubcommand(interaction, list, name) {
 	for (const [, command] of interaction.client.application.commands.cache) {
 		if (command.name !== name) continue;
-		
+
 		const subcommands = (command?.options || []).filter(option => option.type === ApplicationCommandOptionType.Subcommand) || [];
-		
+
 		if (subcommands.length) {
 			for (const subcommand of subcommands) {
 				list.push(`${getSlashCommand(interaction.client, command.name, subcommand.name)}`);

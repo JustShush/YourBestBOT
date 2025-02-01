@@ -19,7 +19,10 @@ module.exports = {
 					.setRequired(true)
 			)
 		)
-		.setDefaultMemberPermissions(PermissionFlagsBits.UseApplicationCommands, PermissionFlagsBits.SendMessages),
+		.setDefaultMemberPermissions(PermissionFlagsBits.UseApplicationCommands, PermissionFlagsBits.SendMessages)
+		.setContexts(0, 1, 2) // 0 for guild | 1 for botDM | 2 everywhere
+		.setIntegrationTypes(0, 1) // 0 for guild install | 1 for user install
+		.setNSFW(false),
 	async execute(interaction) {
 		const emojiInput = interaction.options.getString('emoji');
 

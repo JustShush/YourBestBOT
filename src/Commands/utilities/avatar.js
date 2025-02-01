@@ -13,7 +13,10 @@ module.exports = {
 			option.setName('user')
 				.setDescription('The user to get the avatar from')
 				.setRequired(true)
-		),
+		)
+		.setContexts(0, 1, 2) // 0 for guild | 1 for botDM | 2 everywhere
+		.setIntegrationTypes(0, 1) // 0 for guild install | 1 for user install
+		.setNSFW(false),
 	async execute(interaction) {
 		const user = interaction.options.getUser('user') || interaction.user;
 		const avatarUrl = user.displayAvatarURL({ dynamic: true, size: 1024 });

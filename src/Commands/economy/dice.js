@@ -14,7 +14,8 @@ module.exports = {
 			.setName("amount")
 			.setDescription("Bet amount")
 			.setRequired(true))
-		.setDMPermission(false)
+		.setContexts(0) // 0 for guild | 1 for botDM | 2 everywhere
+		.setIntegrationTypes(0) // 0 for guild install | 1 for user install
 		.setNSFW(false),
 	async execute(interaction, client) {
 		try {

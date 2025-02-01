@@ -10,7 +10,8 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('daily')
 		.setDescription('Claim your daily coins!')
-		.setDMPermission(false)
+		.setContexts(0) // 0 for guild | 1 for botDM | 2 everywhere
+		.setIntegrationTypes(0) // 0 for guild install | 1 for user install
 		.setNSFW(false),
 	async execute(interaction, client) {
 		try {
@@ -52,7 +53,7 @@ module.exports = {
 					],
 					ephemeral: true
 				});
-			} else if ( Math.floor(Date.now() / 1000 >= userData.daily_last_claimed + 172800) ) {
+			} else if (Math.floor(Date.now() / 1000 >= userData.daily_last_claimed + 172800)) {
 				userData.daily_streak = 1;
 				userData.daily_last_claimed = 0;
 				await userData.save();

@@ -123,17 +123,13 @@ module.exports = {
 			await deleteExpiredGW();
 		}, 30_000);
 
-		// Restore the cache of the tickets for the transcript (maybe conside using redis?)
-		let { ticketsChannelsID } = require('../functions/ticketSys.js');
-		const { loadCacheFromFile } = require('../functions/utils.js');
-		ticketsChannelsID = loadCacheFromFile('cache.json');
-		console.log(ticketsChannelsID);
-
-		client.guilds.cache.forEach(guild => {
+		/* client.guilds.cache.forEach(guild => {
 			console.log(colors.brightRed(`${guild.name} | ${guild.id} | ${guild.memberCount} Members`));
-		});
+		}); */
 
-		allGuilds(client);
+		//allGuilds(client);
+
+		//require('../functions/ticketSys.js').rmFromCache("1326147383796695081", ["1326904166659919956", "1328708109782355980"]);
 
 		console.log(colors.magenta.bold(`${client.user.username} is online!\nIn ${client.guilds.cache.size} Servers! ${client.guilds.cache.reduce((a, b) => a + b.memberCount, 0)} Members!`));
 		api.load(client);

@@ -101,6 +101,7 @@ This is an update from [YourBestBOT-legacy](https://github.com/JustShush/Discord
 ## ⭐ Star History
 <details>
 <summary>Show graph</summary>
+
 [![Star History Chart](https://api.star-history.com/svg?repos=JustShush/YourBestBOT&type=Date)](https://star-history.com/#JustShush/YourBestBOT&Date)
 </details>
 

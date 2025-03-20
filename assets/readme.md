@@ -1,0 +1,1 @@
+ty [ItsPi3141](https://github.com/ItsPi3141/discord-fake-avatar-decorations/tree/main/public/decorations) for the avatar decorations <3

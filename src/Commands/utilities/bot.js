@@ -37,7 +37,7 @@ module.exports = {
 					value: '[Click here](https://top.gg/bot/747412110782234654/vote) to vote for me over on Top.gg'
 				})
 				.setTimestamp()
-				.setFooter({ text: interaction.guild.name, iconURL: interaction.guild.iconURL() })
+			if (interaction.guild) embed.setFooter({ text: interaction.guild.name, iconURL: interaction.guild.iconURL() })
 
 			await interaction.reply({ embeds: [embed] })
 		} catch (error) {

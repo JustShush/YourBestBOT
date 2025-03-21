@@ -52,7 +52,7 @@ module.exports = {
 	 */
 	async execute(interaction) {
 		if (!interaction.channel.nsfw) {
-			const img = new AttachmentBuilder('./img/ageRestrict.png');
+			const img = new AttachmentBuilder('./assets/img/ageRestrict.png');
 			const newEmbed = new EmbedBuilder()
 				.setTitle('you can not use this command')
 				.setDescription('pls make sure you have **NSFW** channel enabled')

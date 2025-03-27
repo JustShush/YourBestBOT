@@ -81,7 +81,8 @@ async function closeTicket(interaction) {
 
 		const i = ticketData.Tickets.findIndex((e) => e.ChannelId == interaction.channel.id);
 		let member = await interaction.guild.members.cache.get(ticketData.Tickets[i].MemberId);
-		if (!member) member = await interaction.guild.members.fetch(ticketData.Tickets[i].MemberId).catch(async (err) => {
+		// maybe someday move this so that even if members leave people can save the transcript and not just delete the channel
+		if (!member) member = (await interaction.client.users.fetch(ticketData.Tickets[i].MemberId).member).catch(async (err) => {
 			await interaction.channel.send({ content: `The member that openned the ticket left the server so the ticket will be closed in a couple of seconds`}).then((msg) => { setTimeout(() => { msg.channel.delete(); }, 5 * 1000); })
 			console.log(err);
 		});
@@ -206,8 +207,8 @@ async function deleteTicket(interaction) {
 		const ticketData = await ticketSchema.findOne({ GuildId: interaction.guild.id });
 		const i = ticketData.Tickets.findIndex((e) => e.ChannelId == interaction.channel.id);
 		let member = await interaction.guild.members.cache.get(ticketData.Tickets[i].MemberId);
-		if (!member) user = await interaction.guild.members.fetch(ticketData.Tickets[i].MemberId);
-		await channel.setName(`closed-${member.user.username}`).catch(console.error);
+		if (member)
+			await channel.setName(`closed-${member.user.username}`).catch(console.error);
 		await channel.delete().catch((err) => {
 			interaction.reply({ content: "There was an error trying to delete the channel.", ephemeral: true });
 			return console.error("Error trying to delete the ticket! (interactionCreate.js)", err);

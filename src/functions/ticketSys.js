@@ -82,8 +82,8 @@ async function closeTicket(interaction) {
 		const i = ticketData.Tickets.findIndex((e) => e.ChannelId == interaction.channel.id);
 		let member = await interaction.guild.members.cache.get(ticketData.Tickets[i].MemberId);
 		// maybe someday move this so that even if members leave people can save the transcript and not just delete the channel
-		if (!member) member = (await interaction.client.users.fetch(ticketData.Tickets[i].MemberId).member).catch(async (err) => {
-			await interaction.channel.send({ content: `The member that openned the ticket left the server so the ticket will be closed in a couple of seconds`}).then((msg) => { setTimeout(() => { msg.channel.delete(); }, 5 * 1000); })
+		if (!member) member = await interaction.client.users.fetch(ticketData.Tickets[i].MemberId).catch(async (err) => {
+			await interaction.channel.send({ content: `The member that openned the ticket left the server so the ticket will be closed in a couple of seconds` }).then((msg) => { setTimeout(() => { msg.channel.delete(); }, 5 * 1000); })
 			console.log(err);
 		});
 
@@ -155,9 +155,9 @@ async function transcriptTicket(interaction) {
 			{ upsert: true, new: true }
 		);
 
-		if (userOpenTicket) await userOpenTicket.send({ content: `You can see the Transcript of the ticket [here](https://api.yourbestbot.pt/transcript/${channel.id})`}).catch(err => console.log(err, `Tried to send a DM to the user with the ticket Transcript but didnt worked :(`));
+		if (userOpenTicket) await userOpenTicket.send({ content: `You can see the Transcript of the ticket [here](https://api.yourbestbot.pt/transcript/${channel.id})` }).catch(err => console.log(err, `Tried to send a DM to the user with the ticket Transcript but didnt worked :(`));
 		if (interaction.user.id != userId)
-			await interaction.user.send({ content: `You can see the Transcript of the ticket [here](https://api.yourbestbot.pt/transcript/${channel.id})`}).catch(err => console.log(err, `Tried to send a DM to the user with the ticket Transcript but didnt worked :(`));
+			await interaction.user.send({ content: `You can see the Transcript of the ticket [here](https://api.yourbestbot.pt/transcript/${channel.id})` }).catch(err => console.log(err, `Tried to send a DM to the user with the ticket Transcript but didnt worked :(`));
 		console.log(`https://api.yourbestbot.pt/transcript/${channel.id}`)
 
 		// still need to make a better system for this, maybe a channel to post all transcripts
@@ -165,8 +165,8 @@ async function transcriptTicket(interaction) {
 		// maybe sending to everyone in the ticket is not the best idea, ratelimits and spam
 		function TranscriptEmbed(userID) {
 			return new EmbedBuilder()
-			.setColor('Green')
-			.setDescription(`Transcript saved and sent to <@${userID}>`);
+				.setColor('Green')
+				.setDescription(`Transcript saved and sent to <@${userID}>`);
 		}
 
 		await channel.send({ embeds: userOpenTicket ? interaction.member.id == userId ? [TranscriptEmbed(userId)] : [TranscriptEmbed(interaction.user.id), TranscriptEmbed(userId)] : [TranscriptEmbed(interaction.user.id)] });

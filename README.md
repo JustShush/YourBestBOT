@@ -5,6 +5,9 @@
   <img alt="last-commit" src="https://img.shields.io/github/last-commit/JustShush/YourBestBOT?style=flat&amp;logo=git&amp;logoColor=white&amp;color=0080ff" class="inline-block mx-1" style="margin: 0px 2px;">
   <img alt="repo-top-language" src="https://img.shields.io/github/languages/top/JustShush/YourBestBOT?style=flat&amp;color=0080ff" class="inline-block mx-1" style="margin: 0px 2px;">
   <img alt="repo-language-count" src="https://img.shields.io/github/languages/count/JustShush/YourBestBOT?style=flat&amp;color=0080ff" class="inline-block mx-1" style="margin: 0px 2px;">
+  <br>
+  <img src="https://img.shields.io/github/languages/code-size/JustShush/YourBestBOT" alt="GitHub code size in bytes"/>
+  <!-- <img src="https://img.shields.io/endpoint?url=https://ghloc.vercel.app/api/JustShush/YourBestBOT/badge?filter=.js$&label=lines%20of%20code&color=blue" alt="GitHub lines of code"/> -->
   <p><em>Built with the tools and technologies:</em></p>
   <img alt="Express" src="https://img.shields.io/badge/Express-000000.svg?style=flat&amp;logo=Express&amp;logoColor=white" class="inline-block mx-1" style="margin: 0px 2px;">
   <img alt="JSON" src="https://img.shields.io/badge/JSON-000000.svg?style=flat&amp;logo=JSON&amp;logoColor=white" class="inline-block mx-1" style="margin: 0px 2px;">

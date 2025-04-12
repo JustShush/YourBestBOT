@@ -27,7 +27,7 @@ module.exports = {
 				.setName('reason')
 				.setDescription('The reason that you want to whitelist this webhook. Not providing one may not be whitelisted.')
 				.setMaxLength(512)
-				.setRequired(false)
+				.setRequired(true)
 			)
 		)
 		.setDefaultMemberPermissions(PermissionFlagsBits.UseApplicationCommands, PermissionFlagsBits.SendMessages)

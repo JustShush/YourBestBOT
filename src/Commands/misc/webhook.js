@@ -48,8 +48,9 @@ module.exports = {
 				const repo = interaction.options.getString('repo');
 				const reason = interaction.options.getString('reason');
 				const member = interaction.member || interaction.user;
+				const regex = /https?:\/\/(?:ptb\.|cannary\.)?(?:discord(?:app)?\.com)\/api\/webhooks\/\d+\/[\w-]+/;
 
-				if (!url.startsWith('https://discord.com/api/webhooks/'))
+				if (!regex.test(url))
 					return interaction.reply({ content: `The webhook url should start with \`https://discord.com/api/webhooks/\``, flags: 'Ephemeral' });
 
 				if (!(repo.startsWith('https://github.com/' || repo.startsWith('https://raw.githubusercontent.com/'))))

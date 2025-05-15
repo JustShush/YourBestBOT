@@ -49,6 +49,11 @@ module.exports.load = (client) => {
 	app.get("/servercount/", (req, res) => require("./servercount.js")(req, res, client));
 	app.get("/transcript/:ticketid", (req, res) => require("./transcript.js")(req, res));
 	app.post("/votes", (req, res) => require("./votes.js")(req, res, client));
+
+	// CoinBase Commerce
+	app.post("/create-donation", (req, res) => require("./create-donation.js")(req, res, client));
+	app.post("/webhook", (req, res) => require("./webhook.js")(req, res, client));
+
 	app.listen(port)
 	console.log(`🚀 ${client.user.username} API is Up and Running!`.brightYellow.bold);
 }

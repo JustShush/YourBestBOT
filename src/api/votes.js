@@ -65,8 +65,10 @@ module.exports = async (req, res, client) => {
 	if (user.avatar) avatar = `https://cdn.discordapp.com/avatars/${obj.user}/${user.avatar}.png`
 
 	if (!client.guilds.cache.size) await client.guilds.fetch();
-	const webex = await client.guilds.cache.get(client.config.config.votes.webex.guildId);
-	const sup = await client.guilds.cache.get(client.config.config.votes.support.guildId);
+	let webex = await client.guilds.cache.get(client.config.config.votes.webex.guildId);
+	if (!webex) webex = await client.guilds.fetch(client.config.config.votes.webex.guildId);
+	let sup = await client.guilds.cache.get(client.config.config.votes.support.guildId);
+	if (!sup) sup = await client.guilds.fetch(client.config.config.votes.support.guildId);
 
 	const channels = [ await webex.channels.cache.get(client.config.config.votes.webex.voteChannel),
 		await sup.channels.cache.get(client.config.config.votes.support.voteChannel)

@@ -55,6 +55,7 @@ module.exports = {
 			setupArray = [];
 			votersArray = [];
 			gwArray = [];
+			miscArray = [];
 
 			client.commands.map(async (c) => {
 				if (c.type === "Utility ⚙️") {
@@ -74,6 +75,8 @@ module.exports = {
 					getSubcommand(interaction, votersArray, c.name);
 				} else if (c.type === "Giveaway 🎉") {
 					getSubcommand(interaction, gwArray, c.name);
+				} else if (c.type === "Misc") {
+					getSubcommand(interaction, miscArray, c.name);
 				}
 			});
 
@@ -92,6 +95,8 @@ module.exports = {
 	${setupArray.join(' ')}
 	Giveaway 🎉 Commands:
 	${gwArray.join(' ')}
+	Misc Commands:
+	${miscArray.join(' ')}
 	Other Commands:
 	${otherArray.join(' ')}
 

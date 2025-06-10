@@ -36,7 +36,7 @@ module.exports = {
 				}
 				let num = countNKC(newNick);
 				//console.log("num: " + num);
-				if (num > 4) {
+				if (num > 4 || newMember.nickname.length < 4) {
 					//console.log("newNick: " + newNick + "\nnewNick length: " + newNick.length);
 					const reason = "Your new nickname has more than 4 non QWERTY characters.\nPlease change it back and then message a mod so that they will remove the moderated nickname.";
 

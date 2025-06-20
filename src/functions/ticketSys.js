@@ -16,31 +16,47 @@ async function newTicket(interaction) {
 
 		const category = await interaction.guild.channels.cache.get(ticketData.CategoryId);
 
-		const channel = await interaction.guild.channels.create({
-			name: `ticket-${ticketData.TicketId}-${interaction.user.username}`,
-			type: ChannelType.GuildText,
-			parent: category,
-			topic: `Ticket user: ${interaction.user} | ${interaction.user.id}`,
-			permissionOverwrites: [
-				{
-					id: interaction.guild.id,
-					deny: [PermissionsBitField.Flags.ViewChannel]
-				},
-				{
-					id: interaction.user.id,
+		const permissionOverwrites = [
+			{
+				id: interaction.guild.id,
+				deny: [PermissionsBitField.Flags.ViewChannel],
+			},
+			{
+				id: interaction.user.id,
+				allow: [
+					PermissionsBitField.Flags.ViewChannel,
+					PermissionsBitField.Flags.SendMessages,
+					PermissionsBitField.Flags.ReadMessageHistory,
+					PermissionsBitField.Flags.AttachFiles,
+					PermissionsBitField.Flags.EmbedLinks,
+					PermissionsBitField.Flags.AddReactions,
+					PermissionsBitField.Flags.UseExternalStickers,
+					PermissionsBitField.Flags.UseExternalEmojis,
+					PermissionsBitField.Flags.SendVoiceMessages,
+				],
+			},
+		];
+
+		// Add staff roles to permission overwrites
+		if (Array.isArray(ticketData.StaffRoles)) {
+			for (const roleId of ticketData.StaffRoles) {
+				permissionOverwrites.push({
+					id: roleId,
 					allow: [
 						PermissionsBitField.Flags.ViewChannel,
 						PermissionsBitField.Flags.SendMessages,
 						PermissionsBitField.Flags.ReadMessageHistory,
-						PermissionsBitField.Flags.AttachFiles,
-						PermissionsBitField.Flags.EmbedLinks,
-						PermissionsBitField.Flags.AddReactions,
-						PermissionsBitField.Flags.UseExternalStickers,
-						PermissionsBitField.Flags.UseExternalEmojis,
-						PermissionsBitField.Flags.SendVoiceMessages
-					]
-				}
-			]
+					],
+				});
+			}
+		}
+
+		const channel = await interaction.guild.channels.create({
+			name: `ticket-${ticketData.TicketId}-${interaction.user.username}`,
+			type: ChannelType.GuildText,
+			parent: category ?? null,
+			topic: `Ticket user: ${interaction.user} | ${interaction.user.id}`,
+			permissionOverwrites: permissionOverwrites,
 		});
 
 		if (!ticketsChannelsID[channel.id]) ticketsChannelsID[channel.id] = [];
@@ -87,10 +103,10 @@ async function closeTicket(interaction) {
 			console.log(err);
 		});
 
-		await channel.permissionOverwrites.set([
+		const newOverwrites = [
 			{
 				id: interaction.guild.id,
-				deny: [PermissionsBitField.Flags.ViewChannel]
+				deny: [PermissionsBitField.Flags.ViewChannel],
 			},
 			{
 				id: member.id,
@@ -103,10 +119,34 @@ async function closeTicket(interaction) {
 					PermissionsBitField.Flags.AddReactions,
 					PermissionsBitField.Flags.UseExternalStickers,
 					PermissionsBitField.Flags.UseExternalEmojis,
-					PermissionsBitField.Flags.SendVoiceMessages
-				]
+					PermissionsBitField.Flags.SendVoiceMessages,
+				],
+			},
+		];
+
+		// Re-add staff role access
+		if (Array.isArray(ticketData.StaffRoles)) {
+			for (const roleId of ticketData.StaffRoles) {
+				newOverwrites.push({
+					id: roleId,
+					allow: [
+						PermissionsBitField.Flags.ViewChannel,
+						PermissionsBitField.Flags.SendMessages,
+						PermissionsBitField.Flags.ReadMessageHistory,
+						PermissionsBitField.Flags.AttachFiles,
+						PermissionsBitField.Flags.EmbedLinks,
+						PermissionsBitField.Flags.AddReactions,
+						PermissionsBitField.Flags.UseExternalStickers,
+						PermissionsBitField.Flags.UseExternalEmojis,
+						PermissionsBitField.Flags.SendVoiceMessages,
+					],
+				});
 			}
-		]).catch((err) => { console.error("Error trying to overwrite a member's perms: ", err) });
+		}
+
+		await channel.permissionOverwrites.set(newOverwrites).catch((err) => {
+			console.error("Error updating channel permissions: ", err);
+		});
 
 		const newEmbed = new EmbedBuilder()
 			.setDescription(`Ticket Closed by ${interaction.user}`)
@@ -180,7 +220,8 @@ async function reopenTicket(interaction) {
 		const ticketData = await ticketSchema.findOne({ GuildId: interaction.guild.id });
 		const i = ticketData.Tickets.findIndex((e) => e.ChannelId == interaction.channel.id);
 		const member = await interaction.guild.members.cache.get(ticketData.Tickets[i].MemberId);
-		await channel.permissionOverwrites.set([
+
+		const newOverwrites = [
 			{
 				id: interaction.guild.id,
 				deny: [PermissionsBitField.Flags.ViewChannel]
@@ -189,7 +230,31 @@ async function reopenTicket(interaction) {
 				id: member.id,
 				allow: [PermissionsBitField.Flags.ViewChannel, PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ReadMessageHistory]
 			}
-		]).catch((err) => { console.error("Error trying to overwrite a member's perms: ", err) });
+		];
+
+		// Re-add staff role access
+		if (Array.isArray(ticketData.StaffRoles)) {
+			for (const roleId of ticketData.StaffRoles) {
+				newOverwrites.push({
+					id: roleId,
+					allow: [
+						PermissionsBitField.Flags.ViewChannel,
+						PermissionsBitField.Flags.SendMessages,
+						PermissionsBitField.Flags.ReadMessageHistory,
+						PermissionsBitField.Flags.AttachFiles,
+						PermissionsBitField.Flags.EmbedLinks,
+						PermissionsBitField.Flags.AddReactions,
+						PermissionsBitField.Flags.UseExternalStickers,
+						PermissionsBitField.Flags.UseExternalEmojis,
+						PermissionsBitField.Flags.SendVoiceMessages,
+					],
+				});
+			}
+		}
+
+		await channel.permissionOverwrites.set(newOverwrites).catch((err) => {
+			console.error("Error updating channel permissions: ", err);
+		});
 
 		const newEmbed = new EmbedBuilder()
 			.setDescription(`Ticket Re-Openned by ${interaction.user}`)

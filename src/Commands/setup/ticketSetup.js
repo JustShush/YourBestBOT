@@ -31,6 +31,11 @@ module.exports = {
 				.setDescription("The category to send the tickets in")
 				.addChannelTypes(ChannelType.GuildCategory)
 				.setRequired(true))
+			.addStringOption(o => o
+				.setName("staffroles")
+				.setDescription("Mention the staff roles (e.g., @Mod @Admin)")
+				.setRequired(false)
+			)
 		)
 		.addSubcommand(sub => sub
 			.setName('disable')
@@ -102,10 +107,25 @@ module.exports = {
 				if (ticketSys) return await interaction.reply({ content: `Looks like you already have a ticket system set to \`<#${ticketSys.CategoryId}>\``, ephemeral: true });
 
 				const category = options.getChannel("category");
+				const rolesInput = options.getString("staffroles");
+				const roleIds = [];
+
+				const roleMentions = rolesInput.match(/<@&(\d+)>/g);
+				if (roleMentions) {
+					for (const mention of roleMentions) {
+						const id = mention.match(/\d+/)[0];
+						const role = interaction.guild.roles.cache.get(id);
+						if (role) roleIds.push(role.id);
+					}
+				}
+
+				if (rolesInput && roleIds.length === 0)
+					return interaction.reply({ content: 'No valid roles were mentioned.', flags: "ephemeral" })
 
 				ticketData = await ticketSchema.create({
 					GuildId: interaction.guild.id,
 					CategoryId: category.id,
+					StaffRoles: roleIds,
 					TicketId: '0',
 					Tickets: [],
 				});
@@ -128,7 +148,7 @@ module.exports = {
 
 				user = await options.getUser('user');
 				role = await options.getRole('role');
-				if (!user && !role) return interaction.reply({ content: `You need to provide a user or a role to add to the ticket.`, flags:'ephemeral' });
+				if (!user && !role) return interaction.reply({ content: `You need to provide a user or a role to add to the ticket.`, flags: 'ephemeral' });
 
 				channel = interaction.channel;
 				if (channel.parentId !== ticketData.CategoryId) return await interaction.reply({ content: `Sorry but you aren\'t using the command in a ticket channel, you can only do that inside Category: \`${ticketData.CategoryId}\` | "<#${ticketData.CategoryId}>"`, ephemeral: true });
@@ -159,7 +179,7 @@ module.exports = {
 
 				user = await options.getUser('user');
 				role = await options.getRole('role');
-				if (!user && !role) return interaction.reply({ content: `You need to provide a user or a role to remove from the ticket.`, flags:'ephemeral' });
+				if (!user && !role) return interaction.reply({ content: `You need to provide a user or a role to remove from the ticket.`, flags: 'ephemeral' });
 
 				channel = interaction.channel;
 				if (channel.parentId !== ticketData.CategoryId) return await interaction.reply({ content: `Sorry but you aren\'t using the command in a ticket channel, you can only do that inside Category: \`${ticketData.CategoryId}\` | "<#${ticketData.CategoryId}>"`, ephemeral: true });

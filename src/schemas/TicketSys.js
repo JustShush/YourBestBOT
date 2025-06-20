@@ -12,6 +12,7 @@ module.exports = model("Tickets", new Schema({
 		index: true
 	},
 	CategoryId: reqString,
+	StaffRoles: [],
 	Tickets: [{
 		MemberId: reqString,
 		ChannelId: reqString,

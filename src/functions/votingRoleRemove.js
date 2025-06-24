@@ -57,7 +57,6 @@ async function RVotingRole(client) {
 				if (!ybbMember) console.log('Couldn\'t get the ybb member voting');
 				await ybbMember.roles.remove(ybbR).catch(console.error);
 
-				
 			} catch (err) {
 				console.log(err);
 			}

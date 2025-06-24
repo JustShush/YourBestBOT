@@ -57,13 +57,13 @@ async function RVotingRole(client) {
 				if (!ybbMember) console.log('Couldn\'t get the ybb member voting');
 				await ybbMember.roles.remove(ybbR).catch(console.error);
 
-				const userStats = await UserStatsSchema.findOne({ UserId: user.UserId });
-				userStats.isVoter = false;
-				await userStats.save();
-
+				
 			} catch (err) {
 				console.log(err);
 			}
+			const userStats = await UserStatsSchema.findOne({ UserId: user.UserId });
+			userStats.isVoter = false;
+			await userStats.save();
 			await INFO('removing the voting role from ' + `<@${user.UserId}>` + user.UserId);
 			await Schema.findOneAndDelete({ UserId: user.UserId });
 		}

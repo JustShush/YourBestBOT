@@ -185,7 +185,7 @@ async function transcriptTicket(interaction) {
 
 		const userId = channel.topic.match(/\|\s(\d+)$/)?.[1];
 		if (!userId) return interaction.reply({ content: 'Could not find the user ID in the channel topic.\n Make sure its there or if its the correct one.', ephemeral: true });
-		const userOpenTicket = await interaction.guild.members.cache.get(userId);
+		let userOpenTicket = await interaction.guild.members.cache.get(userId);
 		if (!userOpenTicket) userOpenTicket = await interaction.guild.members.fetch(userId);
 		if (!userOpenTicket) await interaction.reply({ content: `❌ Something when wrong!\nThe user that opened the ticket is no longer in the server so i will not be able to send them the transcript.` });
 

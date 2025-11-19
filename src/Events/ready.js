@@ -129,7 +129,7 @@ module.exports = {
 
 		//allGuilds(client);
 
-		//require('../functions/ticketSys.js').rmFromCache("1326147383796695081", ["1326904166659919956", "1328708109782355980"]);
+		//require('../functions/ticketSys.js').rmFromCache("1326147383796695081", ["1385287191546036325"]);
 
 		console.log(colors.magenta.bold(`${client.user.username} is online!\nIn ${client.guilds.cache.size} Servers! ${client.guilds.cache.reduce((a, b) => a + b.memberCount, 0)} Members!`));
 		api.load(client);

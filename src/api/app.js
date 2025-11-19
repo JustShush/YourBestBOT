@@ -1,10 +1,11 @@
 // https://api.yourbestbot.pt
 const color = require('colors');
 const express = require('express');
+const jwt = require('jsonwebtoken');
 const rateLimit = require('express-rate-limit');
 const app = express();
 const { getTimestamp } = require("../functions/utils.js");
-const port = process.env.PORT || 80
+const port = process.env.PORT || 3000
 
 // Define the rate limiter
 const limiter = rateLimit({
@@ -17,16 +18,57 @@ const limiter = rateLimit({
 // Apply the rate limiting middleware globally
 //app.use(limiter);
 
+// 🌐 Global middleware
 app.use((req, res, next) => {
 	res.setHeader('Access-Control-Allow-Origin', '*');
-	res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
-	res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+	res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS, PATCH');
+	res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 	res.setHeader('Access-Control-Allow-Credentials', 'true');
 
 	console.log(color.yellow(`[${getTimestamp()}]`) + ` ${req.method} ${req.url} | ${req.ip}`);
 
 	next();
 });
+
+// 🔐 JWT Auth middleware
+function verifyJWT(req, res, next) {
+	const authHeader = req.headers.authorization;
+
+	if (!authHeader || !authHeader.startsWith('Bearer ')) {
+		return res.status(401).json({ message: 'Unauthorized' });
+	}
+
+	const token = authHeader.split(' ')[1];
+
+	try {
+		const decoded = jwt.verify(token, SECRET);
+		req.user = decoded;
+		next();
+	} catch (err) {
+		return res.status(403).json({ message: 'Invalid or expired token' });
+	}
+}
+
+/* // 🔐 Basic Auth middleware
+function adminAuth(req, res, next) {
+	const authHeader = req.headers.authorization;
+
+	if (!authHeader || !authHeader.startsWith('Basic ')) {
+		res.setHeader('WWW-Authenticate', 'Basic');
+		return res.status(401).send('Authentication required');
+	}
+
+	const base64Credentials = authHeader.split(' ')[1];
+	const credentials = Buffer.from(base64Credentials, 'base64').toString('ascii');
+	const [username, password] = credentials.split(':');
+
+	if (username === adminUsername && password === adminPassword) {
+		return next();
+	}
+
+	res.setHeader('WWW-Authenticate', 'Basic');
+	return res.status(401).send('Invalid credentials');
+} */
 
 app.options('*', (req, res) => res.status(200).json());
 

@@ -4,6 +4,7 @@ const Schema = require("../schemas/stats.js");
 const UserStats = require("../schemas/userStats.js");
 const { gwBtn } = require('../functions/gwUtils.js');
 const { TicketSystem } = require('../functions/ticketSys.js');
+const { handleModalSubmit } = require("../functions/euroMilhoesUtils.js");
 
 module.exports = {
 	name: "interactionCreate",
@@ -12,6 +13,9 @@ module.exports = {
 	 */
 	async execute(interaction, client) {
 		//if (!interaction.isCommand()) return;
+
+		if (interaction.isModalSubmit())
+			await handleModalSubmit(interaction);
 
 		if (interaction.isButton()) {
 			gwBtn(interaction);

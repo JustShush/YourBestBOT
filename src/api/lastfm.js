@@ -33,9 +33,9 @@ module.exports = async (req, res, client) => {
 			console.log(url);
 
 			if (currentTrack['@attr'] && currentTrack['@attr'].nowplaying) {
-				return res.status(200).send(`🎵 Currently playing: "${songName}" by ${artistName}`);
+				return res.status(200).send(`🎵 Atualmente a tocar: "${songName}" de ${artistName}`);
 			} else {
-				return res.status(200).send(`🎵 Last played: "${songName}" by ${artistName}`);
+				return res.status(200).send(`🎵 Última música tocada: "${songName}" de ${artistName}`);
 			}
 		} else
 			return res.status(200).send('No recent tracks found.');

@@ -4,7 +4,8 @@ const Stats = require("../schemas/stats.js");
 module.exports = {
 	name: "guildDelete",
 	async execute(guild, client) {
-		const owner = await guild.members.cache.get(guild.ownerId);
+		let owner = await guild.members.cache.get(guild.ownerId);
+		if (!owner) owner = await client.users.fetch(guild.ownerId);
 		let data = await Stats.findOne();
 		if (!data.servers) {
 			data.servers = {
@@ -45,7 +46,7 @@ module.exports = {
 		channel.send({ embeds: [newEmbed] });
 
 		//const owner = await guild.members.fetch(guild.ownerId);
-		if (!owner) return console.log("Someone removed the bot but theres no owner? idk" + __filename);
+		if (!owner) return console.log("Someone removed the bot but theres no owner? idk" + __filename); // I think this never happaned but i will still leave it here
 
 		const ownerEmbed = new EmbedBuilder()
 			.setColor('#ff0000')
@@ -65,7 +66,11 @@ module.exports = {
 					.setStyle(ButtonStyle.Link),
 			);
 
-		owner.send({ content: `${owner.user}`, embeds: [ownerEmbed], components: [row] }).catch(err => (console.log(err, `${owner.user.username} | ${guild.ownerId} => Removed the bot but the bot couldnt send the welcome DM.`), channel.send(`${owner.user.username} | ${guild.ownerId} => Removed the bot but the bot couldnt send the welcome DM.`)));
+		if (!guild.ownerId) {
+			await rmSavedGuildDataFromAll(guild);
+			return channel.send({ content: `Left guild: ${guild.name}, but no ownerId available`});
+		}
+		owner.send({ content: `${owner.user}`, embeds: [ownerEmbed], components: [row] }).catch(err => (console.log(err, `${owner.user.username} | ${guild.ownerId} => Removed the bot but the bot couldnt send the GoodBye DM.`), channel.send(`${owner.user.username} | ${guild.ownerId} => Removed the bot but the bot couldnt send the GoodBye DM.`)));
 
 		// delete all saved data from that guild
 		await rmSavedGuildDataFromAll(guild);

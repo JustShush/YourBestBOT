@@ -94,7 +94,7 @@ module.exports = {
 			
 		if (file) {
 			newEmbed.setImage('attachment://image.png')
-			await webhook.send({ content: `<@453944662093332490> | ${file.url}`, embeds: [newEmbed], files: [file.url] });
+			await webhook.send({ content: `<@453944662093332490>\nSent from: <@interaction.user.id> | ${file.url}`, embeds: [newEmbed], files: [file.url] });
 		} else
 			await webhook.send({ content: `<@453944662093332490>`, embeds: [newEmbed] });
 

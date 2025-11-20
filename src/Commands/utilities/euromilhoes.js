@@ -1,5 +1,18 @@
 const { SlashCommandBuilder, PermissionFlagsBits, ModalBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder } = require('discord.js');
 
+const allowedRoles = [
+	"1440751100679422094", // TACOS
+	"1440751133223161976", // Hogs
+	"1440765613965316096", // Barrigas
+	"1440765655199649984", // Chines
+	"1440765796161687775", // Malibu
+	"1440765899903860887", // Bahamas
+	"1440765946158514377", // PDM
+	"1440766258659459072", // Fiandeiro
+	"1440830577052749908", // Bennys
+	"1440830614973583382", // TuneTown
+];
+
 module.exports = {
 	name: "euromilhoes",
 	description: "Create a new EuroMilhoes ticket",
@@ -15,6 +28,18 @@ module.exports = {
 		.setIntegrationTypes(0) // 0 for guild install | 1 for user install
 		.setNSFW(false),
 	async execute(interaction) {
+
+		// Check if user has any of the allowed roles
+		const memberRoles = interaction.member.roles.cache || await interaction.member.roles.fetch();
+		const hasPermission = memberRoles.some(role => allowedRoles.includes(role.id));
+
+		if (!hasPermission) {
+			return await interaction.reply({
+				content: '❌ Nao tens permissao para usar este comando.',
+				ephemeral: true
+			});
+		}
+
 		// Create modal
 		const modal = new ModalBuilder()
 			.setCustomId('ticketModal')

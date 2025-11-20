@@ -10,7 +10,9 @@ const Lojas = {
 	Malibu: "1440765796161687775",
 	Bahamas: "1440765899903860887",
 	PDM: "1440765946158514377",
-	Fiandeiro: "1440766258659459072"
+	Fiandeiro: "1440766258659459072",
+	Bennys: "1440830577052749908",
+	TuneTown: "1440830614973583382"
 }
 
 // Helper function to get all combinations

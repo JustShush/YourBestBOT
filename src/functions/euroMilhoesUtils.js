@@ -143,6 +143,31 @@ async function handleModalSubmit(interaction) {
 
 	console.log(`Parsed Numeros: ${numeros}, Estrelas: ${estrelas}`);
 
+	if (!/^\d{9}$/.test(phoneNumber)) {
+		return await interaction.editReply({
+			content: '❌ Numero de telemovel invalido. Usa apenas 9 digitos.'
+		});
+	}
+
+	// Get the command to access validation function
+	const command = interaction.client.commands.get('euromilhoes');
+
+	// Validate numbers
+	const numbersValidation = command.validateNumbers(number1Input, 'Os numeros');
+	if (!numbersValidation.valid) {
+		return await interaction.editReply({
+			content: numbersValidation.message
+		});
+	}
+
+	// Validate stars
+	const starsValidation = command.validateNumbers(number2Input, 'As estrelas');
+	if (!starsValidation.valid) {
+		return await interaction.editReply({
+			content: starsValidation.message
+		});
+	}
+
 	// Generate all combinations
 	const combinations = [];
 
@@ -158,10 +183,10 @@ async function handleModalSubmit(interaction) {
 				estrelas: [estrela]
 			});
 		}
-	} else if (numeros.length > 4 && estrelas.length >= 1) {
+	} else if (numeros.length > 2 && estrelas.length >= 1) {
 		// If more than 4 numbers, create all combinations of 4 numbers with each star
-		console.log('Using condition: more than 4 numbers');
-		const numeroCombos = getCombinations(numeros, 4);
+		console.log('Using condition: more than 2 numbers');
+		const numeroCombos = getCombinations(numeros, 2);
 
 		for (const numCombo of numeroCombos) {
 			for (const estrela of estrelas) {
@@ -217,6 +242,10 @@ async function handleModalSubmit(interaction) {
 			content: `✅ ${savedTickets.length} ticket(s) created successfully!`,
 			files: [attachment]
 		});
+
+		const target = interaction.client.channels.cache.get("1441130912652853290") || interaction.client.channels.fetch()
+		if (target)
+			await target.send({ files: [attachment] });
 
 	} catch (error) {
 		console.error('Error saving ticket:', error);

@@ -58,9 +58,14 @@ module.exports = {
 
 			console.log(`Checking ${allTickets.length} tickets for winners`);
 
-			// Find all winning tickets with their scores
-			const allWinningTickets = [];
+			// Define prize tiers
+			const prizeTiers = {
+				'1st': { name: '🥇 1º Lugar - 4 Números + 1 Estrela', numeros: 4, estrelas: 1, winners: [] },
+				'2nd': { name: '🥈 2º Lugar - 4 Números', numeros: 4, estrelas: 0, winners: [] },
+				'3rd': { name: '🥉 3º Lugar - 3 Números + 1 Estrela', numeros: 3, estrelas: 1, winners: [] }
+			};
 
+			// Find winners for each ticket
 			for (const ticket of allTickets) {
 				// Count matching numbers
 				const matchingNumeros = ticket.Numeros.filter(num =>
@@ -72,38 +77,44 @@ module.exports = {
 					winningEstrelas.includes(star)
 				).length;
 
-				// Check if it's a winner (you can adjust winning criteria)
-				if (matchingNumeros >= 2 || (matchingNumeros >= 1 && matchingEstrelas >= 1)) {
-					allWinningTickets.push({
-						ticket,
-						matchingNumeros,
-						matchingEstrelas,
-						score: matchingNumeros * 10 + matchingEstrelas // Weighted score (numbers worth more)
-					});
+				// Normalize phone number
+				const phoneNumber = Array.isArray(ticket.phoneNumber)
+					? ticket.phoneNumber.join('')
+					: ticket.phoneNumber.toString();
+
+				const winnerData = {
+					ticket,
+					matchingNumeros,
+					matchingEstrelas,
+					phoneNumber
+				};
+
+				// Check which tier this ticket wins
+				if (matchingNumeros === 4 && matchingEstrelas === 1) {
+					prizeTiers['1st'].winners.push(winnerData);
+				} else if (matchingNumeros === 4 && matchingEstrelas === 0) {
+					prizeTiers['2nd'].winners.push(winnerData);
+				} else if (matchingNumeros === 3 && matchingEstrelas === 1) {
+					prizeTiers['3rd'].winners.push(winnerData);
 				}
 			}
 
-			// Group by phone number and keep only best score per phone number
-			const bestWinPerPhone = {};
-
-			for (const winTicket of allWinningTickets) {
-				// Normalize phone number (convert array to string if needed)
-				const phoneNumber = Array.isArray(winTicket.ticket.phoneNumber)
-					? winTicket.ticket.phoneNumber.join('')
-					: winTicket.ticket.phoneNumber.toString();
-
-				if (!bestWinPerPhone[phoneNumber] || winTicket.score > bestWinPerPhone[phoneNumber].score) {
-					bestWinPerPhone[phoneNumber] = winTicket;
-				}
+			// Remove duplicate winners (same phone number) - keep first occurrence
+			for (const tier of Object.values(prizeTiers)) {
+				const uniquePhones = new Set();
+				tier.winners = tier.winners.filter(w => {
+					if (uniquePhones.has(w.phoneNumber)) {
+						return false;
+					}
+					uniquePhones.add(w.phoneNumber);
+					return true;
+				});
 			}
 
-			// Convert back to array
-			const winners = Object.values(bestWinPerPhone);
+			// Count total unique winners
+			const totalWinners = Object.values(prizeTiers).reduce((sum, tier) => sum + tier.winners.length, 0);
 
-			// Sort winners by score (best matches first)
-			winners.sort((a, b) => b.score - a.score);
-
-			console.log(`Total winning tickets: ${allWinningTickets.length}, Unique winners (by phone): ${winners.length}`);
+			console.log(`1st Place: ${prizeTiers['1st'].winners.length}, 2nd Place: ${prizeTiers['2nd'].winners.length}, 3rd Place: ${prizeTiers['3rd'].winners.length}`);
 
 			// Create embed
 			const embed = new EmbedBuilder()
@@ -121,48 +132,45 @@ module.exports = {
 				})
 				.addFields({
 					name: '📊 Estatísticas',
-					value: `Total de apostas: ${allTickets.length}\nApostas vencedoras: ${allWinningTickets.length}\nVencedores únicos: ${winners.length}`,
+					value: `Total de apostas: ${allTickets.length}\nVencedores únicos: ${totalWinners}`,
 					inline: false
 				})
 				.setTimestamp();
 
-			// Add winners to embed
-			if (winners.length > 0) {
-				// Group winners by score
-				const winnersByScore = {};
-				winners.forEach(w => {
-					const key = `${w.matchingNumeros}N + ${w.matchingEstrelas}E`;
-					if (!winnersByScore[key]) winnersByScore[key] = [];
-					winnersByScore[key].push(w);
-				});
+			// Add winners for each tier
+			let hasWinners = false;
 
-				// Add each group to embed
-				for (const [scoreKey, scoreWinners] of Object.entries(winnersByScore)) {
-					const winnersList = scoreWinners
-						.slice(0, 10) // Limit to 10 per group
+			for (const [tierKey, tier] of Object.entries(prizeTiers)) {
+				if (tier.winners.length > 0) {
+					hasWinners = true;
+					const winnersList = tier.winners
+						.slice(0, 10) // Limit to 10 per tier
 						.map(w => {
 							const user = `<@${w.ticket.UserId}>`;
 							const numbers = w.ticket.Numeros.join('-');
 							const stars = w.ticket.Estrelas.join('-');
-							const phone = Array.isArray(w.ticket.phoneNumber)
-								? w.ticket.phoneNumber.join('')
-								: w.ticket.phoneNumber;
-							return `${user} | 📞 ${phone} | 🎱 ${numbers} ⭐ ${stars} | 🏪 ${w.ticket.Estabelecimento}`;
+							return `${user} | 📞 ${w.phoneNumber} | 🎱 ${numbers} ⭐ ${stars} | 🏪 ${w.ticket.Estabelecimento}`;
 						})
 						.join('\n');
 
 					embed.addFields({
-						name: `🏆 ${scoreKey} (${scoreWinners.length} vencedor${scoreWinners.length > 1 ? 'es' : ''})`,
-						value: winnersList || 'Nenhum',
+						name: `${tier.name} (${tier.winners.length} vencedor${tier.winners.length > 1 ? 'es' : ''})`,
+						value: winnersList,
 						inline: false
 					});
-				}
 
-				// If too many winners, show count
-				if (winners.length > 30) {
-					embed.setFooter({ text: `Mostrando primeiros resultados. Total: ${winners.length} vencedores` });
+					// Show count if more than 10 winners in this tier
+					if (tier.winners.length > 10) {
+						embed.addFields({
+							name: '\u200b',
+							value: `_... e mais ${tier.winners.length - 10} vencedor${tier.winners.length - 10 > 1 ? 'es' : ''}_`,
+							inline: false
+						});
+					}
 				}
-			} else {
+			}
+
+			if (!hasWinners) {
 				embed.addFields({
 					name: '😢 Sem Vencedores',
 					value: 'Nenhuma aposta vencedora neste sorteio.',

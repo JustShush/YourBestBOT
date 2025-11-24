@@ -62,7 +62,7 @@ module.exports = {
 			.setStyle(TextInputStyle.Short)
 			.setPlaceholder('Os numeros 4/10')
 			.setMinLength(4)
-			.setMaxLength(10)
+			.setMaxLength(20)
 			.setRequired(true);
 
 		// Number 2 input
@@ -70,9 +70,9 @@ module.exports = {
 			.setCustomId('number2')
 			.setLabel('As estrelas')
 			.setStyle(TextInputStyle.Short)
-			.setPlaceholder('As estrelas 1/5')
+			.setPlaceholder('As estrelas 1/2')
 			.setMinLength(1)
-			.setMaxLength(5)
+			.setMaxLength(3)
 			.setRequired(true);
 
 		// Add inputs to action rows
@@ -82,5 +82,25 @@ module.exports = {
 
 		modal.addComponents(firstRow, secondRow, thirdRow);
 		await interaction.showModal(modal);
+	},
+
+	// Validation function to check for duplicate numbers
+	validateNumbers(numbersString, fieldName) {
+		// Extract numbers from the string
+		const numbers = numbersString.match(/\d+/g);
+
+		if (!numbers) {
+			return { valid: false, message: `❌ ${fieldName}: Nenhum numero encontrado.` };
+		}
+
+		// Convert to numbers and check for duplicates
+		const numArray = numbers.map(n => parseInt(n));
+		const uniqueNums = new Set(numArray);
+
+		if (numArray.length !== uniqueNums.size) {
+			return { valid: false, message: `❌ ${fieldName}: Nao podes ter numeros repetidos.` };
+		}
+
+		return { valid: true, numbers: numArray };
 	}
 };

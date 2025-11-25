@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits } = require('discord.js');
 const storeSalesModel = require('../../schemas/euroMilhoesStats');
 
 module.exports = {
@@ -27,7 +27,11 @@ module.exports = {
 					{ name: 'Bennys', value: 'Bennys' },
 					{ name: 'TuneTown', value: 'TuneTown' }
 				)
-		),
+		)
+		.setDefaultMemberPermissions(PermissionFlagsBits.Administrator, PermissionFlagsBits.UseApplicationCommands, PermissionFlagsBits.SendMessages)
+		.setContexts(0) // 0 for guild | 1 for botDM | 2 everywhere
+		.setIntegrationTypes(0) // 0 for guild install | 1 for user install
+		.setNSFW(false),
 
 	async execute(interaction) {
 		await interaction.deferReply();

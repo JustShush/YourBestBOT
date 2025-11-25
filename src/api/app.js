@@ -25,6 +25,9 @@ app.use((req, res, next) => {
 	res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 	res.setHeader('Access-Control-Allow-Credentials', 'true');
 
+	if (req.path.endsWith(".php"))
+		return res.status(404).send("Not Found");
+
 	console.log(color.yellow(`[${getTimestamp()}]`) + ` ${req.method} ${req.url} | ${req.ip}`);
 
 	next();

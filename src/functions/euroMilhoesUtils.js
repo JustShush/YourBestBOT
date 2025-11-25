@@ -1,6 +1,7 @@
 const { AttachmentBuilder } = require('discord.js');
 const { createCanvas } = require('canvas');
 const euroMilhoesModel = require("../schemas/euroMilhoes");
+const storeSalesModel = require("../schemas/euroMilhoesStats");
 
 const Lojas = {
 	TACOS: "1440751100679422094",
@@ -14,6 +15,8 @@ const Lojas = {
 	Bennys: "1440830577052749908",
 	TuneTown: "1440830614973583382"
 }
+
+const TICKET_PRICE = 100;
 
 // Helper function to get all combinations
 function getCombinations(arr, size) {
@@ -183,10 +186,10 @@ async function handleModalSubmit(interaction) {
 				estrelas: [estrela]
 			});
 		}
-	} else if (numeros.length > 2 && estrelas.length >= 1) {
+	} else if (numeros.length > 4 && estrelas.length >= 1) {
 		// If more than 4 numbers, create all combinations of 4 numbers with each star
-		console.log('Using condition: more than 2 numbers');
-		const numeroCombos = getCombinations(numeros, 2);
+		console.log('Using condition: more than 4 numbers');
+		const numeroCombos = getCombinations(numeros, 4);
 
 		for (const numCombo of numeroCombos) {
 			for (const estrela of estrelas) {
@@ -233,6 +236,32 @@ async function handleModalSubmit(interaction) {
 			savedTickets.push(ticket);
 			console.log(`✅ Ticket saved: ${ticket._id} - Numeros: [${combo.numeros}] Estrelas: [${combo.estrelas}] - Store: ${userStore}`);
 		}
+
+		// Update store sales statistics
+		const ticketCount = combinations.length;
+		const revenue = ticketCount * TICKET_PRICE;
+
+		await storeSalesModel.findOneAndUpdate(
+			{
+				GuildId: interaction.guild.id,
+				StoreName: userStore
+			},
+			{
+				$inc: {
+					TotalTickets: ticketCount,
+					TotalRevenue: revenue
+				},
+				$set: {
+					LastUpdated: new Date()
+				}
+			},
+			{
+				upsert: true, // Create if doesn't exist
+				new: true
+			}
+		);
+
+		console.log(`📊 Updated ${userStore} sales: +${ticketCount} tickets, +€${revenue.toFixed(2)}`);
 
 		// Generate ticket image with all combinations
 		const imageBuffer = createTicketImage(phoneNumber, combinations);

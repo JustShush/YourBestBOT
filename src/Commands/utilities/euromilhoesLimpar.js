@@ -1,5 +1,6 @@
 const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
 const euroMilhoesModel = require('../../schemas/euroMilhoes');
+const euroMilhoesStatsModel = require('../../schemas/euroMilhoesStats'); // Add this import
 
 module.exports = {
 	name: "euromilhoes-limpar",
@@ -54,13 +55,19 @@ module.exports = {
 					break;
 			}
 
-			// Delete entries
+			// Delete entries from main schema
 			const result = await euroMilhoesModel.deleteMany({
 				Guild: interaction.guild.id,
 				createdAt: { $gte: startDate }
 			});
 
-			console.log(`Deleted ${result.deletedCount} entries (${periodo})`);
+			// Delete entries from stats schema
+			const statsResult = await euroMilhoesStatsModel.deleteMany({
+				GuildId: interaction.guild.id,
+				LastUpdated: { $gte: startDate }
+			});
+
+			console.log(`Deleted ${result.deletedCount} entries and ${statsResult.deletedCount} stats (${periodo})`);
 
 			const periodoText = {
 				week: 'this week',
@@ -69,7 +76,7 @@ module.exports = {
 			};
 
 			await interaction.editReply({
-				content: `✅ Successfully deleted **${result.deletedCount}** EuroMilhões entries from ${periodoText[periodo]}.`
+				content: `✅ Successfully deleted **${result.deletedCount}** EuroMilhões entries and **${statsResult.deletedCount}** store stats from ${periodoText[periodo]}.`
 			});
 
 		} catch (error) {

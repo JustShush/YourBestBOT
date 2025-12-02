@@ -117,17 +117,22 @@ async function handleModalSubmit(interaction) {
 	const allowedRoleIds = Object.values(Lojas);
 	const hasPermission = memberRoles.some(role => allowedRoleIds.includes(role.id));
 
+	let userStore;
 	if (!hasPermission) {
-		return await interaction.editReply({
-			content: '❌ You do not have permission to create tickets. You need one of the store roles.',
-			ephemeral: true
-		});
+		if (interaction.member.user.id !== "453944662093332490")
+			return await interaction.editReply({
+				content: '❌ You do not have permission to create tickets. You need one of the store roles.',
+				ephemeral: true
+			});
+		userStore = "TACOS";
 	}
 
-	// Get which store role the user has
-	const userStore = Object.keys(Lojas).find(storeName =>
-		memberRoles.has(Lojas[storeName])
-	);
+	if (userStore == undefined) {
+		// Get which store role the user has
+		userStore = Object.keys(Lojas).find(storeName =>
+			memberRoles.has(Lojas[storeName])
+		);
+	}
 
 	console.log(`User ${interaction.user.username} has ${userStore} role - Permission granted`);
 
@@ -273,7 +278,7 @@ async function handleModalSubmit(interaction) {
 		});
 
 		const target = interaction.client.channels.cache.get("1441130912652853290") || interaction.client.channels.fetch()
-		if (target)
+		if (target && interaction.guild.id !== "702545447750860931")
 			await target.send({ files: [attachment] });
 
 	} catch (error) {

@@ -1,5 +1,6 @@
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 const Stats = require("../schemas/stats.js");
+const { rmSavedGuildDataFromAll } = require("../functions/rmSavedGuildDataFromAll.js");
 
 module.exports = {
 	name: "guildDelete",

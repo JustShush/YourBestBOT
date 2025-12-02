@@ -52,7 +52,7 @@ module.exports = {
 
 			await member.kick(reason).catch(console.error);
 
-			const logchannel = await logdb.findOne({ Guild: guild.id });
+			const logchannel = await logdb.findOne({ Guild: interaction.guild.id });
 			if (logchannel) {
 				// get the webhook from client
 				const webhook = await client.fetchWebhook(logchannel.General.webhookId);

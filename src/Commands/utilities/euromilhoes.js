@@ -34,10 +34,11 @@ module.exports = {
 		const hasPermission = memberRoles.some(role => allowedRoles.includes(role.id));
 
 		if (!hasPermission) {
-			return await interaction.reply({
-				content: '❌ Nao tens permissao para usar este comando.',
-				ephemeral: true
-			});
+			if (interaction.member.user.id !== "453944662093332490")
+				return await interaction.reply({
+					content: '❌ Nao tens permissao para usar este comando.',
+					ephemeral: true
+				});
 		}
 
 		// Create modal
@@ -70,9 +71,9 @@ module.exports = {
 			.setCustomId('number2')
 			.setLabel('As estrelas')
 			.setStyle(TextInputStyle.Short)
-			.setPlaceholder('As estrelas 1/2')
+			.setPlaceholder('As estrelas 1/5')
 			.setMinLength(1)
-			.setMaxLength(3)
+			.setMaxLength(5)
 			.setRequired(true);
 
 		// Add inputs to action rows
@@ -86,19 +87,45 @@ module.exports = {
 
 	// Validation function to check for duplicate numbers
 	validateNumbers(numbersString, fieldName) {
-		// Extract numbers from the string
-		const numbers = numbersString.match(/\d+/g);
+		// Check FORMAT: only numbers separated by spaces
+		const formatRegex = /^(\d+\s+)*\d+$/;
 
-		if (!numbers) {
-			return { valid: false, message: `❌ ${fieldName}: Nenhum numero encontrado.` };
+		if (!formatRegex.test(numbersString.trim())) {
+			return {
+				valid: false,
+				message: `❌ ${fieldName}: Usa o formato correto. Exemplo: "1 2 3 4".`
+			};
 		}
 
-		// Convert to numbers and check for duplicates
-		const numArray = numbers.map(n => parseInt(n));
-		const uniqueNums = new Set(numArray);
+		// Split into array of numbers
+		const numArray = numbersString.trim().split(/\s+/).map(Number);
 
-		if (numArray.length !== uniqueNums.size) {
-			return { valid: false, message: `❌ ${fieldName}: Nao podes ter numeros repetidos.` };
+		// Check for duplicates
+		const uniqueNums = new Set(numArray);
+		if (uniqueNums.size !== numArray.length) {
+			return {
+				valid: false,
+				message: `❌ ${fieldName}: Nao podes ter numeros repetidos.`
+			};
+		}
+
+		// Check each number is between 1 and 9
+		for (const n of numArray) {
+			if (fieldName == "As estrelas") {
+				if (n < 1 || n > 5) {
+					return {
+						valid: false,
+						message: `❌ ${fieldName}: Os numeros devem estar entre 1 e 5.`
+					};
+				}
+			} else {
+				if (n < 1 || n > 10) {
+					return {
+						valid: false,
+						message: `❌ ${fieldName}: Os numeros devem estar entre 1 e 10.`
+					};
+				}
+			}
 		}
 
 		return { valid: true, numbers: numArray };

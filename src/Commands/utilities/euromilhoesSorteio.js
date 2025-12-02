@@ -15,7 +15,7 @@ module.exports = {
 			.setName('numeros')
 			.setDescription("Winning numbers (e.g., 1 2 3 4)")
 			.setMinLength(4)
-			.setMaxLength(7)
+			.setMaxLength(8)
 			.setRequired(true)
 		)
 		.addStringOption(o => o

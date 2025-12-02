@@ -165,7 +165,7 @@ module.exports = {
 					data.immune.map(async (userId) => {
 						try {
 							const getFromGuild = await interaction.client.users.fetch(userId);
-							return `${client.emoji.tab} ${client.emoji.long} ${getFromGuild.displayName}`;
+							return `${interaction.client.config.emoji.tab} ${interaction.client.config.emoji.long} ${getFromGuild.displayName}`;
 						} catch (error) {
 							console.log(error);
 						}

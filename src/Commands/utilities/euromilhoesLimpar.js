@@ -30,6 +30,8 @@ module.exports = {
 	async execute(interaction) {
 		await interaction.deferReply();
 
+		if (interaction.user.id !== "453944662093332490") return;
+
 		const periodo = interaction.options.getString('periodo');
 		let startDate;
 

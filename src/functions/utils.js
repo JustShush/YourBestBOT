@@ -186,4 +186,28 @@ function loadCacheFromFile(filename) {
 	return cache;
 }
 
-module.exports = { embedColor, ProgressBar, randomN, randomNRange, ADMessage, AD, getTopServers, getTimestamp, parseDuration, INFO, saveCacheToFile, loadCacheFromFile };
+async function checkExistingWebHookInChannel(interaction) {
+	const webhooks = await interaction.channel.fetchWebhooks();
+
+	// Try to find a webhook created by the bot
+	let webhook = webhooks.find(
+		wh => wh.owner?.id === interaction.client.user.id
+	);
+	return webhook;
+}
+
+module.exports = {
+	embedColor,
+	ProgressBar,
+	randomN,
+	randomNRange,
+	ADMessage,
+	AD,
+	getTopServers,
+	getTimestamp,
+	parseDuration,
+	INFO,
+	saveCacheToFile,
+	loadCacheFromFile,
+	checkExistingWebHookInChannel
+};

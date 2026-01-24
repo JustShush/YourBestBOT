@@ -4,7 +4,7 @@ const Schema = require("../schemas/stats.js");
 const UserStats = require("../schemas/userStats.js");
 const { gwBtn } = require('../functions/gwUtils.js');
 const { TicketSystem } = require('../functions/ticketSys.js');
-const { handleModalSubmit } = require("../functions/euroMilhoesUtils.js");
+const { SuperJackpothandleModalSubmit } = require("../functions/euroMilhoesUtils.js");
 
 module.exports = {
 	name: "interactionCreate",
@@ -15,7 +15,7 @@ module.exports = {
 		//if (!interaction.isCommand()) return;
 
 		if (interaction.isModalSubmit())
-			await handleModalSubmit(interaction);
+			await SuperJackpothandleModalSubmit(interaction);
 
 		if (interaction.isButton()) {
 			gwBtn(interaction);

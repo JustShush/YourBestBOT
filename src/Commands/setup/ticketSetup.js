@@ -110,18 +110,19 @@ module.exports = {
 				const rolesInput = options.getString("staffroles");
 				const roleIds = [];
 
-				const roleMentions = rolesInput.match(/<@&(\d+)>/g);
-				if (roleMentions) {
-					for (const mention of roleMentions) {
-						const id = mention.match(/\d+/)[0];
-						const role = interaction.guild.roles.cache.get(id);
-						if (role) roleIds.push(role.id);
+				if (rolesInput) {
+					const roleMentions = rolesInput.match(/<@&(\d+)>/g);
+					if (roleMentions) {
+						for (const mention of roleMentions) {
+							const id = mention.match(/\d+/)[0];
+							const role = interaction.guild.roles.cache.get(id);
+							if (role) roleIds.push(role.id);
+						}
 					}
+
+					if (rolesInput && roleIds.length === 0)
+						return interaction.reply({ content: 'No valid roles were mentioned.', flags: "ephemeral" })
 				}
-
-				if (rolesInput && roleIds.length === 0)
-					return interaction.reply({ content: 'No valid roles were mentioned.', flags: "ephemeral" })
-
 				ticketData = await ticketSchema.create({
 					GuildId: interaction.guild.id,
 					CategoryId: category.id,

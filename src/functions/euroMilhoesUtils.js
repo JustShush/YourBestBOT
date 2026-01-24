@@ -107,7 +107,7 @@ function createTicketImage(phoneNumber, combinations) {
 }
 
 // Modal submit handler
-async function handleModalSubmit(interaction) {
+async function SuperJackpothandleModalSubmit(interaction) {
 	if (interaction.customId !== 'ticketModal') return;
 
 	await interaction.deferReply();
@@ -290,4 +290,4 @@ async function handleModalSubmit(interaction) {
 	}
 }
 
-module.exports = { handleModalSubmit };
+module.exports = { SuperJackpothandleModalSubmit };

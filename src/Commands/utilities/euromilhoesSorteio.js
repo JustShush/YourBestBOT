@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits, MessageFlags } = require('discord.js');
 const euroMilhoesModel = require('../../schemas/euroMilhoes');
 
 module.exports = {
@@ -31,7 +31,7 @@ module.exports = {
 		.setNSFW(false),
 
 	async execute(interaction) {
-		await interaction.deferReply();
+		await interaction.deferReply({ flags: MessageFlags.Ephemeral });
 
 		// Parse winning numbers
 		const parseNumbers = (input) => {

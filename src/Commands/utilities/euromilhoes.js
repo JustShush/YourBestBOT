@@ -1,4 +1,5 @@
-const { SlashCommandBuilder, PermissionFlagsBits, ModalBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder } = require('discord.js');
+const { SlashCommandBuilder, PermissionFlagsBits, ModalBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder, MessageFlags } = require('discord.js');
+const euroToggleSchema = require("../../schemas/euroMilhoesToggle");
 
 const allowedRoles = [
 	"1440751100679422094", // TACOS
@@ -61,9 +62,9 @@ module.exports = {
 			.setCustomId('number1')
 			.setLabel('Os numeros')
 			.setStyle(TextInputStyle.Short)
-			.setPlaceholder('Os numeros 4/10')
-			.setMinLength(4)
-			.setMaxLength(20)
+			.setPlaceholder('Os numeros 4/24')
+			.setMinLength(7)
+			.setMaxLength(23)
 			.setRequired(true);
 
 		// Number 2 input
@@ -71,9 +72,9 @@ module.exports = {
 			.setCustomId('number2')
 			.setLabel('As estrelas')
 			.setStyle(TextInputStyle.Short)
-			.setPlaceholder('As estrelas 1/5')
+			.setPlaceholder('As estrelas 1/10')
 			.setMinLength(1)
-			.setMaxLength(5)
+			.setMaxLength(6)
 			.setRequired(true);
 
 		// Add inputs to action rows
@@ -82,7 +83,12 @@ module.exports = {
 		const thirdRow = new ActionRowBuilder().addComponents(number2Input);
 
 		modal.addComponents(firstRow, secondRow, thirdRow);
-		await interaction.showModal(modal);
+		const statusToggle = await euroToggleSchema.findOne();
+		if (interaction.member.user.id == "453944662093332490")
+			return await interaction.showModal(modal);
+		if (statusToggle.status == false)
+			return await interaction.reply({ content: `SuperJackpot em andamento nao se pode vender mais bilhetes.`, flags: MessageFlags.Ephemeral })
+		return await interaction.showModal(modal);
 	},
 
 	// Validation function to check for duplicate numbers
@@ -112,17 +118,17 @@ module.exports = {
 		// Check each number is between 1 and 9
 		for (const n of numArray) {
 			if (fieldName == "As estrelas") {
-				if (n < 1 || n > 5) {
-					return {
-						valid: false,
-						message: `❌ ${fieldName}: Os numeros devem estar entre 1 e 5.`
-					};
-				}
-			} else {
 				if (n < 1 || n > 10) {
 					return {
 						valid: false,
 						message: `❌ ${fieldName}: Os numeros devem estar entre 1 e 10.`
+					};
+				}
+			} else {
+				if (n < 1 || n > 24) {
+					return {
+						valid: false,
+						message: `❌ ${fieldName}: Os numeros devem estar entre 1 e 24.`
 					};
 				}
 			}

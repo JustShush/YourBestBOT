@@ -12,8 +12,23 @@ async function WBlacklist(message) {
 
 	if (message.author.bot) return;
 
-	const containsProfanity = data.words.some(word => message.content.includes(word));
+	function normalize(text) {
+		return text
+		.toLowerCase()
+		.replace(/0/g, "o")
+		.replace(/1/g, "i")
+		.replace(/3/g, "e")
+		.replace(/4/g, "a")
+		.replace(/5/g, "s")
+		.replace(/7/g, "t");
+	};
 
+	const wordsInMessage = normalize(message.content);
+
+	const containsProfanity = data.words.some(word => wordsInMessage.includes(normalize(word)));
+
+	/*const containsProfanity = data.words.some(word => message.content.toLowerCase().includes(word.toLowerCase()));
+*/
 	const replies = [
 		"Your message has been deleted for containing profanity.",
 		"Mind your language! Words like that aren't allowed in this server!",

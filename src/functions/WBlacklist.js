@@ -38,9 +38,14 @@ async function WBlacklist(message) {
 
 	if (containsProfanity) {
 		await message.reply(
-			`${randReply}`
+			`${message.author}, ${randReply}`
 		);
 		await message.delete();
+
+		// Temp flr jogalia
+		await message.member.timeout(
+			15 * 60 * 1000, // 15min
+			"Used a prohibited word!").catch(console.error);
 	} else {
 		return;
 	}

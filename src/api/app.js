@@ -1,5 +1,6 @@
 // https://api.yourbestbot.pt
 const color = require('colors');
+const path = require("path")
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const rateLimit = require('express-rate-limit');
@@ -86,6 +87,8 @@ module.exports.load = (client) => {
 	 */
 	app.get('/oauth', (req, res) => require('./oauth.js')(req, res));
 	app.get('/login', (req, res) => require('./login.js')(req, res));
+
+	app.use('/public', express.static(path.join(__dirname, '../public')));
 
 	app.get("/commands", (req, res) => require("./commands.js")(req, res, client));
 	app.get("/lastfm", (req, res) => require("./lastfm.js")(req, res, client));

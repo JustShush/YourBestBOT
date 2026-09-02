@@ -27,6 +27,28 @@ for (const folder of commandFolders) {
 	}
 }
 
+function findDuplicateCommands(cmds) {
+	const names = cmds.map(cmd => cmd.name);
+	const seen = new Set();
+	const duplicates = new Set();
+
+	for (const name of names) {
+		if (seen.has(name)) duplicates.add(name);
+		seen.add(name);
+	}
+
+	return [...duplicates];
+}
+
+// 🔍 Detect duplicates BEFORE deploying
+const duplicates = findDuplicateCommands(commands);
+if (duplicates.length > 0) {
+	console.log("\n❌ Duplicate command names detected!".red.bold);
+	duplicates.forEach(d => console.log(` - ${d}`.red));
+	console.log("\nFix duplicates before redeploying.\n".yellow);
+	process.exit(1); // Stop script to prevent Discord API errors
+}
+
 const rest = new REST().setToken(TOKEN);
 
 (async () => {

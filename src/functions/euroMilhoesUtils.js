@@ -16,7 +16,7 @@ const Lojas = {
 	TuneTown: "1440830614973583382"
 }
 
-const TICKET_PRICE = 100;
+const TICKET_PRICE = 200;
 
 // Helper function to get all combinations
 function getCombinations(arr, size) {
